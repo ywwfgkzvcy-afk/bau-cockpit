@@ -241,6 +241,81 @@
   .todometa .gtag-l{font-size:11px;}
   .todots{font-family:"SF Mono",ui-monospace,Consolas,monospace;font-size:10.5px;color:var(--grau);}
 
+  /* Ampel sitzt jetzt in der Namenszelle */
+  .nameflex{display:flex;align-items:center;gap:8px;}
+  .nameflex .name-in{flex:1;width:auto;}
+
+  /* ---- Bearbeiten-Sperre: standardmäßig sind Namen/Farbe/Löschen gesperrt ---- */
+  .name-in,.gname-in{pointer-events:none;}
+  .gbar{pointer-events:none;cursor:default;}
+  .ghbtn.danger,.delbtn{display:none;}
+  body.edit-on .name-in,body.edit-on .gname-in{pointer-events:auto;}
+  body.edit-on .name-in{border:1px solid var(--line-strong);background:#fff;}
+  body.edit-on .gname-in{border:1px solid var(--line-strong);}
+  body.edit-on .gbar{pointer-events:auto;cursor:pointer;}
+  body.edit-on .ghbtn.danger{display:inline-block;}
+  body.edit-on .delbtn{display:inline-block;}
+  .act.editactive{background:var(--accent) !important;color:#fff !important;border-color:var(--accent) !important;}
+
+  /* ====== MOBILE: Karten-Layout (iPhone) ====== */
+  @media (max-width:720px){
+    .wrap{padding:18px 12px 80px;}
+    .top{align-items:flex-start;}
+    .top h1{font-size:21px;}
+    .top .sub{font-size:12px;}
+    .totalbox{text-align:left;}
+    .totalbox .big{font-size:27px;}
+
+    .viewtabs .vtab{flex:1;text-align:center;padding:9px 6px;}
+    .toolbar{gap:8px;}
+    button.act{padding:8px 11px;font-size:12.5px;}
+
+    /* Tabelle -> Karten */
+    table,tbody,tr,td{display:block;width:100%;}
+    thead,tfoot{display:none;}
+    .tablecard{border:none;background:transparent;border-radius:0;overflow:visible;}
+
+    tr.grouphead{margin:16px 0 8px;border-radius:9px;overflow:hidden;border:none;}
+    tr.grouphead td{padding:10px 12px;border:none;}
+    tr.grouphead .gh{flex-wrap:wrap;}
+    input.gname-in{min-width:120px;}
+    .gh .gright{width:100%;margin-left:0;margin-top:8px;gap:10px;flex-wrap:wrap;justify-content:flex-start;}
+
+    tr.item{border:1px solid var(--line);border-radius:11px;margin:0 0 10px;padding:11px 13px;background:var(--card);box-shadow:0 1px 2px rgba(0,0,0,.03);}
+    tr.item:hover{background:var(--card);}
+    tr.item[data-ampel="gruen"]{background:rgba(58,143,91,.05);}
+    tr.item td{border:none;padding:0;}
+    td.pos{display:none;}
+    td.name{padding-bottom:7px;}
+    .nameflex .name-in{font-size:15px;}
+    .firma-line{margin-top:5px;}
+
+    /* drei Kostenfelder nebeneinander */
+    td.inp{float:left;width:33.33%;padding:0 6px 0 0;}
+    td.inp:nth-of-type(5){padding-right:0;}
+    td.inp input.eu{width:100%;font-size:13px;padding:8px 6px;}
+    td.inp::before,td.sum::before,td.status::before{content:attr(data-label);display:block;font-size:9.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);font-weight:700;margin-bottom:3px;}
+
+    td.sum{clear:both;display:flex;justify-content:space-between;align-items:center;padding-top:10px;margin-top:9px;border-top:1px dashed var(--line);font-size:15px;}
+    td.sum::before{margin-bottom:0;}
+    td.status{margin-top:10px;}
+    td.status select.st{padding:10px 9px;font-size:13.5px;}
+    td.exp{margin-top:9px;}
+    td.exp .expbtn{width:100%;height:40px;font-size:16px;}
+
+    /* Detailbereich */
+    .detailinner{padding:12px 2px 14px;}
+    tr.detail td{padding:0;}
+    .logadd{flex-wrap:wrap;}
+    .logadd-in{flex:1 1 100%;}
+    .logadd-btn{flex:1;text-align:center;}
+
+    /* Übersicht */
+    .sumrecap{font-size:12px;}
+    .sumcard-h{flex-wrap:wrap;}
+    .sumamt{margin-left:auto;}
+  }
+
   @media (max-width:880px){
     .dash{grid-template-columns:1fr 1fr;}
     .dgrid2{grid-template-columns:1fr;}
@@ -324,6 +399,7 @@
       <div class="btns">
         <span class="saved" id="savedNote"></span>
         <span class="cloudstat" id="cloudStatus">nur lokal</span>
+        <button class="act" id="editToggle" onclick="toggleEdit()">🔒 Gesperrt</button>
         <button class="act" onclick="toggleCloud()">☁️ Cloud-Sync</button>
         <button class="act" onclick="exportJSON()">⭳ Sichern (JSON)</button>
         <button class="act" onclick="document.getElementById('importFile').click()">⭱ Laden (JSON)</button>
@@ -337,7 +413,6 @@
       <table>
         <thead>
           <tr>
-            <th class="l" style="width:20px"></th>
             <th class="l" style="width:26px"></th>
             <th class="l">Position &amp; Auftragnehmer</th>
             <th>Material</th><th>Arbeit</th><th>Sonstige</th><th>Summe</th>
@@ -347,7 +422,7 @@
         <tbody id="tbody"></tbody>
         <tfoot>
           <tr>
-            <td colspan="3" class="tlabel">GESAMT</td>
+            <td colspan="2" class="tlabel">GESAMT</td>
             <td class="tnum num" id="footMat">–</td>
             <td class="tnum num" id="footArb">–</td>
             <td class="tnum num" id="footSon">–</td>
@@ -502,7 +577,7 @@ function render(){
 
     let gmin=0,gmax=0; rows.forEach(r=>{gmin+=r.min;gmax+=r.max;});
     const ghr=document.createElement('tr'); ghr.className='grouphead';
-    ghr.innerHTML=`<td colspan="9"><div class="gh">
+    ghr.innerHTML=`<td colspan="8"><div class="gh">
         <span class="gbar" title="Farbe wechseln" data-color="${gr.id}" style="background:${gr.color}"></span>
         <input class="gname-in" data-gname="${gr.id}" value="${esc(gr.label)}">
         <div class="gright">
@@ -520,23 +595,22 @@ function render(){
       tr.dataset.id=it.id; tr.dataset.ampel=ampelOf(it.status);
       const opts=STATUSES.map(s=>`<option value="${s.v}"${it.status===s.v?' selected':''}>${s.t}</option>`).join('');
       tr.innerHTML=`
-        <td class="ampelcell"><span class="ampel"></span></td>
         <td class="pos num">${posNo}</td>
         <td class="name">
-          <input class="name-in" data-f="n" value="${esc(it.n)}">
+          <div class="nameflex"><span class="ampel"></span><input class="name-in" data-f="n" value="${esc(it.n)}"></div>
           <div class="firma-line">${hasTodo(it)?'<span class="rowtodo" title="Offene To-Dos">⚡ To-Do</span>':''}<span class="pre">AN ▸</span><input class="firma-in" data-f="firma" placeholder="Auftragnehmer / Firma…" value="${esc(it.firma)}"></div>
         </td>
-        <td class="inp"><input class="eu" type="number" min="0" step="100" data-f="mat" value="${it.mat}"></td>
-        <td class="inp"><input class="eu" type="number" min="0" step="100" data-f="arb" value="${it.arb}"></td>
-        <td class="inp"><input class="eu" type="number" min="0" step="100" data-f="son" value="${it.son}"></td>
-        <td class="sum num" data-sum>–</td>
-        <td class="status"><select class="st" data-f="status">${opts}</select></td>
+        <td class="inp" data-label="Material"><input class="eu" type="number" inputmode="numeric" min="0" step="100" data-f="mat" value="${it.mat}"></td>
+        <td class="inp" data-label="Arbeit"><input class="eu" type="number" inputmode="numeric" min="0" step="100" data-f="arb" value="${it.arb}"></td>
+        <td class="inp" data-label="Sonstige"><input class="eu" type="number" inputmode="numeric" min="0" step="100" data-f="son" value="${it.son}"></td>
+        <td class="sum num" data-sum data-label="Summe">–</td>
+        <td class="status" data-label="Status"><select class="st" data-f="status">${opts}</select></td>
         <td class="exp"><button class="expbtn" data-exp="${it.id}" title="Details / Notizen">⋯</button></td>`;
       tb.appendChild(tr);
 
       const dr=document.createElement('tr');
       dr.className='detail'+(hide?' hidden':''); dr.dataset.detail=it.id;
-      dr.innerHTML=`<td colspan="9"><div class="detailinner" id="det-${it.id}">
+      dr.innerHTML=`<td colspan="8"><div class="detailinner" id="det-${it.id}">
         <div class="loghead">📌 Verlauf / Notizen</div>
         <div class="logadd">
           <textarea class="logadd-in" placeholder="Neue Notiz… ⚡ = nächster Schritt/To-Do (steht ganz oben in der Übersicht). Strg/⌘+Enter = normaler Eintrag."></textarea>
@@ -646,8 +720,19 @@ function bindGroup(){
   document.querySelectorAll('[data-delgroup]').forEach(btn=>{ btn.addEventListener('click',()=>delGroup(btn.dataset.delgroup)); });
 }
 
+// ---------- Bearbeiten-Modus (Namen/Struktur standardmäßig gesperrt) ----------
+let editMode=false;
+function setEdit(on){
+  editMode=on;
+  document.body.classList.toggle('edit-on',on);
+  const b=document.getElementById('editToggle');
+  if(b){ b.textContent=on?'🔓 Bearbeiten aktiv':'🔒 Gesperrt'; b.classList.toggle('editactive',on); }
+}
+function toggleEdit(){ setEdit(!editMode); }
+
 // ---------- Struktur ----------
 function addItem(gid){
+  setEdit(true);
   state.items.push({id:nid(),g:gid,n:'Neue Position',note:'',mat:0,arb:0,son:0,min:0,max:0,status:'offen',firma:'',datum:'',kontakt:'',notizen:[]});
   render(); save();
   const last=[...document.querySelectorAll('#tbody tr.item')].filter(tr=>{const x=itemById(tr.dataset.id);return x&&x.g===gid;}).pop();
@@ -664,7 +749,7 @@ function addGroup(){
   const used=state.groups.map(g=>g.color);
   const color=PALETTE.find(c=>!used.includes(c))||PALETTE[state.groups.length%PALETTE.length];
   state.groups.push({id:nid(),label:name,color});
-  inp.value=''; render(); save();
+  inp.value=''; setEdit(true); render(); save();
 }
 function delGroup(gid){
   const g=groupById(gid);
