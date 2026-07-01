@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="de-AT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bau-Cockpit · Neubau EFH (Cloud)</title>
+<!-- Homescreen-Icon & Web-App (iPhone) -->
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Bau-Cockpit">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#1a1d21">
+<style>
+  /* ===================== THEME-TOKENS ===================== */
+  :root{
+    --paper:#f7f6f2; --card:#ffffff; --ink:#1a1d21; --ink-soft:#5b6168; --ink-contrast:#ffffff;
+    --line:#e6e2d9; --line-strong:#cdc7ba; --accent:#1f6f7a; --accent-ink:#ffffff;
+    --rot:#cf5a5a; --gelb:#dca02e; --gruen:#3a8f5b; --grau:#a39e92;
+
+    --input-bg:#ffffff;
+    --head-bg:#fbfaf7;
+    --group-bg:#efeae0;
+    --chip-bg:#f1eee7;
+    --bar-track:#ece8df;
+    --detail-bg:#fbfaf6;
+    --hover:rgba(31,111,122,.05);
+    --shadow-card:0 1px 2px rgba(0,0,0,.03);
+    --overlay:rgba(20,22,25,.45);
+    --focus-ring:rgba(31,111,122,.16);
+    --placeholder:#bdb8ac;
+    --faint:#c3bdb0;
+    --ring-soft:rgba(0,0,0,.04);
+    --gbar-outline:rgba(0,0,0,.15);
+    --green-tint:rgba(58,143,91,.05);
+
+    --badge-rot-bg:#f7e3e3;  --badge-rot-ink:#b14747;
+    --badge-gelb-bg:#f6ecd2; --badge-gelb-ink:#a9761a;
+    --badge-gruen-bg:#dff0e6;--badge-gruen-ink:#2f7d4f;
+    --badge-done-bg:#e6e2d9; --badge-done-ink:#6b6457;
+
+    --st-rot-ink:#b14747;  --st-rot-bd:#e3b3b3;
+    --st-gelb-ink:#a9761a; --st-gelb-bd:#e6c98a;
+    --st-gruen-ink:#3a8f5b;--st-gruen-bd:#9fceb2;
+
+    --todo-accent:#e07b39; --todo-ink:#c4641f; --todo-line:#e0b48f;
+    --todo-bg:#fff7f0; --todo-bg2:#fffaf5; --todo-badge-bg:#fbe6d2; --todo-hover:rgba(224,123,57,.07);
+  }
+  body.dark{
+    --paper:#14161a; --card:#1d2025; --ink:#e9e7e2; --ink-soft:#a2a7af; --ink-contrast:#14161a;
+    --line:#2b2f36; --line-strong:#3a3f47; --accent:#41a7b4; --accent-ink:#0b1618;
+    --rot:#e07a7a; --gelb:#e6b24d; --gruen:#5cb883; --grau:#7c828b;
+
+    --input-bg:#24282e;
+    --head-bg:#20242a;
+    --group-bg:#262a31;
+    --chip-bg:#2a2f37;
+    --bar-track:#2b2f36;
+    --detail-bg:#1a1d22;
+    --hover:rgba(65,167,180,.12);
+    --shadow-card:0 1px 2px rgba(0,0,0,.4);
+    --overlay:rgba(0,0,0,.6);
+    --focus-ring:rgba(65,167,180,.32);
+    --placeholder:#6b7078;
+    --faint:#5c626b;
+    --ring-soft:rgba(255,255,255,.05);
+    --gbar-outline:rgba(255,255,255,.22);
+    --green-tint:rgba(92,184,131,.10);
+
+    --badge-rot-bg:#3a2323;  --badge-rot-ink:#e79a9a;
+    --badge-gelb-bg:#3a3320; --badge-gelb-ink:#e6c579;
+    --badge-gruen-bg:#1f3529;--badge-gruen-ink:#7fd0a0;
+    --badge-done-bg:#2b2f36; --badge-done-ink:#a8adb5;
+
+    --st-rot-ink:#e79a9a;  --st-rot-bd:#5a3535;
+    --st-gelb-ink:#e6c579; --st-gelb-bd:#5a4d2e;
+    --st-gruen-ink:#7fd0a0;--st-gruen-bd:#2f5a41;
+
+    --todo-accent:#e8874a; --todo-ink:#f0a86a; --todo-line:#5a4432;
+    --todo-bg:#2a2119; --todo-bg2:#241d16; --todo-badge-bg:#3a2b1c; --todo-hover:rgba(232,135,74,.12);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--paper);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased;
+    transition:background-color .2s ease,color .2s ease;}
+  .num{font-family:"SF Mono",ui-monospace,"JetBrains Mono","Roboto Mono",Consolas,monospace;
+    font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
+  .wrap{max-width:1240px;margin:0 auto;padding:26px 20px 90px;}
+  .hidden{display:none !important;}
+
+  /* Kopf */
+  header.top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;
+    gap:18px;border-bottom:2px solid var(--ink);padding-bottom:15px;}
+  .top .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;margin-bottom:6px;}
+  .top h1{font-size:26px;line-height:1.1;margin:0;font-weight:700;letter-spacing:-.01em;}
+  .top .sub{color:var(--ink-soft);font-size:12.5px;margin-top:6px;max-width:560px;}
+  .totalbox{text-align:right;}
+  .totalbox .lbl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;}
+  .totalbox .big{font-size:32px;font-weight:700;line-height:1;margin-top:3px;}
+  .totalbox .band{font-size:12px;color:var(--ink-soft);margin-top:5px;}
+
+  /* View-Tabs */
+  .viewtabs{display:flex;gap:6px;margin:16px 0 4px;}
+  .vtab{border:1px solid var(--line-strong);background:var(--card);color:var(--ink-soft);
+    font:inherit;font-size:13px;font-weight:600;padding:8px 18px;border-radius:8px;cursor:pointer;transition:.12s;}
+  .vtab.on{background:var(--ink);color:var(--ink-contrast);border-color:var(--ink);}
+
+  /* Dashboard */
+  .dash{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:12px;margin:14px 0 8px;}
+  .dcard{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:13px 15px;}
+  .dcard .dh{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;display:flex;align-items:center;gap:7px;}
+  .dcard .dnum{font-size:21px;font-weight:700;margin-top:7px;line-height:1;}
+  .dcard .dsub{font-size:11.5px;color:var(--ink-soft);margin-top:4px;}
+  .dcard .adot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  .progwrap{grid-column:1/-1;background:var(--card);border:1px solid var(--line);border-radius:11px;padding:13px 16px;margin-top:4px;}
+  .progtop{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--ink-soft);font-weight:600;margin-bottom:8px;}
+  .progtop b{color:var(--ink);font-size:13px;}
+  .bar{height:11px;background:var(--bar-track);border-radius:6px;overflow:hidden;display:flex;}
+  .bar .seg{height:100%;transition:width .35s ease;}
+  .bar .seg.g{background:var(--gruen);} .bar .seg.y{background:var(--gelb);} .bar .seg.r{background:var(--rot);}
+
+  /* Toolbar / Filter */
+  .toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin:20px 0 14px;}
+  .filters{display:flex;gap:6px;flex-wrap:wrap;}
+  .fchip{border:1px solid var(--line-strong);background:var(--card);color:var(--ink-soft);
+    font:inherit;font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:20px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:.12s;}
+  .fchip .adot{width:9px;height:9px;border-radius:50%;display:inline-block;}
+  .fchip.on{background:var(--ink);color:var(--ink-contrast);border-color:var(--ink);}
+  .btns{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  button.act{border:1px solid var(--line-strong);background:var(--card);color:var(--ink);
+    font:inherit;font-size:13px;font-weight:600;padding:8px 14px;border-radius:7px;cursor:pointer;transition:.12s;}
+  button.act:hover{background:var(--ink);color:var(--ink-contrast);border-color:var(--ink);}
+  .saved{font-size:11.5px;color:var(--grau);}
+
+  /* Tabelle */
+  .tablecard{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  table{width:100%;border-collapse:collapse;}
+  thead th{text-align:right;font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);
+    font-weight:700;padding:12px 10px;border-bottom:1.5px solid var(--line-strong);background:var(--head-bg);}
+  thead th.l{text-align:left;}
+  tbody td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:middle;}
+
+  tr.grouphead td{background:var(--group-bg);border-bottom:1px solid var(--line-strong);padding:9px 10px;}
+  tr.grouphead{cursor:pointer;}
+  tr.grouphead .gh{display:flex;align-items:center;gap:10px;}
+  .ghchev{flex:none;width:14px;text-align:center;color:var(--ink-soft);font-size:12px;transition:transform .18s ease;display:inline-block;}
+  tr.grouphead.gopen .ghchev{transform:rotate(90deg);}
+  .gbar{width:6px;height:20px;border-radius:2px;cursor:pointer;flex:none;}
+  .gbar:hover{outline:2px solid var(--gbar-outline);outline-offset:1px;}
+  input.gname-in{border:1px solid transparent;background:transparent;font:inherit;font-weight:700;color:var(--ink);
+    font-size:12.5px;letter-spacing:.03em;text-transform:uppercase;padding:3px 5px;border-radius:4px;flex:1 1 auto;min-width:160px;}
+  input.gname-in:hover{border-color:var(--line-strong);}
+  input.gname-in:focus{outline:none;border-color:var(--accent);background:var(--input-bg);text-transform:none;}
+  .gh .gright{margin-left:auto;display:flex;align-items:center;gap:12px;}
+  .gsum{font-weight:700;font-size:13px;}
+  .gsum small{color:var(--ink-soft);font-weight:600;font-size:11px;}
+  .ghbtn{border:1px solid var(--line-strong);background:var(--input-bg);border-radius:6px;font:inherit;font-size:11.5px;
+    font-weight:600;padding:4px 9px;cursor:pointer;color:var(--ink-soft);}
+  .ghbtn:hover{background:var(--ink);color:var(--ink-contrast);border-color:var(--ink);}
+  .ghbtn.danger:hover{background:var(--rot);border-color:var(--rot);color:#fff;}
+
+  tr.item{cursor:pointer;}
+  td.ampelcell{width:20px;text-align:center;}
+  .ampel{width:11px;height:11px;border-radius:50%;display:inline-block;background:var(--grau);box-shadow:0 0 0 3px var(--ring-soft);}
+  tr[data-ampel="rot"] .ampel{background:var(--rot);}
+  tr[data-ampel="gelb"] .ampel{background:var(--gelb);}
+  tr[data-ampel="gruen"] .ampel{background:var(--gruen);}
+  tr.item[data-ampel="gruen"]{background:var(--green-tint);}
+  tr.item:hover{background:var(--hover);}
+
+  .pos{color:var(--grau);font-size:11.5px;width:26px;text-align:right;}
+  td.name{min-width:210px;}
+  input.name-in{border:1px solid transparent;background:transparent;font:inherit;font-weight:600;color:var(--ink);width:100%;padding:3px 5px;border-radius:4px;}
+  input.name-in:hover{border-color:var(--line);}
+  input.name-in:focus{outline:none;border-color:var(--accent);background:var(--input-bg);}
+  input.firma-in{border:1px solid transparent;background:transparent;font:inherit;font-size:11.5px;color:var(--ink-soft);width:100%;padding:2px 5px;border-radius:4px;margin-top:1px;}
+  input.firma-in::placeholder{color:var(--placeholder);font-style:italic;}
+  input.firma-in:hover{border-color:var(--line);}
+  input.firma-in:focus{outline:none;border-color:var(--accent);background:var(--input-bg);color:var(--ink);}
+  .firma-line{display:flex;align-items:center;gap:5px;}
+  .firma-line .pre{color:var(--faint);font-size:11px;flex:none;}
+
+  td.inp{width:90px;text-align:right;}
+  input.eu{width:82px;text-align:right;font-family:"SF Mono",ui-monospace,Consolas,monospace;
+    font-variant-numeric:tabular-nums;font-size:12.5px;border:1px solid var(--line);border-radius:6px;padding:5px 6px;background:var(--input-bg);color:var(--ink);}
+  input.eu:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px var(--focus-ring);}
+  input.eu::-webkit-outer-spin-button,input.eu::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+  input.eu[type=number]{-moz-appearance:textfield;}
+
+  td.sum{width:100px;text-align:right;font-weight:700;font-size:13.5px;}
+  td.status{width:150px;}
+  select.st{width:100%;font:inherit;font-size:11.5px;border:1px solid var(--line);border-radius:6px;padding:5px 6px;background:var(--input-bg);cursor:pointer;font-weight:600;color:var(--ink-soft);}
+  tr[data-ampel="gelb"] select.st{color:var(--st-gelb-ink);border-color:var(--st-gelb-bd);}
+  tr[data-ampel="gruen"] select.st{color:var(--st-gruen-ink);border-color:var(--st-gruen-bd);}
+  tr[data-ampel="rot"] select.st{color:var(--st-rot-ink);border-color:var(--st-rot-bd);}
+
+  td.exp{width:30px;text-align:center;}
+  .expbtn{border:1px solid var(--line);background:var(--input-bg);border-radius:6px;width:26px;height:26px;cursor:pointer;color:var(--ink-soft);font-size:13px;line-height:1;padding:0;}
+  .expbtn:hover{background:var(--ink);color:var(--ink-contrast);border-color:var(--ink);}
+
+  /* Detailpanel */
+  tr.detail td{padding:0;border-bottom:1px solid var(--line);background:var(--detail-bg);}
+  .detailinner{padding:14px 18px 16px 56px;display:none;}
+  tr.detail.open .detailinner{display:block;}
+
+  .loghead{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;margin-bottom:7px;}
+  .logadd{display:flex;gap:8px;align-items:flex-start;margin-bottom:10px;}
+  .logadd-in{flex:1;font:inherit;font-size:12.5px;border:1px solid var(--line);border-radius:7px;padding:7px 9px;background:var(--input-bg);color:var(--ink);min-height:38px;line-height:1.4;resize:vertical;}
+  .logadd-in:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px var(--focus-ring);}
+  .logadd-btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);font:inherit;font-size:12.5px;font-weight:600;padding:8px 13px;border-radius:7px;cursor:pointer;flex:none;}
+  .logadd-btn:hover{filter:brightness(.92);}
+  .loglist{margin-bottom:14px;}
+  .logempty{font-size:12px;color:var(--grau);font-style:italic;padding:4px 0 8px;}
+  .logentry{border-left:2px solid var(--line-strong);padding:0 0 0 11px;margin-bottom:9px;}
+  .logmeta{display:flex;align-items:center;gap:8px;margin-bottom:3px;}
+  .logts{font-size:11px;font-weight:700;color:var(--accent);font-family:"SF Mono",ui-monospace,Consolas,monospace;}
+  .logts.muted{color:var(--grau);font-weight:600;}
+  .logdel{margin-left:auto;border:none;background:transparent;color:var(--grau);font-size:15px;line-height:1;cursor:pointer;padding:0 4px;border-radius:4px;}
+  .logdel:hover{color:#fff;background:var(--rot);}
+  .logtext{width:100%;font:inherit;font-size:12.5px;color:var(--ink);border:1px solid transparent;border-radius:6px;padding:4px 6px;background:transparent;line-height:1.4;resize:vertical;min-height:30px;}
+  .logtext:hover{border-color:var(--line);background:var(--input-bg);}
+  .logtext:focus{outline:none;border-color:var(--accent);background:var(--input-bg);}
+
+  .dgrid2{display:grid;grid-template-columns:180px 1fr;gap:12px 16px;align-items:start;margin-bottom:11px;}
+  .field label{display:block;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;margin-bottom:4px;}
+  .field input[type=date],.field textarea{width:100%;font:inherit;font-size:12.5px;border:1px solid var(--line);border-radius:7px;padding:7px 9px;background:var(--input-bg);color:var(--ink);resize:vertical;line-height:1.4;}
+  .field input:focus,.field textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px var(--focus-ring);}
+  .kontakt-ta{min-height:38px;}
+  .annahme{margin-bottom:13px;}
+  .annahme label{display:block;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--grau);font-weight:700;margin-bottom:4px;}
+  .annahme textarea{width:100%;font:inherit;font-size:12px;color:var(--ink-soft);border:1px dashed var(--line-strong);border-radius:7px;padding:7px 9px;background:transparent;min-height:38px;line-height:1.4;resize:vertical;}
+  .detailfoot{display:flex;justify-content:flex-end;}
+  .delbtn{border:1px solid var(--st-rot-bd);background:var(--input-bg);color:var(--st-rot-ink);font:inherit;font-size:12px;font-weight:600;padding:6px 13px;border-radius:7px;cursor:pointer;}
+  .delbtn:hover{background:var(--rot);color:#fff;border-color:var(--rot);}
+
+  /* Hauptpunkt hinzufügen */
+  .addgroup{display:flex;gap:10px;align-items:center;margin-top:16px;background:var(--card);border:1px dashed var(--line-strong);border-radius:11px;padding:13px 16px;}
+  .addgroup input{flex:1;font:inherit;font-size:13px;border:1px solid var(--line);border-radius:7px;padding:8px 11px;background:var(--input-bg);color:var(--ink);}
+  .addgroup input:focus{outline:none;border-color:var(--accent);}
+  .addgroup button{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);font:inherit;font-size:13px;font-weight:600;padding:8px 16px;border-radius:7px;cursor:pointer;}
+  .addgroup button:hover{filter:brightness(.92);}
+  .addgroup .lbl{font-size:12px;color:var(--ink-soft);font-weight:600;flex:none;}
+
+  tfoot td{padding:15px 10px;border-top:2px solid var(--ink);font-weight:700;}
+  tfoot .tlabel{font-size:14px;} tfoot .tnum{text-align:right;font-size:16px;}
+  tfoot .tband{text-align:right;font-size:12px;color:var(--ink-soft);font-weight:600;}
+
+  .disclaimer{margin-top:18px;font-size:11.5px;color:var(--grau);line-height:1.5;border-left:3px solid var(--line-strong);padding-left:12px;}
+
+  /* Cloud-Sync */
+  .cloudstat{font-size:11.5px;font-weight:700;color:var(--grau);}
+  .cloudstat.ok{color:var(--gruen);} .cloudstat.warn{color:var(--gelb);} .cloudstat.err{color:var(--rot);}
+  .cloudpanel{position:fixed;inset:0;background:var(--overlay);display:flex;align-items:center;justify-content:center;z-index:50;padding:18px;}
+  .cloudbox{background:var(--card);border:1px solid var(--line);border-radius:14px;max-width:500px;width:100%;padding:20px 22px;box-shadow:0 20px 60px rgba(0,0,0,.35);}
+  .cloudhead{display:flex;align-items:center;font-weight:700;font-size:16px;margin-bottom:12px;}
+  .cloudx{margin-left:auto;border:none;background:transparent;font-size:22px;cursor:pointer;color:var(--ink-soft);line-height:1;}
+  .cloudstatusrow{font-size:13px;margin-bottom:10px;}
+  .cloudlbl{display:block;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;margin:12px 0 5px;}
+  .cloudkeyrow{display:flex;gap:8px;}
+  .cloudkeyrow input{flex:1;font:inherit;font-size:12px;border:1px solid var(--line);border-radius:7px;padding:8px 10px;background:var(--input-bg);color:var(--ink);font-family:"SF Mono",ui-monospace,Consolas,monospace;}
+  .cloudkeyrow input:focus{outline:none;border-color:var(--accent);}
+  .cloudhelp{font-size:11.5px;color:var(--ink-soft);line-height:1.5;margin:14px 0 0;background:var(--group-bg);border-radius:8px;padding:10px 12px;}
+
+  /* ----- Übersichtsseite (Akkordeon) ----- */
+  .sumhead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:14px;margin:14px 0 18px;border-bottom:1.5px solid var(--line-strong);padding-bottom:12px;}
+  .sumhead h2{margin:0;font-size:20px;font-weight:700;}
+  .sumstand{font-size:12px;color:var(--ink-soft);margin-top:4px;}
+  .sumrecap{display:flex;gap:16px;font-size:12.5px;color:var(--ink-soft);flex-wrap:wrap;}
+  .sumrecap b{font-size:16px;color:var(--ink);}
+  .sumempty{color:var(--grau);font-style:italic;padding:30px 0;text-align:center;}
+  .sumnote.empty{color:var(--grau);font-style:italic;padding:6px 2px;}
+
+  .acc-group{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gc,var(--grau));border-radius:11px;margin-bottom:10px;overflow:hidden;}
+  .acc-ghead{display:flex;align-items:center;gap:11px;padding:13px 15px;cursor:pointer;user-select:none;}
+  .acc-ghead:hover{background:var(--hover);}
+  .acc-chev{flex:none;width:14px;color:var(--ink-soft);font-size:12px;transition:transform .18s ease;display:inline-block;text-align:center;}
+  .acc-group.open>.acc-ghead .acc-chev,.acc-item.open>.acc-ihead .acc-chev{transform:rotate(90deg);}
+  .acc-gtag{width:11px;height:11px;border-radius:50%;flex:none;}
+  .acc-gname{font-size:15px;font-weight:800;flex:1;letter-spacing:.01em;}
+  .acc-gcount{font-size:11.5px;color:var(--ink-soft);font-weight:600;white-space:nowrap;}
+  .acc-mini{display:flex;gap:4px;align-items:center;}
+  .acc-pill{font-size:10.5px;font-weight:800;border-radius:20px;padding:1px 7px;line-height:1.55;}
+  .acc-pill.r{background:var(--badge-rot-bg);color:var(--badge-rot-ink);}
+  .acc-pill.y{background:var(--badge-gelb-bg);color:var(--badge-gelb-ink);}
+  .acc-pill.g{background:var(--badge-gruen-bg);color:var(--badge-gruen-ink);}
+  .acc-gsum{font-weight:800;font-size:14px;min-width:74px;text-align:right;}
+  .acc-gbody{display:none;padding:0 13px 8px;}
+  .acc-group.open>.acc-gbody{display:block;}
+
+  .acc-item{border-top:1px solid var(--line);}
+  .acc-item:first-child{border-top:none;}
+  .acc-ihead{display:flex;align-items:center;gap:9px;padding:10px 6px;cursor:pointer;user-select:none;flex-wrap:wrap;}
+  .acc-ihead:hover{background:var(--hover);}
+  .acc-iname{font-size:13.5px;font-weight:700;}
+  .acc-ifirma{font-size:12px;color:var(--ink-soft);font-weight:600;}
+  .acc-idate{font-size:11.5px;color:var(--ink-soft);}
+  .acc-isum{margin-left:auto;font-weight:700;font-size:13px;padding-left:8px;}
+  .acc-ibody{display:none;padding:2px 6px 12px 29px;}
+  .acc-item.open>.acc-ibody{display:block;}
+  .acc-note{border-left:2px solid var(--line-strong);padding:3px 0 3px 11px;margin-bottom:8px;}
+  .acc-note.todo{border-left-color:var(--todo-accent);}
+  .acc-note-ts{display:block;font-family:"SF Mono",ui-monospace,Consolas,monospace;font-size:10.5px;font-weight:700;color:var(--accent);margin-bottom:2px;}
+  .acc-note-ts.muted{color:var(--grau);font-weight:600;}
+  .acc-note-tx{font-size:12.5px;color:var(--ink);line-height:1.45;white-space:pre-wrap;}
+  .acc-note-empty{font-size:12px;color:var(--grau);font-style:italic;padding:2px 0 6px;}
+  .acc-open-btn{display:inline-flex;align-items:center;gap:5px;margin-top:5px;border:1px solid var(--line-strong);background:var(--input-bg);color:var(--ink-soft);font:inherit;font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:7px;cursor:pointer;}
+  .acc-open-btn:hover{background:var(--ink);color:var(--ink-contrast);border-color:var(--ink);}
+
+  /* Status-Badges (Übersicht/To-Dos) */
+  .gtag{width:9px;height:9px;border-radius:50%;flex:none;}
+  .gtag-l{font-size:11px;color:var(--ink-soft);background:var(--chip-bg);border-radius:5px;padding:1px 7px;}
+  .stbadge{font-size:11px;font-weight:700;border-radius:5px;padding:2px 8px;}
+  .stbadge.a-rot{background:var(--badge-rot-bg);color:var(--badge-rot-ink);}
+  .stbadge.a-gelb{background:var(--badge-gelb-bg);color:var(--badge-gelb-ink);}
+  .stbadge.a-gruen{background:var(--badge-gruen-bg);color:var(--badge-gruen-ink);}
+  .stbadge.a-done{background:var(--badge-done-bg);color:var(--badge-done-ink);}
+
+  /* To-Dos */
+  .rowtodo{font-size:10px;font-weight:800;background:var(--todo-badge-bg);color:var(--todo-ink);border-radius:5px;padding:1px 6px;flex:none;}
+  .logadd-btn.todo{background:var(--input-bg);color:var(--todo-ink);border-color:var(--todo-line);}
+  .logadd-btn.todo:hover{background:var(--todo-ink);color:#fff;border-color:var(--todo-ink);filter:none;}
+  .todobadge{font-size:10px;font-weight:800;letter-spacing:.03em;background:var(--todo-badge-bg);color:var(--todo-ink);border-radius:5px;padding:2px 7px;}
+  .todobadge.done{background:var(--badge-done-bg);color:var(--badge-done-ink);}
+  .logentry.todo{border-left-color:var(--todo-accent);background:var(--todo-bg);border-radius:0 7px 7px 0;padding:6px 0 6px 11px;}
+  .logentry.todo.done{border-left-color:var(--grau);background:transparent;}
+  .logentry.todo.done .logtext{color:var(--ink-soft);}
+  .logdone{border:1px solid var(--todo-line);background:var(--input-bg);color:var(--todo-ink);font:inherit;font-size:10.5px;font-weight:700;border-radius:5px;padding:2px 8px;cursor:pointer;}
+  .logdone:hover{background:var(--gruen);color:#fff;border-color:var(--gruen);}
+  .logreopen{border:1px solid var(--line-strong);background:var(--input-bg);color:var(--ink-soft);font:inherit;font-size:10.5px;font-weight:700;border-radius:5px;padding:2px 8px;cursor:pointer;}
+  .logreopen:hover{background:var(--todo-ink);color:#fff;border-color:var(--todo-ink);}
+  .todo-sec{border-left-color:var(--todo-accent) !important;background:var(--todo-bg2);}
+  .sumsec{border-left:4px solid var(--grau);background:var(--card);border:1px solid var(--line);border-left-width:4px;border-radius:11px;padding:6px 16px 14px;margin-bottom:16px;}
+  .sumsec.a-done{border-left-color:var(--grau);}
+  .sumsec.a-gruen{border-left-color:var(--gruen);}
+  .sumsec-h{display:flex;align-items:center;gap:10px;padding:12px 0 4px;flex-wrap:wrap;}
+  .sumsec-h h3{margin:0;font-size:15px;font-weight:700;}
+  .sumsec-c{background:var(--ink);color:var(--ink-contrast);font-size:12px;font-weight:700;border-radius:20px;padding:2px 9px;}
+  .sumsec-s{color:var(--ink-soft);font-size:12px;}
+  .todocard{display:flex;gap:11px;align-items:flex-start;border-top:1px solid var(--line);padding:11px 0;cursor:pointer;}
+  .todocard:first-of-type{border-top:none;}
+  .todocard:hover{background:var(--todo-hover);}
+  .todocard.done{opacity:.72;}
+  .todocard.done .todotext{text-decoration:line-through;color:var(--ink-soft);}
+  .todochk{flex:none;width:24px;height:24px;border-radius:50%;border:2px solid var(--todo-line);color:var(--todo-ink);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;cursor:pointer;background:var(--input-bg);}
+  .todochk:hover{background:var(--gruen);border-color:var(--gruen);color:#fff;}
+  .todochk.done{background:var(--gruen);border-color:var(--gruen);color:#fff;}
+  .todochk.done:hover{background:var(--todo-ink);border-color:var(--todo-ink);}
+  .todobody{flex:1;}
+  .todotext{font-size:14px;font-weight:600;color:var(--ink);line-height:1.35;white-space:pre-wrap;}
+  .todometa{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:5px;font-size:12px;color:var(--ink-soft);}
+  .todometa .gtag-l{font-size:11px;}
+  .todots{font-family:"SF Mono",ui-monospace,Consolas,monospace;font-size:10.5px;color:var(--grau);}
+  .todo-done-date{font-family:"SF Mono",ui-monospace,Consolas,monospace;font-size:10.5px;color:var(--gruen);font-weight:700;}
+
+  /* Ampel in der Namenszelle */
+  .nameflex{display:flex;align-items:center;gap:8px;}
+  .nameflex .name-in{flex:1;width:auto;}
+
+  /* Hierarchie Cockpit */
+  tr.grouphead .gname{font-size:14px;font-weight:800;}
+  tr.item td.pos{border-left:3px solid var(--gc,transparent);padding-left:8px;}
+
+  /* ---- Bearbeiten-Sperre: Namen/Farbe/Löschen/Vergabe standardmäßig gesperrt ---- */
+  .name-in,.gname-in,.firma-in{pointer-events:none;}
+  .gbar{pointer-events:none;cursor:default;}
+  .ghbtn.danger,.delbtn{display:none;}
+  body.edit-on .name-in,body.edit-on .gname-in,body.edit-on .firma-in{pointer-events:auto;}
+  body.edit-on .name-in,body.edit-on .firma-in{border:1px solid var(--line-strong);background:var(--input-bg);}
+  body.edit-on .firma-in{color:var(--ink);}
+  body.edit-on .gname-in{border:1px solid var(--line-strong);}
+  body.edit-on .gbar{pointer-events:auto;cursor:pointer;}
+  body.edit-on .ghbtn.danger{display:inline-block;}
+  body.edit-on .delbtn{display:inline-block;}
+  .act.editactive{background:var(--accent) !important;color:var(--accent-ink) !important;border-color:var(--accent) !important;}
+
+  /* Zahlungen (Detailbereich) */
+  .rowpaid{font-size:11px;flex:none;}
+  .zahlhead{margin-top:15px;}
+  .zahladd{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap;}
+  .zahladd input{font:inherit;font-size:12.5px;border:1px solid var(--line);border-radius:7px;padding:7px 9px;background:var(--input-bg);color:var(--ink);}
+  .zahladd .z-betrag{width:120px;text-align:right;font-family:"SF Mono",ui-monospace,Consolas,monospace;}
+  .zahladd .z-text{flex:1;min-width:170px;}
+  .zahladd input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px var(--focus-ring);}
+  .zadd-btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);font:inherit;font-size:12.5px;font-weight:600;padding:8px 13px;border-radius:7px;cursor:pointer;flex:none;}
+  .zadd-btn:hover{filter:brightness(.92);}
+  .zahllist{margin-bottom:8px;}
+  .zrow{display:flex;align-items:center;gap:10px;padding:6px 2px;border-bottom:1px solid var(--line);}
+  .zrow .zdate{flex:0 0 88px;font-size:12px;color:var(--accent);font-weight:700;}
+  .zrow .zlabel{flex:1;font-size:12.5px;color:var(--ink);}
+  .zrow .zempty{color:var(--grau);font-style:italic;}
+  .zrow .zamt{flex:0 0 auto;font-weight:700;font-size:13px;}
+  .zdel{border:none;background:transparent;color:var(--grau);font-size:15px;cursor:pointer;padding:0 4px;border-radius:4px;flex:none;}
+  .zdel:hover{color:#fff;background:var(--rot);}
+  .zahlsum{font-size:12.5px;color:var(--ink-soft);margin-bottom:6px;}
+  .zahlsum .zoffen{color:var(--rot);font-weight:700;}
+  .zahlsum .zfull{color:var(--gruen);font-weight:700;}
+  .zahlsum .zof{color:var(--grau);}
+
+  /* Zahlungsübersicht (Tab) */
+  .zpos{background:var(--card);border:1px solid var(--line);border-radius:11px;margin-bottom:14px;padding:2px 16px 12px;}
+  .zpos-h{display:flex;align-items:center;gap:9px;padding:12px 0 9px;border-bottom:1px solid var(--line);cursor:pointer;}
+  .zpos-h b{font-size:14px;}
+  .zpos-sum{margin-left:auto;font-weight:700;font-size:13.5px;text-align:right;}
+  .zpos-sum small{color:var(--ink-soft);font-weight:600;font-size:11.5px;}
+  .zpos-list{padding-top:2px;}
+  .zrow-ov{cursor:pointer;}
+  .zrow-ov:last-child{border-bottom:none;}
+  .zrow-ov:hover{background:var(--hover);}
+
+  /* ====== MOBILE: Karten-Layout (iPhone) ====== */
+  @media (max-width:720px){
+    .wrap{padding:18px 12px 80px;}
+    .top{align-items:flex-start;}
+    .top h1{font-size:21px;}
+    .top .sub{font-size:12px;}
+    .totalbox{text-align:left;}
+    .totalbox .big{font-size:27px;}
+
+    .viewtabs .vtab{flex:1;text-align:center;padding:9px 4px;font-size:12px;}
+    .toolbar{gap:8px;}
+    button.act{padding:8px 11px;font-size:12.5px;}
+
+    /* Tabelle -> Karten */
+    table,tbody,tr,td{display:block;width:100%;}
+    thead,tfoot{display:none;}
+    .tablecard{border:none;background:transparent;border-radius:0;overflow:visible;}
+
+    tr.grouphead{margin:16px 0 8px;border-radius:9px;overflow:hidden;border:none;}
+    tr.grouphead td{padding:10px 12px;border:none;}
+    tr.grouphead .gh{flex-wrap:wrap;}
+    input.gname-in{min-width:120px;}
+    .gh .gright{width:100%;margin-left:0;margin-top:8px;gap:10px;flex-wrap:wrap;justify-content:flex-start;}
+
+    tr.item{border:1px solid var(--line);border-left:4px solid var(--gc,var(--line));border-radius:11px;margin:0 0 11px 16px;padding:11px 13px;background:var(--card);box-shadow:var(--shadow-card);}
+    tr.item:hover{background:var(--card);}
+    tr.item[data-ampel="gruen"]{background:var(--green-tint);}
+    tr.item td{border:none;padding:0;}
+    td.pos{display:none;}
+    td.name{padding-bottom:7px;}
+    .nameflex .name-in{font-size:15px;}
+    .firma-line{margin-top:5px;}
+
+    /* drei Kostenfelder nebeneinander */
+    td.inp{float:left;width:33.33%;padding:0 6px 0 0;}
+    td.inp:nth-of-type(5){padding-right:0;}
+    td.inp input.eu{width:100%;font-size:13px;padding:8px 6px;}
+    td.inp::before,td.sum::before,td.status::before{content:attr(data-label);display:block;font-size:9.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);font-weight:700;margin-bottom:3px;}
+
+    td.sum{clear:both;display:flex;justify-content:space-between;align-items:center;padding-top:10px;margin-top:9px;border-top:1px dashed var(--line);font-size:15px;}
+    td.sum::before{margin-bottom:0;}
+    td.status{margin-top:10px;}
+    td.status select.st{padding:10px 9px;font-size:13.5px;}
+    td.exp{margin-top:9px;}
+    td.exp .expbtn{width:100%;height:40px;font-size:16px;}
+
+    /* Detailbereich */
+    .detailinner{padding:12px 2px 14px;}
+    tr.detail td{padding:0;}
+    .logadd{flex-wrap:wrap;}
+    .logadd-in{flex:1 1 100%;}
+    .logadd-btn{flex:1;text-align:center;}
+
+    /* Übersicht / To-Dos */
+    .sumrecap{font-size:12px;}
+    .acc-ghead{gap:8px;}
+    .acc-gname{flex:1 1 100%;order:2;}
+    .acc-chev{order:1;}
+    .acc-gtag{order:1;}
+    .acc-gcount,.acc-mini,.acc-gsum{order:3;}
+    .acc-gsum{margin-left:auto;}
+
+    /* Zahlungen mobil */
+    .zahladd{gap:6px;}
+    .zahladd .z-datum{flex:1 1 46%;}
+    .zahladd .z-betrag{flex:1 1 46%;width:auto;}
+    .zahladd .z-text{flex:1 1 100%;min-width:0;}
+    .zadd-btn{flex:1 1 100%;text-align:center;}
+    .zpos{padding:2px 13px 12px;}
+    .zpos-h{flex-wrap:wrap;}
+    .zpos-sum{margin-left:auto;}
+    .zrow .zdate{flex-basis:72px;font-size:11.5px;}
+  }
+
+  @media (max-width:880px){
+    .dash{grid-template-columns:1fr 1fr;}
+    .dgrid2{grid-template-columns:1fr;}
+    .detailinner{padding-left:18px;}
+    .sumrecap{flex-wrap:wrap;gap:10px;}
+  }
+
+  @media print{
+    @page{size:A4 landscape;margin:10mm;}
+    body,body.dark{
+      --paper:#fff;--card:#fff;--ink:#1a1d21;--ink-soft:#5b6168;--ink-contrast:#fff;
+      --line:#e6e2d9;--line-strong:#cdc7ba;--input-bg:#fff;--head-bg:#fbfaf7;--group-bg:#efeae0;--chip-bg:#f1eee7;--detail-bg:#fbfaf6;
+      --badge-rot-bg:#f7e3e3;--badge-rot-ink:#b14747;--badge-gelb-bg:#f6ecd2;--badge-gelb-ink:#a9761a;--badge-gruen-bg:#dff0e6;--badge-gruen-ink:#2f7d4f;--badge-done-bg:#e6e2d9;--badge-done-ink:#6b6457;
+      --todo-badge-bg:#fbe6d2;--todo-ink:#c4641f;--todo-bg:#fff7f0;--todo-bg2:#fffaf5;--todo-accent:#e07b39;--todo-line:#e0b48f;
+      --accent:#1f6f7a;--gruen:#3a8f5b;--gelb:#dca02e;--rot:#cf5a5a;--grau:#a39e92;
+      background:#fff;color:#1a1d21;
+    }
+    .viewtabs,.toolbar,.addgroup,.saved,.expbtn,.ghbtn,.disclaimer,.dcard .dsub,.logadd,.logdel,.logdone,.logreopen,.todochk,.cloudpanel,.zahladd,.zdel,.acc-open-btn{display:none !important;}
+    .wrap{max-width:none;padding:0;}
+    .tablecard{border:none;border-radius:0;}
+    input,select,textarea{border:none !important;background:transparent !important;padding:1px !important;font-size:9.5px !important;-webkit-appearance:none;box-shadow:none !important;}
+    select.st{color:#1a1d21 !important;}
+    .acc-gbody,.acc-ibody{display:block !important;}
+    thead th,tr.grouphead td,.dcard,.progwrap,.sumsec-c,.stbadge,.gtag-l,.acc-pill{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .ampel,.gtag,.sumsec,.acc-group{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    tr.detail.open .detailinner{display:block;}
+    .dash{grid-template-columns:repeat(4,1fr);}
+    .todocard,.sumsec,.logentry,.acc-group,.acc-item{page-break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div>
+      <div class="eyebrow">Bau-Cockpit · Neubau Einfamilienhaus</div>
+      <h1>Kosten &amp; Fortschritt</h1>
+      <div class="sub">Niederösterreich · ca. 210&nbsp;m² Wohnfläche + 60&nbsp;m² Garage · Sole-WP, BKA, KWL, Loxone · Stand 2026. Zeile anklicken zum Aufklappen · Notizen mit Zeitstempel · JSON-Sicherung.</div>
+    </div>
+    <div class="totalbox">
+      <div class="lbl">Summe (Ansatz)</div>
+      <div class="big num" id="grandTotal">–</div>
+      <div class="band">Schätzband: <span class="num" id="grandBand">–</span></div>
+    </div>
+  </header>
+
+  <div class="viewtabs">
+    <button class="vtab on" data-v="cockpit">📋 Cockpit</button>
+    <button class="vtab" data-v="summary">✓ Übersicht</button>
+    <button class="vtab" data-v="todos">⚡ To-Dos</button>
+    <button class="vtab" data-v="payments">💶 Zahlungen</button>
+  </div>
+
+  <!-- ===== COCKPIT-ANSICHT ===== -->
+  <div id="cockpitView">
+
+    <div class="dash" id="dash">
+      <div class="dcard">
+        <div class="dh">Gesamtvolumen</div>
+        <div class="dnum num" id="dTotal">–</div>
+        <div class="dsub" id="dCount">– Positionen</div>
+      </div>
+      <div class="dcard">
+        <div class="dh"><span class="adot" style="background:var(--gruen)"></span>Gesichert</div>
+        <div class="dnum num" id="dGreen">–</div>
+        <div class="dsub" id="dGreenC">beauftragt / fertig</div>
+      </div>
+      <div class="dcard">
+        <div class="dh"><span class="adot" style="background:var(--gelb)"></span>In Angebot</div>
+        <div class="dnum num" id="dYellow">–</div>
+        <div class="dsub" id="dYellowC">Angebotsphase</div>
+      </div>
+      <div class="dcard">
+        <div class="dh"><span class="adot" style="background:var(--rot)"></span>Offen</div>
+        <div class="dnum num" id="dRed">–</div>
+        <div class="dsub" id="dRedC">noch nichts veranlasst</div>
+      </div>
+      <div class="progwrap">
+        <div class="progtop"><span>Fortschritt nach Volumen</span><b><span id="progPct">0</span>% gesichert</b></div>
+        <div class="bar"><div class="seg g" id="segG" style="width:0%"></div><div class="seg y" id="segY" style="width:0%"></div><div class="seg r" id="segR" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="filters" id="filters">
+        <button class="fchip on" data-f="alle">Alle</button>
+        <button class="fchip" data-f="rot"><span class="adot" style="background:var(--rot)"></span>Offen</button>
+        <button class="fchip" data-f="gelb"><span class="adot" style="background:var(--gelb)"></span>In Angebot</button>
+        <button class="fchip" data-f="gruen"><span class="adot" style="background:var(--gruen)"></span>Gesichert</button>
+      </div>
+      <div class="btns">
+        <span class="saved" id="savedNote"></span>
+        <span class="cloudstat" id="cloudStatus">nur lokal</span>
+        <button class="act" id="expandToggle" onclick="toggleAllGroups()">⊞ Alle auf</button>
+        <button class="act" id="themeToggle" onclick="toggleTheme()">🌙 Dunkel</button>
+        <button class="act" id="editToggle" onclick="toggleEdit()">🔒 Gesperrt</button>
+        <button class="act" onclick="toggleCloud()">☁️ Cloud-Sync</button>
+        <button class="act" onclick="exportJSON()">⭳ Sichern (JSON)</button>
+        <button class="act" onclick="document.getElementById('importFile').click()">⭱ Laden (JSON)</button>
+        <input type="file" id="importFile" accept="application/json,.json" class="hidden" onchange="if(this.files[0])importJSON(this.files[0]);this.value='';">
+        <button class="act" onclick="resetAll()">Zurücksetzen</button>
+        <button class="act" onclick="window.print()">Drucken / PDF</button>
+      </div>
+    </div>
+
+    <div class="tablecard">
+      <table>
+        <thead>
+          <tr>
+            <th class="l" style="width:26px"></th>
+            <th class="l">Position &amp; Auftragnehmer</th>
+            <th>Material</th><th>Arbeit</th><th>Sonstige</th><th>Summe</th>
+            <th class="l">Status</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2" class="tlabel">GESAMT</td>
+            <td class="tnum num" id="footMat">–</td>
+            <td class="tnum num" id="footArb">–</td>
+            <td class="tnum num" id="footSon">–</td>
+            <td class="tnum num" id="footSum">–</td>
+            <td class="tband num" id="footBand">–</td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="addgroup">
+      <span class="lbl">+ Hauptpunkt</span>
+      <input id="newGroupName" type="text" placeholder="Name des neuen Hauptpunkts (z.B. „Smart-Home Erweiterung")" onkeydown="if(event.key==='Enter')addGroup()">
+      <button onclick="addGroup()">Hinzufügen</button>
+    </div>
+
+    <p class="disclaimer">
+      Richtwerte für die Planungsphase (NÖ, 2026) – keine Angebote. Klick auf eine Zeile klappt Details auf; Klick auf den farbigen Balken eines Hauptpunkts wechselt dessen Farbe (nur im Bearbeiten-Modus). Eingaben werden automatisch gespeichert – zur Sicherheit zusätzlich „Sichern (JSON)".
+    </p>
+
+  </div>
+
+  <!-- ===== ÜBERSICHTS-ANSICHT ===== -->
+  <div id="summaryView" class="hidden"></div>
+
+  <!-- ===== TO-DOS-ANSICHT ===== -->
+  <div id="todosView" class="hidden"></div>
+
+  <!-- ===== ZAHLUNGEN-ANSICHT ===== -->
+  <div id="paymentsView" class="hidden"></div>
+
+  <!-- ===== CLOUD-SYNC-PANEL ===== -->
+  <div id="cloudPanel" class="cloudpanel hidden">
+    <div class="cloudbox">
+      <div class="cloudhead">☁️ Cloud-Synchronisation <button class="cloudx" onclick="toggleCloud()">×</button></div>
+      <div class="cloudstatusrow">Status: <span class="cloudstat" id="cloudStatus2">–</span></div>
+      <label class="cloudlbl">Dein Projekt-Schlüssel (auf allen Geräten identisch)</label>
+      <div class="cloudkeyrow"><input id="cloudKey" readonly value=""><button class="act" onclick="copyCloudKey()">Kopieren</button></div>
+      <label class="cloudlbl">Anderes Gerät verbinden – Schlüssel hier einfügen</label>
+      <div class="cloudkeyrow"><input id="cloudJoin" placeholder="Schlüssel von Gerät 1 einfügen…"><button class="act" onclick="cloudConnect()">Verbinden</button></div>
+      <p class="cloudhelp"><b>So geht's:</b> Auf Gerät 1 den Schlüssel kopieren → auf Gerät 2 hier einfügen &amp; „Verbinden". Beide zeigen dann dieselben Daten. Der Cloud-Abgleich läuft alle paar Sekunden gebündelt, damit die Eingabe am Handy/Mac nicht unterbrochen wird.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const fmt = new Intl.NumberFormat('de-AT',{style:'currency',currency:'EUR',maximumFractionDigits:0});
+const eur = n => fmt.format(Math.round(n||0));
+const STORE_KEY = 'baucockpit_efh_v2';
+const THEME_KEY = 'baucockpit_theme';
+
+const STATUSES = [
+  {v:'offen',       t:'Offen',                  a:'rot'},
+  {v:'angebote',    t:'Angebote einholen',      a:'gelb'},
+  {v:'angebot_da',  t:'Angebot liegt vor',      a:'gelb'},
+  {v:'beauftragt',  t:'Beauftragt / vereinbart',a:'gruen'},
+  {v:'ausfuehrung', t:'In Ausführung',          a:'gruen'},
+  {v:'fertig',      t:'Fertig',                 a:'gruen'},
+];
+const ampelOf = v => (STATUSES.find(s=>s.v===v)||STATUSES[0]).a;
+const PALETTE = ['#7a6244','#4a5896','#5b6b7a','#b5613a','#2a7a8c','#3a6b99','#b0832a','#7a5a8c','#5f8a3f','#8c5a6a','#3f8a7d','#a05a3a'];
+
+let uid = 1000;
+const nid = () => 'x'+(uid++);
+
+function fmtTs(iso){ if(!iso) return ''; try{ return new Date(iso).toLocaleString('de-AT',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}); }catch(e){ return ''; } }
+function fmtDate(d){ if(!d) return ''; const p=(''+d).split('-'); return p.length===3?`${p[2]}.${p[1]}.${p[0]}`:d; }
+
+/* ---- To-Do-Modell: explizite Flags (todo/done/doneTs) statt „!"-Präfix ---- */
+function isTodo(nt){ return !!(nt && nt.todo); }
+function isOpenTodo(nt){ return isTodo(nt) && !nt.done; }
+function isDoneTodo(nt){ return isTodo(nt) && !!nt.done; }
+function hasOpenTodo(it){ return (it.notizen||[]).some(isOpenTodo); }
+function hasZahl(it){ return (it.zahlungen||[]).length>0; }
+
+// ---------- Standarddaten ----------
+function defaults(){
+  const g = [
+    {id:'g1', label:'Grundstück & Aufschließung', color:'#7a6244'},
+    {id:'g2', label:'Planung & Behörde',          color:'#4a5896'},
+    {id:'g3', label:'Rohbau & Baumeister',        color:'#5b6b7a'},
+    {id:'g4', label:'Gebäudehülle & Dach',        color:'#b5613a'},
+    {id:'g5', label:'Haustechnik (TGA)',          color:'#2a7a8c'},
+    {id:'g6', label:'Öffnungen',                  color:'#3a6b99'},
+    {id:'g7', label:'Innenausbau',                color:'#b0832a'},
+    {id:'g8', label:'Ausstattung',                color:'#7a5a8c'},
+    {id:'g9', label:'Außenanlagen',               color:'#5f8a3f'},
+  ];
+  const mk = (g,n,note,mat,arb,son,min,max,status,firma,notizText)=>({
+    id:nid(),g,n,note,mat,arb,son,min,max,status:status||'offen',firma:firma||'',datum:'',kontakt:'',
+    notizen: notizText ? [{ts:null,text:notizText}] : [], zahlungen:[]
+  });
+  const it = [
+    mk('g1','Grundstück','Kaufpreis Bauplatz – stark standortabhängig. Falls bereits vorhanden/erworben: Wert auf 0 lassen.',0,0,0,0,0,'fertig','','Bereits vorhanden – bei Bedarf Kaufpreis eintragen.'),
+    mk('g1','Aufschließungsabgabe (NÖ BauO §38)','Einmalig, abhängig von Bauklasse, Frontlänge & Einheitssatz der Gemeinde.',0,0,5000,2500,9000,'offen','Gemeinde',''),
+    mk('g1','Anschlussgebühren Strom / Wasser / Kanal','Netz NÖ (Netzzutritt+Bereitstellung) + Wasser- + Kanalanschluss. In EINEN Graben legen!',0,0,10000,6500,17000,'angebote','Netz NÖ / Gemeinde','Fundamenterder vor Betonage! Baustrom früh beantragen.'),
+    mk('g2','Planung / Statik / Baubehörde','Planung + Statik + Einreichung + Behördengebühren. Großteils bereits angefallen, falls Pläne vorliegen.',0,0,12000,6000,25000,'beauftragt','Planer / Statiker','Pläne liegen vor.'),
+    mk('g2','Vermessung','Naturstandsaufnahme, Höhenplan, Einmessung Gebäude & Außenanlagen.',0,2500,0,1500,4000,'offen','',''),
+    mk('g2','Baustellenversicherung','Bauwesen-/Rohbauversicherung + Bauherrenhaftpflicht für die Bauzeit.',0,0,1000,500,2500,'offen','',''),
+    mk('g3','Baumeister (Einrichtung & Allgemeines)','Polier, Absteckung, Container, prov. Anschlüsse, Geräte. Oft im Rohbau-Pauschalangebot enthalten.',3000,7000,3000,9000,17000,'beauftragt','Baumeister',''),
+    mk('g3','Bodenplatte inkl. Grabarbeiten','~190 m²: Aushub, Frostkoffer, XPS, Fundamenterder, STB-Platte. Sonstige = Bagger/Deponie.',16000,14000,7000,29000,46000,'beauftragt','Baumeister','Kollektor-Aushub mit Baugrube kombinieren!'),
+    mk('g3','Mauern / Decken','~210 m² WNF, 2 Gesch.: Ziegel, STB-Decken (BKA-EG koordiniert), Stürze. Sonstige = Kran/Pumpe.',29000,27000,3500,48000,71000,'beauftragt','Baumeister',''),
+    mk('g3','Kamin (Schornsteinsystem)','Nur falls Kaminofen geplant (Heizung = Erdwärme). z.B. Schiedel, 2 Gesch. + Dachdurchführung.',2200,1100,350,2500,5000,'offen','',''),
+    mk('g4','Dachkonstruktion','140 m²: Kleinrad Pos.2 Dachstuhl €10.500 + Pos.3 Unterdach €9.100 = €19.600 fix + Lattung.',10000,11600,700,20000,25000,'beauftragt','Kleinrad Zimmerei GmbH','Pos.2+3 = €19.600 fix. Vollständiges Angebot (Konterlattung/Traufkasten?) noch ausständig anfordern.'),
+    mk('g4','Dachdecker (Eindeckung)','140 m²: Ton-/Betondachsteine, First-/Gratziegel, Lattung. Ggf. Paket mit Zimmerer günstiger.',3600,3800,500,5900,10100,'offen','',''),
+    mk('g4','Spengler','Rinnen, Fallrohre, Verblechung (Alu pulverb. lt. Plan), Attika Flachdach.',3200,3400,200,5000,9000,'offen','',''),
+    mk('g4','Flachdach – Dämmung + Abdichtung','~100 m² (Garage + EG-Teil): Dampfsperre, Gefälledämmung EPS, Abdichtung, Kies. STB-Decke = Rohbau.',8000,5500,1500,11000,19000,'offen','',''),
+    mk('g4','Fassade 20 cm EPS (WDVS)','~280 m²: EPS, Armierung, Ober-/Schlussputz, Anstrich. Sonstige = Gerüst (bei Kleinrad: bauseits!).',12000,14000,4500,23000,38000,'offen','',''),
+    mk('g5','Installateur HKL','Sole-WP + Flächenkollektor + FBH + BKA + Deckenkühlung (Kapillarrohrmatten) + KWL. Sanitär → Bad.',39000,16000,6500,46000,77000,'angebote','IDM / Ochsner?','Modbus-Freigabe + Registerliste SCHRIFTLICH! Kollektor-Aushub mit Baugrube.'),
+    mk('g5','Elektrik (Loxone)','Loxone-Komponenten ~€18.100 + Standard-Elektromaterial. Arbeit 250–400h @ €27/h. Zzgl. 150–250h Eigenleistung.',31100,8775,300,32000,47000,'angebote','Elektriker (€27/h verhandelt)','DALI spart Aktorplätze. Griffsensoren statt Reed.'),
+    mk('g5','Photovoltaik 10 kWp + 10 kWh Speicher','Module, Hybrid-WR, Speicher, UK. Sonstige = Netz-NÖ-Anmeldung. Montage teils Eigenleistung.',16000,4500,1000,16500,27500,'offen','','<15 kVA WR günstiger für NÖ-Tarif.'),
+    mk('g5','Wallbox','11 kW, mit Lastmanagement, Loxone-anbindbar. Gerät + Installation.',900,600,0,800,2500,'offen','',''),
+    mk('g5','Wasseraufbereitung / Enthärter','Enthärtungsanlage (+ ggf. Filter). Gerät + Einbindung Hausinstallation.',1800,700,0,1500,4000,'offen','',''),
+    mk('g6','Fenster / Eingangstür / Garagentor','~30 m² 3-fach (Mittelklasse) + Raffstore + Trapez-Aufschlag + Haustür + Sektionaltor.',27000,5500,1000,26500,42500,'angebote','Drutex / Rekord / Internorm?','Trapezfenster Giebel + Raffstore-Aufschlag klären.'),
+    mk('g7','Innenputz','~1000 m² Wandfläche: Maschinenputz Gips/Kalk-Zement. Sonstige = Eckschutzschienen.',5500,14500,1000,15500,26500,'offen','',''),
+    mk('g7','Estrich (Heizestrich)','~210 m²: Trittschall, Randdämmstreifen, PE-Folie, Heizestrich. Nach Haustechnik-Rohinstallation!',3800,5500,750,8000,12000,'offen','',''),
+    mk('g7','Stiege Holz','Holztreppe EG→OG inkl. Geländer (lt. Plan separat, nicht im Rohbau).',4200,2400,200,4500,9500,'offen','',''),
+    mk('g7','Böden','~150 m² Parkett inkl. Unterlage, Sockelleisten. Verlegung in Eigenleistung möglich.',9500,4200,300,9000,19500,'offen','',''),
+    mk('g7','Fliesen','~80 m² Bäder/WC/TR Boden+Wand inkl. Verbundabdichtung Nassräume.',4000,4400,500,5900,12800,'offen','',''),
+    mk('g7','Innentüren','~12 Stk inkl. Zargen + Beschläge. Montage in Eigenleistung möglich.',5000,1400,200,4000,9400,'offen','',''),
+    mk('g8','Malen','~1000 m²: Tiefengrund + Dispersion 2 Anstriche. Arbeit komplett in Eigenleistung sparbar.',2500,11000,200,10100,18300,'offen','',''),
+    mk('g8','Küche','Möbel, Geräte, Arbeitsplatte, Spüle (Mittelklasse – stark niveauabhängig).',18000,2000,500,14500,32000,'offen','',''),
+    mk('g8','Badezimmer','Sanitär-Rohinstallation + Objekte + Armaturen + Vorwand. Rohinstallation vor Estrich!',9500,5500,1000,10500,24500,'offen','',''),
+    mk('g8','Bauendreinigung','Grob- + Feinreinigung nach Bau. Teils in Eigenleistung möglich.',0,1800,0,1000,3500,'offen','',''),
+    mk('g9','Pflasterung / Wege / Einfahrt','~150 m² Pflaster + Unterbau. Sonstige = Randsteine/Entwässerung.',7000,6000,1000,9000,22000,'offen','',''),
+    mk('g9','Zaun & Tore','Einfriedung + Einfahrtstor (ggf. elektrisch, Loxone-anbindbar).',5000,2500,0,4000,14000,'offen','',''),
+    mk('g9','Gartenbau / Bepflanzung','Modellierung, Rasen, Bepflanzung, ggf. Bewässerung. Viel Eigenleistung möglich.',3000,3000,0,3000,18000,'offen','',''),
+    mk('g9','Terrasse','~30 m² Holz/WPC/Stein + Unterbau.',3500,2500,500,4000,12000,'offen','',''),
+  ];
+  return {groups:g, items:it};
+}
+
+let state = defaults();
+let filter = 'alle';
+let currentView = 'cockpit';
+let sumOpenGroups = new Set();
+let sumOpenItems = new Set();
+let cockpitOpenGroups = new Set();   // aufgeklappte Hauptpunkte im Cockpit (leer = alle zu)
+
+function normalize(){
+  (state.items||[]).forEach(it=>{
+    if(!Array.isArray(it.notizen)){ it.notizen = it.notiz ? [{ts:null,text:it.notiz}] : []; }
+    delete it.notiz;
+    it.notizen.forEach(nt=>{
+      if(typeof nt.text!=='string') nt.text = nt.text==null ? '' : (''+nt.text);
+      // Alt-Format „! …" -> explizites Todo-Flag migrieren
+      if(nt.todo===undefined && /^\s*!/.test(nt.text)){ nt.todo=true; nt.text=nt.text.replace(/^\s*!\s*/,''); }
+    });
+    if(typeof it.kontakt!=='string') it.kontakt='';
+    if(typeof it.datum!=='string')  it.datum='';
+    if(typeof it.firma!=='string')  it.firma='';
+    if(!it.status) it.status='offen';
+    if(!Array.isArray(it.zahlungen)) it.zahlungen=[];
+  });
+}
+
+function itemById(id){return state.items.find(i=>i.id===id);}
+function groupById(id){return state.groups.find(g=>g.id===id);}
+
+// ---------- Cockpit-Rendering ----------
+function render(){
+  const tb = document.getElementById('tbody');
+  tb.innerHTML='';
+  let posNo=0;
+
+  state.groups.forEach(gr=>{
+    const rows = state.items.filter(it=>it.g===gr.id);
+    const visible = rows.filter(it=> filter==='alle' || ampelOf(it.status)===filter );
+    if(filter!=='alle' && visible.length===0) return;
+
+    let gmin=0,gmax=0,gr_r=0,gr_y=0,gr_g=0;
+    rows.forEach(r=>{gmin+=r.min;gmax+=r.max;const a=ampelOf(r.status);if(a==='rot')gr_r++;else if(a==='gelb')gr_y++;else gr_g++;});
+    const collapsible=(filter==='alle');
+    const gOpen = !collapsible || cockpitOpenGroups.has(gr.id);   // beim Filtern immer offen
+    const gmini=[ gr_r?`<span class="acc-pill r">${gr_r}</span>`:'', gr_y?`<span class="acc-pill y">${gr_y}</span>`:'', gr_g?`<span class="acc-pill g">${gr_g}</span>`:'' ].join('');
+    const ghr=document.createElement('tr'); ghr.className='grouphead'+(gOpen?' gopen':''); ghr.dataset.ghead=gr.id;
+    ghr.innerHTML=`<td colspan="8" style="border-left:6px solid ${gr.color}"><div class="gh">
+        <span class="ghchev">▸</span>
+        <span class="gbar" title="Farbe wechseln (nur im Bearbeiten-Modus)" data-color="${gr.id}" style="background:${gr.color}"></span>
+        <input class="gname-in" data-gname="${gr.id}" value="${esc(gr.label)}">
+        <div class="gright">
+          <span class="acc-mini">${gmini}</span>
+          <span class="gsum">Σ <span class="num" id="gsum-${gr.id}">–</span> <small>(${eur(gmin)}–${eur(gmax)})</small></span>
+          <button class="ghbtn" data-additem="${gr.id}">+ Unterpunkt</button>
+          <button class="ghbtn danger" data-delgroup="${gr.id}" title="Hauptpunkt entfernen">×</button>
+        </div></div></td>`;
+    tb.appendChild(ghr);
+
+    rows.forEach(it=>{
+      posNo++;
+      const hide = !(filter==='alle' || ampelOf(it.status)===filter) || !gOpen;
+      const tr=document.createElement('tr');
+      tr.className='item'+(hide?' hidden':'');
+      tr.dataset.id=it.id; tr.dataset.ampel=ampelOf(it.status); tr.style.setProperty('--gc',gr.color);
+      const opts=STATUSES.map(s=>`<option value="${s.v}"${it.status===s.v?' selected':''}>${s.t}</option>`).join('');
+      tr.innerHTML=`
+        <td class="pos num">${posNo}</td>
+        <td class="name">
+          <div class="nameflex"><span class="ampel"></span><input class="name-in" data-f="n" value="${esc(it.n)}"></div>
+          <div class="firma-line">${hasOpenTodo(it)?'<span class="rowtodo" title="Offene To-Dos">⚡ To-Do</span>':''}${hasZahl(it)?'<span class="rowpaid" title="Zahlungen erfasst">💶</span>':''}<span class="pre">AN ▸</span><input class="firma-in" data-f="firma" placeholder="Auftragnehmer / Firma…" value="${esc(it.firma)}"></div>
+        </td>
+        <td class="inp" data-label="Material"><input class="eu" type="number" inputmode="numeric" min="0" step="100" data-f="mat" value="${it.mat}"></td>
+        <td class="inp" data-label="Arbeit"><input class="eu" type="number" inputmode="numeric" min="0" step="100" data-f="arb" value="${it.arb}"></td>
+        <td class="inp" data-label="Sonstige"><input class="eu" type="number" inputmode="numeric" min="0" step="100" data-f="son" value="${it.son}"></td>
+        <td class="sum num" data-sum data-label="Summe">–</td>
+        <td class="status" data-label="Status"><select class="st" data-f="status">${opts}</select></td>
+        <td class="exp"><button class="expbtn" data-exp="${it.id}" title="Details / Notizen">⋯</button></td>`;
+      tb.appendChild(tr);
+
+      const dr=document.createElement('tr');
+      dr.className='detail'+(hide?' hidden':''); dr.dataset.detail=it.id;
+      dr.innerHTML=`<td colspan="8"><div class="detailinner" id="det-${it.id}">
+        <div class="loghead">📌 Verlauf / Notizen</div>
+        <div class="logadd">
+          <textarea class="logadd-in" placeholder="Neue Notiz… ⚡ = nächster Schritt/To-Do (erscheint im To-Dos-Reiter). Strg/⌘+Enter = normaler Eintrag."></textarea>
+          <button class="logadd-btn todo" data-addtodo="${it.id}">⚡ + To-Do</button>
+          <button class="logadd-btn" data-addnote="${it.id}">+ Eintrag</button>
+        </div>
+        <div class="loglist" id="log-${it.id}"></div>
+
+        <div class="loghead zahlhead">💶 Zahlungen</div>
+        <div class="zahladd">
+          <input type="date" class="z-datum" title="Zahlungsdatum">
+          <input type="number" inputmode="numeric" min="0" step="100" class="z-betrag" placeholder="Betrag €">
+          <input type="text" class="z-text" placeholder="Bezeichnung (z.B. Anzahlung, Schalter, Leitung)">
+          <button class="zadd-btn" data-addzahl="${it.id}">+ Zahlung</button>
+        </div>
+        <div class="zahllist" id="zahl-${it.id}"></div>
+        <div class="zahlsum" id="zsum-${it.id}"></div>
+
+        <div class="dgrid2">
+          <div class="field"><label>Termin / Datum</label><input type="date" data-f="datum" value="${it.datum||''}"></div>
+          <div class="field"><label>Kontakt (Tel / Mail / Ansprechpartner)</label>
+            <textarea class="kontakt-ta" data-f="kontakt" placeholder="z.B. Hr. Müller · 0664/… · mail@firma.at">${esc(it.kontakt)}</textarea></div>
+        </div>
+        <div class="annahme"><label>Kalkulationsbasis / Annahme</label><textarea data-f="note">${esc(it.note)}</textarea></div>
+        <div class="detailfoot"><button class="delbtn" data-delitem="${it.id}">🗑 Unterpunkt entfernen</button></div>
+      </div></td>`;
+      tb.appendChild(dr);
+    });
+  });
+
+  bindRow(); bindGroup(); recalc();
+}
+
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function renderLog(id){
+  const it=itemById(id); const box=document.getElementById('log-'+id); if(!it||!box) return;
+  if(!it.notizen.length){ box.innerHTML='<div class="logempty">Noch keine Einträge – erste Notiz oben hinzufügen.</div>'; return; }
+  box.innerHTML=it.notizen.map((nt,i)=>{
+    const todo=isTodo(nt), done=isDoneTodo(nt);
+    let meta='';
+    if(todo && done){
+      meta=`<span class="todobadge done">✓ ERLEDIGT</span><span class="logts muted">${nt.doneTs?('am '+fmtTs(nt.doneTs)):''}</span><button class="logreopen" data-idx="${i}" title="Wieder als To-Do öffnen">↩ öffnen</button>`;
+    } else if(todo){
+      meta=`<span class="todobadge">⚡ TO-DO</span><span class="logts${nt.ts?'':' muted'}">${nt.ts?fmtTs(nt.ts):'Vorlage'}</span><button class="logdone" data-idx="${i}" title="To-Do als erledigt markieren">✓ erledigt</button>`;
+    } else {
+      meta=`<span class="logts${nt.ts?'':' muted'}">${nt.ts?fmtTs(nt.ts):'Vorlage'}</span>`;
+    }
+    return `<div class="logentry${todo?(done?' todo done':' todo'):''}">
+      <div class="logmeta">${meta}<button class="logdel" data-idx="${i}" title="Eintrag löschen">×</button></div>
+      <textarea class="logtext" data-idx="${i}">${esc(nt.text)}</textarea>
+    </div>`;
+  }).join('');
+  box.querySelectorAll('.logtext').forEach(ta=>{
+    ta.addEventListener('input',e=>{ it.notizen[+ta.dataset.idx].text=e.target.value; save(); });
+  });
+  box.querySelectorAll('.logdone').forEach(btn=>{
+    btn.addEventListener('click',()=>{ const i=+btn.dataset.idx; it.notizen[i].done=true; it.notizen[i].doneTs=new Date().toISOString(); renderLog(id); refreshRowBadges(id); save(); });
+  });
+  box.querySelectorAll('.logreopen').forEach(btn=>{
+    btn.addEventListener('click',()=>{ const i=+btn.dataset.idx; it.notizen[i].done=false; delete it.notizen[i].doneTs; renderLog(id); refreshRowBadges(id); save(); });
+  });
+  box.querySelectorAll('.logdel').forEach(btn=>{
+    btn.addEventListener('click',()=>{ if(!confirm('Diesen Notiz-Eintrag löschen?')) return; it.notizen.splice(+btn.dataset.idx,1); renderLog(id); refreshRowBadges(id); save(); });
+  });
+}
+
+function renderZahl(id){
+  const it=itemById(id);
+  const box=document.getElementById('zahl-'+id);
+  const sumEl=document.getElementById('zsum-'+id);
+  if(!it||!box) return;
+  const list=[...(it.zahlungen||[])].map((z,i)=>({z,i})).sort((a,b)=>(a.z.datum||'').localeCompare(b.z.datum||''));
+  if(!list.length){ box.innerHTML='<div class="logempty">Noch keine Zahlung erfasst – oben Datum, Betrag &amp; Bezeichnung eintragen.</div>'; }
+  else {
+    box.innerHTML=list.map(({z,i})=>`<div class="zrow">
+        <span class="zdate num">${fmtDate(z.datum)||'—'}</span>
+        <span class="zlabel">${z.text?esc(z.text):'<span class="zempty">(ohne Bezeichnung)</span>'}</span>
+        <span class="zamt num">${eur(z.betrag)}</span>
+        <button class="zdel" data-idx="${i}" title="Zahlung löschen">×</button>
+      </div>`).join('');
+    box.querySelectorAll('.zdel').forEach(btn=>{
+      btn.addEventListener('click',()=>{ if(!confirm('Diese Zahlung löschen?')) return; it.zahlungen.splice(+btn.dataset.idx,1); renderZahl(id); refreshRowBadges(id); save(); });
+    });
+  }
+  if(sumEl){
+    const paid=(it.zahlungen||[]).reduce((s,z)=>s+(+z.betrag||0),0);
+    const budget=(it.mat||0)+(it.arb||0)+(it.son||0);
+    const offen=budget-paid;
+    sumEl.innerHTML=`Bezahlt: <b class="num">${eur(paid)}</b> <span class="zof">von ${eur(budget)} Budget</span>${budget?` · <span class="${offen>0?'zoffen':'zfull'}">${offen>0?('offen '+eur(offen)):'vollständig bezahlt ✓'}</span>`:''}`;
+  }
+}
+
+function toggleDetail(id){
+  const dr=document.querySelector(`tr.detail[data-detail="${id}"]`);
+  const btn=document.querySelector(`[data-exp="${id}"]`);
+  if(!dr) return;
+  dr.classList.toggle('open');
+  if(btn) btn.textContent = dr.classList.contains('open')?'✕':'⋯';
+  if(!dr.classList.contains('open')) setTimeout(flushPendingRemote,60);
+}
+
+/* aktualisiert ⚡/💶-Badges einer Zeile ohne kompletten Neuaufbau */
+function refreshRowBadges(id){
+  const it=itemById(id); if(!it) return;
+  const line=document.querySelector(`tr.item[data-id="${id}"] .firma-line`);
+  if(!line) return;
+  line.querySelectorAll('.rowtodo,.rowpaid').forEach(e=>e.remove());
+  let html='';
+  if(hasZahl(it)) html='<span class="rowpaid" title="Zahlungen erfasst">💶</span>'+html;
+  if(hasOpenTodo(it)) html='<span class="rowtodo" title="Offene To-Dos">⚡ To-Do</span>'+html;
+  if(html) line.insertAdjacentHTML('afterbegin',html);
+}
+
+function bindRow(){
+  document.querySelectorAll('#tbody tr.item').forEach(tr=>{
+    const it=itemById(tr.dataset.id);
+    tr.addEventListener('click',e=>{
+      if(e.target.closest('input,select,textarea,button,.gbar')) return;
+      toggleDetail(it.id);
+    });
+    tr.querySelectorAll('[data-f]').forEach(el=>{
+      const f=el.dataset.f;
+      const ev=(el.tagName==='SELECT')?'change':'input';
+      el.addEventListener(ev,e=>{
+        let v=e.target.value;
+        if(['mat','arb','son'].includes(f)) v=parseFloat(v)||0;
+        it[f]=v;
+        if(f==='status') tr.dataset.ampel=ampelOf(v);
+        recalc(); save();
+      });
+    });
+  });
+  document.querySelectorAll('#tbody tr.detail').forEach(dr=>{
+    const it=itemById(dr.dataset.detail);
+    dr.querySelectorAll('[data-f]').forEach(el=>{
+      el.addEventListener('input',e=>{ it[el.dataset.f]=e.target.value; save(); });
+    });
+    const addBtn=dr.querySelector('[data-addnote]');
+    const addTodoBtn=dr.querySelector('[data-addtodo]');
+    const addIn=dr.querySelector('.logadd-in');
+    const doAdd=(asTodo)=>{ let t=(addIn.value||'').trim(); if(!t) return; const note={ts:new Date().toISOString(),text:t}; if(asTodo) note.todo=true; it.notizen.unshift(note); addIn.value=''; renderLog(it.id); refreshRowBadges(it.id); save(); };
+    if(addBtn) addBtn.addEventListener('click',()=>doAdd(false));
+    if(addTodoBtn) addTodoBtn.addEventListener('click',()=>doAdd(true));
+    if(addIn) addIn.addEventListener('keydown',e=>{ if((e.ctrlKey||e.metaKey)&&e.key==='Enter') doAdd(false); });
+    dr.querySelector('[data-delitem]').addEventListener('click',()=>delItem(it.id));
+    const zBtn=dr.querySelector('[data-addzahl]');
+    if(zBtn) zBtn.addEventListener('click',()=>{
+      const dd=dr.querySelector('.z-datum'), bb=dr.querySelector('.z-betrag'), tt=dr.querySelector('.z-text');
+      const betrag=parseFloat(bb.value)||0;
+      if(!betrag){ bb.focus(); return; }
+      it.zahlungen.unshift({datum:dd.value||'', betrag, text:(tt.value||'').trim()});
+      dd.value=''; bb.value=''; tt.value='';
+      renderZahl(it.id); refreshRowBadges(it.id); save();
+    });
+    renderLog(it.id);
+    renderZahl(it.id);
+  });
+  document.querySelectorAll('[data-exp]').forEach(btn=>{
+    btn.addEventListener('click',()=>toggleDetail(btn.dataset.exp));
+  });
+}
+
+function bindGroup(){
+  document.querySelectorAll('[data-gname]').forEach(inp=>{
+    inp.addEventListener('input',e=>{ groupById(inp.dataset.gname).label=e.target.value; save(); });
+  });
+  document.querySelectorAll('[data-color]').forEach(bar=>{
+    bar.addEventListener('click',()=>{
+      const g=groupById(bar.dataset.color);
+      const i=PALETTE.indexOf(g.color);
+      g.color=PALETTE[(i+1)%PALETTE.length];
+      bar.style.background=g.color; save();
+    });
+  });
+  document.querySelectorAll('[data-additem]').forEach(btn=>{ btn.addEventListener('click',()=>addItem(btn.dataset.additem)); });
+  document.querySelectorAll('[data-delgroup]').forEach(btn=>{ btn.addEventListener('click',()=>delGroup(btn.dataset.delgroup)); });
+  document.querySelectorAll('tr.grouphead[data-ghead]').forEach(gh=>{
+    gh.addEventListener('click',e=>{
+      if(e.target.closest('input,select,textarea,button,.gbar')) return;
+      toggleGroupCollapse(gh.dataset.ghead);
+    });
+  });
+  updateExpandLabel();
+}
+
+// ---------- Cockpit: Hauptpunkte auf-/zuklappen ----------
+function setGroupRowsVisible(gid, open){
+  state.items.filter(i=>i.g===gid).forEach(it=>{
+    const row=document.querySelector(`tr.item[data-id="${it.id}"]`);
+    const dt=document.querySelector(`tr.detail[data-detail="${it.id}"]`);
+    if(row) row.classList.toggle('hidden',!open);
+    if(dt) dt.classList.toggle('hidden',!open);
+  });
+  const gh=document.querySelector(`tr.grouphead[data-ghead="${gid}"]`);
+  if(gh) gh.classList.toggle('gopen',open);
+}
+function toggleGroupCollapse(gid){
+  if(filter!=='alle') return;                 // beim Filtern sind Gruppen immer offen
+  const open = !cockpitOpenGroups.has(gid);
+  if(open) cockpitOpenGroups.add(gid); else cockpitOpenGroups.delete(gid);
+  setGroupRowsVisible(gid, open);
+  updateExpandLabel();
+}
+function toggleAllGroups(){
+  if(filter!=='alle'){ flag('Zum Auf-/Zuklappen Filter „Alle" wählen'); return; }
+  const anyClosed = state.groups.some(g=>!cockpitOpenGroups.has(g.id));
+  state.groups.forEach(g=>{ if(anyClosed) cockpitOpenGroups.add(g.id); else cockpitOpenGroups.delete(g.id); setGroupRowsVisible(g.id, anyClosed); });
+  updateExpandLabel();
+}
+function updateExpandLabel(){
+  const b=document.getElementById('expandToggle'); if(!b) return;
+  const allOpen = state.groups.length>0 && state.groups.every(g=>cockpitOpenGroups.has(g.id));
+  b.textContent = allOpen ? '⊟ Alle zu' : '⊞ Alle auf';
+}
+
+// ---------- Bearbeiten-Modus (Namen/Struktur/Vergabe standardmäßig gesperrt) ----------
+let editMode=false;
+function setEdit(on){
+  editMode=on;
+  document.body.classList.toggle('edit-on',on);
+  const b=document.getElementById('editToggle');
+  if(b){ b.textContent=on?'🔓 Bearbeiten aktiv':'🔒 Gesperrt'; b.classList.toggle('editactive',on); }
+}
+function toggleEdit(){ setEdit(!editMode); }
+
+// ---------- Struktur ----------
+function addItem(gid){
+  setEdit(true);
+  cockpitOpenGroups.add(gid);
+  state.items.push({id:nid(),g:gid,n:'Neue Position',note:'',mat:0,arb:0,son:0,min:0,max:0,status:'offen',firma:'',datum:'',kontakt:'',notizen:[],zahlungen:[]});
+  render(); save();
+  const last=[...document.querySelectorAll('#tbody tr.item')].filter(tr=>{const x=itemById(tr.dataset.id);return x&&x.g===gid;}).pop();
+  if(last){const ni=last.querySelector('.name-in'); ni.focus(); ni.select();}
+}
+function delItem(id){
+  const it=itemById(id);
+  if(!confirm(`Unterpunkt „${it.n}" wirklich entfernen?`)) return;
+  state.items=state.items.filter(i=>i.id!==id); render(); save();
+}
+function addGroup(){
+  const inp=document.getElementById('newGroupName');
+  const name=(inp.value||'').trim(); if(!name){inp.focus();return;}
+  const used=state.groups.map(g=>g.color);
+  const color=PALETTE.find(c=>!used.includes(c))||PALETTE[state.groups.length%PALETTE.length];
+  state.groups.push({id:nid(),label:name,color});
+  inp.value=''; setEdit(true); render(); save();
+}
+function delGroup(gid){
+  const g=groupById(gid);
+  const n=state.items.filter(i=>i.g===gid).length;
+  if(!confirm(`Hauptpunkt „${g.label}"${n?` inkl. ${n} Unterpunkt(en)`:''} wirklich entfernen?`)) return;
+  state.groups=state.groups.filter(x=>x.id!==gid);
+  state.items=state.items.filter(i=>i.g!==gid);
+  render(); save();
+}
+
+// ---------- Berechnung & Dashboard ----------
+function recalc(){
+  let M=0,A=0,S=0,bMin=0,bMax=0, cR=0,cY=0,cG=0, vR=0,vY=0,vG=0;
+  state.groups.forEach(g=>{
+    let gs=0; state.items.filter(i=>i.g===g.id).forEach(it=>{ gs+=(it.mat||0)+(it.arb||0)+(it.son||0); });
+    const el=document.getElementById('gsum-'+g.id); if(el) el.textContent=eur(gs);
+  });
+  document.querySelectorAll('#tbody tr.item').forEach(tr=>{
+    const it=itemById(tr.dataset.id);
+    const s=(it.mat||0)+(it.arb||0)+(it.son||0);
+    const sc=tr.querySelector('[data-sum]'); if(sc) sc.textContent=eur(s);
+  });
+  state.items.forEach(it=>{
+    const s=(it.mat||0)+(it.arb||0)+(it.son||0);
+    M+=it.mat||0;A+=it.arb||0;S+=it.son||0;bMin+=it.min;bMax+=it.max;
+    const a=ampelOf(it.status);
+    if(a==='rot'){cR++;vR+=s;} else if(a==='gelb'){cY++;vY+=s;} else {cG++;vG+=s;}
+  });
+  const total=M+A+S;
+  document.getElementById('grandTotal').textContent=eur(total);
+  document.getElementById('grandBand').textContent=eur(bMin)+' – '+eur(bMax);
+  document.getElementById('footMat').textContent=eur(M);
+  document.getElementById('footArb').textContent=eur(A);
+  document.getElementById('footSon').textContent=eur(S);
+  document.getElementById('footSum').textContent=eur(total);
+  document.getElementById('footBand').textContent=eur(bMin)+'–'+eur(bMax);
+  document.getElementById('dTotal').textContent=eur(total);
+  document.getElementById('dCount').textContent=state.items.length+' Positionen · '+state.groups.length+' Hauptpunkte';
+  document.getElementById('dGreen').textContent=eur(vG);
+  document.getElementById('dGreenC').textContent=cG+' Positionen · beauftragt/fertig';
+  document.getElementById('dYellow').textContent=eur(vY);
+  document.getElementById('dYellowC').textContent=cY+' Positionen · Angebotsphase';
+  document.getElementById('dRed').textContent=eur(vR);
+  document.getElementById('dRedC').textContent=cR+' Positionen · offen';
+  const pg=total>0?(vG/total*100):0, py=total>0?(vY/total*100):0, pr=total>0?(vR/total*100):0;
+  document.getElementById('segG').style.width=pg+'%';
+  document.getElementById('segY').style.width=py+'%';
+  document.getElementById('segR').style.width=pr+'%';
+  document.getElementById('progPct').textContent=Math.round(pg);
+}
+
+// ---------- Übersichtsseite (Akkordeon: Hauptpunkt > Unterpunkt > Notizen) ----------
+function renderSummary(){
+  const v=document.getElementById('summaryView');
+  let totalSum=0, cFertig=0,cArbeit=0,cAngebot=0,cOffen=0;
+  state.items.forEach(it=>{
+    totalSum+=(it.mat||0)+(it.arb||0)+(it.son||0);
+    const s=it.status;
+    if(s==='fertig') cFertig++;
+    else if(s==='beauftragt'||s==='ausfuehrung') cArbeit++;
+    else if(s==='angebote'||s==='angebot_da') cAngebot++;
+    else cOffen++;
+  });
+
+  const groupBlock=(gr)=>{
+    const items=state.items.filter(it=>it.g===gr.id);
+    let gsum=0, r=0,y=0,gg=0;
+    items.forEach(it=>{ gsum+=(it.mat||0)+(it.arb||0)+(it.son||0); const a=ampelOf(it.status); if(a==='rot')r++; else if(a==='gelb')y++; else gg++; });
+    const mini=[ r?`<span class="acc-pill r">${r}</span>`:'', y?`<span class="acc-pill y">${y}</span>`:'', gg?`<span class="acc-pill g">${gg}</span>`:'' ].join('');
+    const openG=sumOpenGroups.has(gr.id);
+
+    const itemsHtml=items.map(it=>{
+      const st=STATUSES.find(x=>x.v===it.status)||STATUSES[0];
+      const sum=(it.mat||0)+(it.arb||0)+(it.son||0);
+      const openI=sumOpenItems.has(it.id);
+      const notes=(it.notizen||[]);
+      const notesHtml= notes.length ? notes.map(nt=>{
+        const todo=isTodo(nt), done=isDoneTodo(nt);
+        const badge= todo?(done?'<span class="todobadge done" style="margin-right:6px">✓</span>':'<span class="todobadge" style="margin-right:6px">⚡</span>'):'';
+        const doneInfo= (done&&nt.doneTs)?(' · erledigt '+fmtTs(nt.doneTs)):'';
+        return `<div class="acc-note${todo?' todo':''}"><span class="acc-note-ts${nt.ts?'':' muted'}">${badge}${nt.ts?fmtTs(nt.ts):'Vorlage'}${doneInfo}</span><div class="acc-note-tx">${esc(nt.text)}</div></div>`;
+      }).join('') : '<div class="acc-note-empty">Keine Notiz hinterlegt.</div>';
+      return `<div class="acc-item${openI?' open':''}" data-i="${it.id}">
+        <div class="acc-ihead" data-toggle-i="${it.id}">
+          <span class="acc-chev">▸</span>
+          <span class="stbadge a-${st.a}">${st.t}</span>
+          <span class="acc-iname">${esc(it.n)}</span>
+          ${hasOpenTodo(it)?'<span class="rowtodo">⚡</span>':''}
+          ${it.firma?`<span class="acc-ifirma">▸ ${esc(it.firma)}</span>`:''}
+          ${it.datum?`<span class="acc-idate">📅 ${fmtDate(it.datum)}</span>`:''}
+          <span class="acc-isum num">${eur(sum)}</span>
+        </div>
+        <div class="acc-ibody">
+          ${notesHtml}
+          <button class="acc-open-btn" data-goto="${it.id}">↗ Im Cockpit öffnen</button>
+        </div>
+      </div>`;
+    }).join('') || '<div class="acc-note-empty" style="padding:10px 6px">Keine Positionen in diesem Hauptpunkt.</div>';
+
+    return `<div class="acc-group${openG?' open':''}" data-g="${gr.id}" style="--gc:${gr.color}">
+      <div class="acc-ghead" data-toggle-g="${gr.id}">
+        <span class="acc-chev">▸</span>
+        <span class="acc-gtag" style="background:${gr.color}"></span>
+        <span class="acc-gname">${esc(gr.label)}</span>
+        <span class="acc-gcount">${items.length} Pos.</span>
+        <span class="acc-mini">${mini}</span>
+        <span class="acc-gsum num">${eur(gsum)}</span>
+      </div>
+      <div class="acc-gbody">${itemsHtml}</div>
+    </div>`;
+  };
+
+  v.innerHTML=`
+    <div class="sumhead">
+      <div><h2>Übersicht nach Gewerken</h2><div class="sumstand">Hauptpunkt antippen → Unterpunkte · Unterpunkt antippen → Notizen</div></div>
+      <div class="sumrecap">
+        <span><b class="num">${eur(totalSum)}</b> gesamt</span>
+        <span><b class="num">${cFertig}</b> fertig</span>
+        <span><b class="num">${cArbeit}</b> in Arbeit</span>
+        <span><b class="num">${cAngebot}</b> in Angebot</span>
+        <span><b class="num">${cOffen}</b> offen</span>
+      </div>
+    </div>
+    ${state.groups.map(groupBlock).join('')}
+    ${state.groups.length===0?'<div class="sumempty">Keine Hauptpunkte vorhanden.</div>':''}
+  `;
+
+  v.querySelectorAll('[data-toggle-g]').forEach(h=>{
+    h.addEventListener('click',()=>{ const gEl=h.closest('.acc-group'); const id=h.dataset.toggleG; gEl.classList.toggle('open'); if(gEl.classList.contains('open')) sumOpenGroups.add(id); else sumOpenGroups.delete(id); });
+  });
+  v.querySelectorAll('[data-toggle-i]').forEach(h=>{
+    h.addEventListener('click',()=>{ const iEl=h.closest('.acc-item'); const id=h.dataset.toggleI; iEl.classList.toggle('open'); if(iEl.classList.contains('open')) sumOpenItems.add(id); else sumOpenItems.delete(id); });
+  });
+  v.querySelectorAll('.acc-open-btn[data-goto]').forEach(b=>{
+    b.addEventListener('click',(e)=>{ e.stopPropagation(); gotoItem(b.dataset.goto); });
+  });
+}
+
+// ---------- To-Dos-Reiter ----------
+function renderTodos(){
+  const v=document.getElementById('todosView');
+  const gById={}; state.groups.forEach(g=>gById[g.id]=g);
+  const open=[], done=[];
+  state.items.forEach(it=>{ (it.notizen||[]).forEach((nt,idx)=>{
+    if(isOpenTodo(nt)) open.push({it,idx,nt});
+    else if(isDoneTodo(nt)) done.push({it,idx,nt});
+  }); });
+  open.sort((a,b)=>{ const ta=a.nt.ts?Date.parse(a.nt.ts):0, tb=b.nt.ts?Date.parse(b.nt.ts):0; return tb-ta; });      // zuletzt notiert zuerst
+  done.sort((a,b)=>{ const ta=a.nt.doneTs?Date.parse(a.nt.doneTs):0, tb=b.nt.doneTs?Date.parse(b.nt.doneTs):0; return tb-ta; }); // zuletzt erledigt zuerst
+
+  const openCard=(td)=>{
+    const g=gById[td.it.g]||{}; const st=STATUSES.find(x=>x.v===td.it.status)||STATUSES[0];
+    return `<div class="todocard" data-goto="${td.it.id}">
+      <span class="todochk" data-done="${td.it.id}__${td.idx}" title="Als erledigt markieren">✓</span>
+      <div class="todobody">
+        <div class="todotext">${esc(td.nt.text)}</div>
+        <div class="todometa"><span class="gtag" style="background:${g.color||'#999'}"></span><b>${esc(td.it.n)}</b><span class="gtag-l">${esc(g.label||'')}</span><span class="stbadge a-${st.a}">${st.t}</span>${td.nt.ts?`<span class="todots">notiert ${fmtTs(td.nt.ts)}</span>`:''}</div>
+      </div>
+    </div>`;
+  };
+  const doneCard=(td)=>{
+    const g=gById[td.it.g]||{};
+    return `<div class="todocard done" data-goto="${td.it.id}">
+      <span class="todochk done" data-reopen="${td.it.id}__${td.idx}" title="Wieder öffnen (Häkchen entfernen)">✓</span>
+      <div class="todobody">
+        <div class="todotext">${esc(td.nt.text)}</div>
+        <div class="todometa"><span class="gtag" style="background:${g.color||'#999'}"></span><b>${esc(td.it.n)}</b><span class="gtag-l">${esc(g.label||'')}</span>${td.nt.doneTs?`<span class="todo-done-date">✓ erledigt ${fmtTs(td.nt.doneTs)}</span>`:'<span class="todots">erledigt</span>'}</div>
+      </div>
+    </div>`;
+  };
+
+  v.innerHTML=`
+    <div class="sumhead">
+      <div><h2>To-Dos – nächste Schritte</h2><div class="sumstand">Stand: ${fmtTs(new Date().toISOString())}</div></div>
+      <div class="sumrecap">
+        <span><b class="num">${open.length}</b> offen</span>
+        <span><b class="num">${done.length}</b> erledigt</span>
+      </div>
+    </div>
+    <div class="sumsec todo-sec">
+      <div class="sumsec-h"><h3>⚡ Offen</h3><span class="sumsec-c">${open.length}</span><span class="sumsec-s">zuerst erledigen · Klick öffnet die Position</span></div>
+      ${open.length? open.map(openCard).join('') : '<div class="sumnote empty">Keine offenen To-Dos. Im Cockpit eine Position öffnen → „⚡ + To-Do" tippen.</div>'}
+    </div>
+    <div class="sumsec a-done">
+      <div class="sumsec-h"><h3>✓ Erledigt</h3><span class="sumsec-c">${done.length}</span><span class="sumsec-s">chronologisch · zuletzt erledigt zuerst</span></div>
+      ${done.length? done.map(doneCard).join('') : '<div class="sumnote empty">Noch nichts abgehakt.</div>'}
+    </div>
+  `;
+
+  v.querySelectorAll('.todochk[data-done]').forEach(el=>{
+    el.addEventListener('click',ev=>{ ev.stopPropagation(); const p=el.dataset.done.split('__'); const it=itemById(p[0]); const idx=+p[1];
+      if(it&&it.notizen[idx]){ it.notizen[idx].done=true; it.notizen[idx].doneTs=new Date().toISOString(); save(); renderTodos(); } });
+  });
+  v.querySelectorAll('.todochk[data-reopen]').forEach(el=>{
+    el.addEventListener('click',ev=>{ ev.stopPropagation(); const p=el.dataset.reopen.split('__'); const it=itemById(p[0]); const idx=+p[1];
+      if(it&&it.notizen[idx]){ it.notizen[idx].done=false; delete it.notizen[idx].doneTs; save(); renderTodos(); } });
+  });
+  v.querySelectorAll('.todocard[data-goto]').forEach(c=>{ c.addEventListener('click',()=>gotoItem(c.dataset.goto)); });
+}
+
+function gotoItem(id){
+  filter='alle';
+  const gi=itemById(id); if(gi) cockpitOpenGroups.add(gi.g);
+  document.querySelectorAll('.fchip').forEach(x=>x.classList.toggle('on',x.dataset.f==='alle'));
+  setView('cockpit'); render();
+  const dr=document.querySelector(`tr.detail[data-detail="${id}"]`);
+  const btn=document.querySelector(`[data-exp="${id}"]`);
+  if(dr){ dr.classList.add('open'); if(btn) btn.textContent='✕';
+    const row=document.querySelector(`tr.item[data-id="${id}"]`);
+    if(row) row.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+}
+
+// ---------- Zahlungsübersicht ----------
+function renderPayments(){
+  const v=document.getElementById('paymentsView');
+  const gById={}; state.groups.forEach(g=>gById[g.id]=g);
+  const withPay=state.items.filter(it=>(it.zahlungen||[]).length>0);
+  let totalPaid=0; state.items.forEach(it=>(it.zahlungen||[]).forEach(z=>totalPaid+=(+z.betrag||0)));
+  let totalBudget=0; state.items.forEach(it=>totalBudget+=(it.mat||0)+(it.arb||0)+(it.son||0));
+  const pct=totalBudget>0?Math.round(totalPaid/totalBudget*100):0;
+
+  const posBlock=(it)=>{
+    const g=gById[it.g]||{};
+    const paid=(it.zahlungen||[]).reduce((s,z)=>s+(+z.betrag||0),0);
+    const budget=(it.mat||0)+(it.arb||0)+(it.son||0);
+    const offen=budget-paid;
+    const rows=[...(it.zahlungen||[])].sort((a,b)=>(a.datum||'').localeCompare(b.datum||''))
+      .map(z=>`<div class="zrow zrow-ov">
+        <span class="zdate num">${fmtDate(z.datum)||'—'}</span>
+        <span class="zlabel">${z.text?esc(z.text):'<span class="zempty">(ohne Bezeichnung)</span>'}</span>
+        <span class="zamt num">${eur(z.betrag)}</span>
+      </div>`).join('');
+    return `<div class="zpos" data-goto="${it.id}">
+      <div class="zpos-h">
+        <span class="gtag" style="background:${g.color||'#999'}"></span>
+        <b>${esc(it.n)}</b><span class="gtag-l">${esc(g.label||'')}</span>
+        <span class="zpos-sum">${eur(paid)}<small> / ${eur(budget)} Budget${budget?` · ${offen>0?('offen '+eur(offen)):'voll bezahlt ✓'}`:''}</small></span>
+      </div>
+      <div class="zpos-list">${rows}</div>
+    </div>`;
+  };
+
+  v.innerHTML=`
+    <div class="sumhead">
+      <div><h2>Zahlungen – wer wurde wann bezahlt</h2><div class="sumstand">Stand: ${fmtTs(new Date().toISOString())}</div></div>
+      <div class="sumrecap">
+        <span><b class="num">${eur(totalPaid)}</b> bezahlt</span>
+        <span>von <b class="num">${eur(totalBudget)}</b> Budget</span>
+        <span><b class="num">${pct}%</b> bezahlt</span>
+      </div>
+    </div>
+    ${withPay.length? withPay.map(posBlock).join('') : '<div class="sumempty">Noch keine Zahlungen erfasst.<br>Öffne im Cockpit eine Position (Klick auf die Zeile) → Abschnitt „💶 Zahlungen" → Datum, Betrag &amp; Bezeichnung eintragen. Z.B. Elektrik: „Schalter & Dosen" am 12.03., „Leitungen" am 20.03. usw.</div>'}
+  `;
+  v.querySelectorAll('.zpos[data-goto]').forEach(c=>{ c.addEventListener('click',()=>gotoItem(c.dataset.goto)); });
+}
+
+// ---------- View-Umschaltung ----------
+function refreshActiveSecondary(){
+  if(currentView==='summary') renderSummary();
+  else if(currentView==='todos') renderTodos();
+  else if(currentView==='payments') renderPayments();
+}
+function setView(v){
+  currentView=v;
+  document.getElementById('cockpitView').classList.toggle('hidden',v!=='cockpit');
+  document.getElementById('summaryView').classList.toggle('hidden',v!=='summary');
+  document.getElementById('todosView').classList.toggle('hidden',v!=='todos');
+  document.getElementById('paymentsView').classList.toggle('hidden',v!=='payments');
+  document.querySelectorAll('.vtab').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
+  if(v==='summary') renderSummary();
+  if(v==='todos') renderTodos();
+  if(v==='payments') renderPayments();
+}
+document.querySelectorAll('.vtab').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.v)));
+
+// ---------- Filter ----------
+document.getElementById('filters').addEventListener('click',e=>{
+  const b=e.target.closest('.fchip'); if(!b)return;
+  filter=b.dataset.f;
+  document.querySelectorAll('.fchip').forEach(x=>x.classList.toggle('on',x===b));
+  render();
+});
+
+// ---------- Theme (Hell/Dunkel) ----------
+function applyTheme(t){
+  const dark = t==='dark';
+  document.body.classList.toggle('dark',dark);
+  const b=document.getElementById('themeToggle');
+  if(b) b.textContent = dark?'☀️ Hell':'🌙 Dunkel';
+  const mt=document.querySelector('meta[name="theme-color"]');
+  if(mt) mt.setAttribute('content', dark?'#14161a':'#1a1d21');
+}
+function toggleTheme(){
+  const now = document.body.classList.contains('dark')?'light':'dark';
+  try{ localStorage.setItem(THEME_KEY, now); }catch(e){}
+  applyTheme(now);
+}
+function initTheme(){
+  let t='light';
+  try{
+    const stored=localStorage.getItem(THEME_KEY);
+    if(stored){ t=stored; }
+    else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){ t='dark'; }
+  }catch(e){}
+  applyTheme(t);
+}
+
+// ---------- JSON Export / Import ----------
+function exportJSON(){
+  const data=JSON.stringify({app:'Bau-Cockpit',version:4,exported:new Date().toISOString(),uid,groups:state.groups,items:state.items},null,2);
+  const blob=new Blob([data],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download='Bau-Cockpit_'+new Date().toISOString().slice(0,10)+'.json';
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  flag('JSON exportiert');
+}
+function importJSON(file){
+  const r=new FileReader();
+  r.onload=()=>{
+    let d; try{ d=JSON.parse(r.result); }catch(e){ alert('Die Datei ist kein gültiges JSON.'); return; }
+    if(!d||!Array.isArray(d.groups)||!Array.isArray(d.items)){ alert('Datei enthält keine gültigen Bau-Cockpit-Daten.'); return; }
+    if(!confirm('Aktuelle Daten durch die geladene Datei ersetzen? (Tipp: vorher „Sichern (JSON)")')) return;
+    state={groups:d.groups,items:d.items}; normalize();
+    if(d.uid) uid=Math.max(uid,d.uid);
+    filter='alle'; document.querySelectorAll('.fchip').forEach(x=>x.classList.toggle('on',x.dataset.f==='alle'));
+    render(); refreshActiveSecondary(); save();
+    flag('JSON geladen');
+  };
+  r.readAsText(file);
+}
+
+// ---------- Persistenz (lokal schnell, Cloud gebündelt) ----------
+let lsTimer=null, cloudTimer=null;
+function currentPayload(){ return JSON.stringify({groups:state.groups,items:state.items,uid}); }
+function save(){
+  // localStorage: schnell (verhindert Datenverlust)
+  clearTimeout(lsTimer);
+  lsTimer=setTimeout(()=>{ try{ localStorage.setItem(STORE_KEY,currentPayload()); }catch(e){} flag('Gespeichert'); },300);
+  // Cloud: gebündelt alle paar Sekunden, damit Eingabe/Tastatur nicht unterbrochen wird
+  clearTimeout(cloudTimer);
+  cloudTimer=setTimeout(pushCloudNow,2500);
+}
+function pushCloudNow(){
+  clearTimeout(cloudTimer);
+  const p=currentPayload();
+  window.__lastPushedData=p;
+  try{ if(window.__cloud&&window.__cloud.save) window.__cloud.save(p); }catch(e){}
+}
+// Beim Verlassen/Ausblenden noch offene Cloud-Änderung sofort schreiben
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden') pushCloudNow(); });
+window.addEventListener('beforeunload', pushCloudNow);
+
+function flag(t){const el=document.getElementById('savedNote');el.textContent=t;setTimeout(()=>{if(el.textContent===t)el.textContent='';},1500);}
+async function load(){
+  try{
+    const raw=localStorage.getItem(STORE_KEY);
+    if(raw){ const d=JSON.parse(raw);
+      if(d&&d.groups&&d.items){ state={groups:d.groups,items:d.items}; if(d.uid)uid=Math.max(uid,d.uid); } }
+  }catch(e){}
+  normalize();
+}
+
+// ---------- Cloud-Bridge (wird vom Firebase-Modul genutzt) ----------
+window.getStatePayload=()=>currentPayload();
+
+function dataFingerprint(payloadStr){ try{ const d=JSON.parse(payloadStr); return JSON.stringify({g:d.groups,i:d.items}); }catch(e){ return payloadStr; } }
+function isEditingNow(){
+  const ae=document.activeElement;
+  if(ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName) && ae.closest && ae.closest('.wrap')) return true;
+  if(document.querySelector('tr.detail.open')) return true;
+  return false;
+}
+let pendingRemote=null;
+window.applyRemoteState=function(payload){
+  const incoming = typeof payload==='string'?payload:JSON.stringify(payload);
+  // eigenes Echo aus der Cloud ignorieren (kein Neuaufbau -> Reiter/Tastatur bleiben offen)
+  if(window.__lastPushedData && incoming===window.__lastPushedData) return;
+  // identischer Datenstand -> nichts zu tun
+  if(dataFingerprint(incoming)===dataFingerprint(currentPayload())) return;
+  // während aktiver Eingabe nicht neu aufbauen, sondern zurückstellen
+  if(isEditingNow()){ pendingRemote=incoming; return; }
+  try{
+    const d=JSON.parse(incoming);
+    if(d&&Array.isArray(d.groups)&&Array.isArray(d.items)){
+      state={groups:d.groups,items:d.items}; if(d.uid)uid=Math.max(uid,d.uid);
+      normalize();
+      try{ localStorage.setItem(STORE_KEY,currentPayload()); }catch(e){}
+      render(); refreshActiveSecondary();
+    }
+  }catch(e){}
+};
+function flushPendingRemote(){ if(pendingRemote && !isEditingNow()){ const p=pendingRemote; pendingRemote=null; window.applyRemoteState(p); } }
+document.addEventListener('focusout',()=>{ setTimeout(flushPendingRemote,400); });
+
+// ---------- Cloud-Panel ----------
+function toggleCloud(){ const p=document.getElementById('cloudPanel'); if(!p)return; p.classList.toggle('hidden'); if(!p.classList.contains('hidden')) refreshCloudPanel(); }
+function refreshCloudPanel(){
+  const k=(window.__cloud&&window.__cloud.getKey&&window.__cloud.getKey())||'(wird beim ersten Cloud-Login automatisch erzeugt)';
+  const el=document.getElementById('cloudKey'); if(el) el.value=k;
+}
+function cloudConnect(){
+  const inp=document.getElementById('cloudJoin'); const key=(inp.value||'').trim();
+  if(!key){ inp.focus(); return; }
+  if(window.__cloud&&window.__cloud.connect){ window.__cloud.connect(key); refreshCloudPanel(); flag('Mit Projekt verbunden'); }
+  else { alert('Cloud ist noch nicht konfiguriert. Bitte zuerst die Firebase-Konfiguration unten in der Datei eintragen.'); }
+  inp.value='';
+}
+function copyCloudKey(){
+  const el=document.getElementById('cloudKey'); if(!el)return; el.select();
+  try{ navigator.clipboard.writeText(el.value); flag('Schlüssel kopiert'); }catch(e){ try{document.execCommand('copy');}catch(_){} }
+}
+async function resetAll(){
+  if(!confirm('Alle Eingaben (inkl. eigener Punkte, Status & Notizen) auf die Standard-Vorlage zurücksetzen?')) return;
+  try{ localStorage.removeItem(STORE_KEY); }catch(e){}
+  uid=1000; state=defaults(); filter='alle';
+  sumOpenGroups.clear(); sumOpenItems.clear(); cockpitOpenGroups.clear();
+  document.querySelectorAll('.fchip').forEach(x=>x.classList.toggle('on',x.dataset.f==='alle'));
+  setView('cockpit'); render(); save();
+}
+
+// ---------- Init ----------
+initTheme();
+(async function init(){ await load(); render(); })();
+</script>
+
+<!-- =====================================================================
+     CLOUD-SYNC ÜBER FIREBASE (Firestore)
+     Trage unten deine Firebase-Konfiguration ein (siehe Anleitung).
+     Solange apiKey leer ist, läuft die App nur lokal + JSON.
+     ===================================================================== -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* ▼▼▼ HIER DEINE FIREBASE-KONFIGURATION EINFÜGEN ▼▼▼ */
+const firebaseConfig = {
+  apiKey: "AIzaSyD7xQQBnu7unmdKUpD9GsYuOlRjMA6BVGE",
+  authDomain: "bau-cockpit.firebaseapp.com",
+  projectId: "bau-cockpit",
+  storageBucket: "bau-cockpit.firebasestorage.app",
+  messagingSenderId: "1076485971052",
+  appId: "1:1076485971052:web:289913f25be94349778c49"
+};
+/* ▲▲▲ Werte aus der Firebase-Console (Projekteinstellungen → Web-App) ▲▲▲ */
+
+const KEYNAME='baucockpit_projectkey';
+const STAT={local:['nur lokal',''],connecting:['verbinde…','warn'],synced:['☁ synchronisiert','ok'],error:['Cloud-Fehler – nur lokal','err']};
+function setStatus(s){ const x=STAT[s]||['','']; ['cloudStatus','cloudStatus2'].forEach(id=>{ const el=document.getElementById(id); if(el){ el.textContent=x[0]; el.className='cloudstat'+(x[1]?(' '+x[1]):''); } }); }
+function genKey(){ try{ return crypto.randomUUID(); }catch(e){ return 'p'+Date.now()+Math.random().toString(36).slice(2); } }
+function getKey(){ try{ return localStorage.getItem(KEYNAME); }catch(e){ return null; } }
+function storeKey(k){ try{ localStorage.setItem(KEYNAME,k); }catch(e){} }
+
+let db=null, ready=false, currentKey=getKey(), unsub=null;
+const payload=()=> (window.getStatePayload?window.getStatePayload():null);
+
+async function writeDoc(p){
+  if(!ready||!currentKey||!p) return;
+  try{ await setDoc(doc(db,'baucockpit',currentKey),{data:p,updatedAt:serverTimestamp()}); setStatus('synced'); }
+  catch(e){ setStatus('error'); console.error('Cloud-Schreibfehler:',e); }
+}
+async function subscribe(){
+  if(!ready) return;
+  if(!currentKey){ currentKey=genKey(); storeKey(currentKey); }
+  if(unsub){ unsub(); unsub=null; }
+  const ref=doc(db,'baucockpit',currentKey);
+  try{
+    const snap=await getDoc(ref);
+    if(snap.exists() && snap.data() && snap.data().data){ window.applyRemoteState(snap.data().data); }
+    else { await writeDoc(payload()); }   // erstes Mal: lokalen Stand in die Cloud schreiben
+  }catch(e){ setStatus('error'); console.error('Cloud-Lesefehler:',e); }
+  unsub=onSnapshot(ref,(snap)=>{
+    if(snap.metadata.hasPendingWrites) return;            // eigener (noch nicht bestätigter) Schreibvorgang -> ignorieren
+    if(snap.exists() && snap.data() && snap.data().data){ window.applyRemoteState(snap.data().data); setStatus('synced'); }
+  },(err)=>{ setStatus('error'); console.error('Cloud-Sync-Fehler:',err); });
+  setStatus('synced');
+}
+
+window.__cloud = {
+  save:(p)=>{ writeDoc(p); },
+  connect:(k)=>{ currentKey=k; storeKey(k); subscribe(); },
+  getKey:()=>currentKey,
+  configured:false
+};
+
+(async ()=>{
+  if(!firebaseConfig.apiKey){ setStatus('local'); return; }   // noch nicht konfiguriert
+  try{
+    setStatus('connecting');
+    const app=initializeApp(firebaseConfig);
+    const auth=getAuth(app); db=getFirestore(app);
+    await signInAnonymously(auth);
+    ready=true; window.__cloud.configured=true;
+    await subscribe();
+  }catch(e){ setStatus('error'); console.error('Cloud-Init-Fehler:',e); }
+})();
+</script>
+</body>
+</html>
