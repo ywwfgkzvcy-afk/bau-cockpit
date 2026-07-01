@@ -12,16 +12,80 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#1a1d21">
 <style>
+  /* ===================== THEME-TOKENS ===================== */
   :root{
-    --paper:#f7f6f2; --card:#ffffff; --ink:#1a1d21; --ink-soft:#5b6168;
-    --line:#e6e2d9; --line-strong:#cdc7ba; --accent:#1f6f7a;
+    --paper:#f7f6f2; --card:#ffffff; --ink:#1a1d21; --ink-soft:#5b6168; --ink-contrast:#ffffff;
+    --line:#e6e2d9; --line-strong:#cdc7ba; --accent:#1f6f7a; --accent-ink:#ffffff;
     --rot:#cf5a5a; --gelb:#dca02e; --gruen:#3a8f5b; --grau:#a39e92;
+
+    --input-bg:#ffffff;
+    --head-bg:#fbfaf7;
+    --group-bg:#efeae0;
+    --chip-bg:#f1eee7;
+    --bar-track:#ece8df;
+    --detail-bg:#fbfaf6;
+    --hover:rgba(31,111,122,.05);
+    --shadow-card:0 1px 2px rgba(0,0,0,.03);
+    --overlay:rgba(20,22,25,.45);
+    --focus-ring:rgba(31,111,122,.16);
+    --placeholder:#bdb8ac;
+    --faint:#c3bdb0;
+    --ring-soft:rgba(0,0,0,.04);
+    --gbar-outline:rgba(0,0,0,.15);
+    --green-tint:rgba(58,143,91,.05);
+
+    --badge-rot-bg:#f7e3e3;  --badge-rot-ink:#b14747;
+    --badge-gelb-bg:#f6ecd2; --badge-gelb-ink:#a9761a;
+    --badge-gruen-bg:#dff0e6;--badge-gruen-ink:#2f7d4f;
+    --badge-done-bg:#e6e2d9; --badge-done-ink:#6b6457;
+
+    --st-rot-ink:#b14747;  --st-rot-bd:#e3b3b3;
+    --st-gelb-ink:#a9761a; --st-gelb-bd:#e6c98a;
+    --st-gruen-ink:#3a8f5b;--st-gruen-bd:#9fceb2;
+
+    --todo-accent:#e07b39; --todo-ink:#c4641f; --todo-line:#e0b48f;
+    --todo-bg:#fff7f0; --todo-bg2:#fffaf5; --todo-badge-bg:#fbe6d2; --todo-hover:rgba(224,123,57,.07);
   }
+  body.dark{
+    --paper:#14161a; --card:#1d2025; --ink:#e9e7e2; --ink-soft:#a2a7af; --ink-contrast:#14161a;
+    --line:#2b2f36; --line-strong:#3a3f47; --accent:#41a7b4; --accent-ink:#0b1618;
+    --rot:#e07a7a; --gelb:#e6b24d; --gruen:#5cb883; --grau:#7c828b;
+
+    --input-bg:#24282e;
+    --head-bg:#20242a;
+    --group-bg:#262a31;
+    --chip-bg:#2a2f37;
+    --bar-track:#2b2f36;
+    --detail-bg:#1a1d22;
+    --hover:rgba(65,167,180,.12);
+    --shadow-card:0 1px 2px rgba(0,0,0,.4);
+    --overlay:rgba(0,0,0,.6);
+    --focus-ring:rgba(65,167,180,.32);
+    --placeholder:#6b7078;
+    --faint:#5c626b;
+    --ring-soft:rgba(255,255,255,.05);
+    --gbar-outline:rgba(255,255,255,.22);
+    --green-tint:rgba(92,184,131,.10);
+
+    --badge-rot-bg:#3a2323;  --badge-rot-ink:#e79a9a;
+    --badge-gelb-bg:#3a3320; --badge-gelb-ink:#e6c579;
+    --badge-gruen-bg:#1f3529;--badge-gruen-ink:#7fd0a0;
+    --badge-done-bg:#2b2f36; --badge-done-ink:#a8adb5;
+
+    --st-rot-ink:#e79a9a;  --st-rot-bd:#5a3535;
+    --st-gelb-ink:#e6c579; --st-gelb-bd:#5a4d2e;
+    --st-gruen-ink:#7fd0a0;--st-gruen-bd:#2f5a41;
+
+    --todo-accent:#e8874a; --todo-ink:#f0a86a; --todo-line:#5a4432;
+    --todo-bg:#2a2119; --todo-bg2:#241d16; --todo-badge-bg:#3a2b1c; --todo-hover:rgba(232,135,74,.12);
+  }
+
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{background:var(--paper);color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased;}
+    font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased;
+    transition:background-color .2s ease,color .2s ease;}
   .num{font-family:"SF Mono",ui-monospace,"JetBrains Mono","Roboto Mono",Consolas,monospace;
     font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
   .wrap{max-width:1240px;margin:0 auto;padding:26px 20px 90px;}
@@ -42,7 +106,7 @@
   .viewtabs{display:flex;gap:6px;margin:16px 0 4px;}
   .vtab{border:1px solid var(--line-strong);background:var(--card);color:var(--ink-soft);
     font:inherit;font-size:13px;font-weight:600;padding:8px 18px;border-radius:8px;cursor:pointer;transition:.12s;}
-  .vtab.on{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .vtab.on{background:var(--ink);color:var(--ink-contrast);border-color:var(--ink);}
 
   /* Dashboard */
   .dash{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:12px;margin:14px 0 8px;}
@@ -54,7 +118,7 @@
   .progwrap{grid-column:1/-1;background:var(--card);border:1px solid var(--line);border-radius:11px;padding:13px 16px;margin-top:4px;}
   .progtop{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--ink-soft);font-weight:600;margin-bottom:8px;}
   .progtop b{color:var(--ink);font-size:13px;}
-  .bar{height:11px;background:#ece8df;border-radius:6px;overflow:hidden;display:flex;}
+  .bar{height:11px;background:var(--bar-track);border-radius:6px;overflow:hidden;display:flex;}
   .bar .seg{height:100%;transition:width .35s ease;}
   .bar .seg.g{background:var(--gruen);} .bar .seg.y{background:var(--gelb);} .bar .seg.r{background:var(--rot);}
 
@@ -64,86 +128,89 @@
   .fchip{border:1px solid var(--line-strong);background:var(--card);color:var(--ink-soft);
     font:inherit;font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:20px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:.12s;}
   .fchip .adot{width:9px;height:9px;border-radius:50%;display:inline-block;}
-  .fchip.on{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .fchip.on{background:var(--ink);color:var(--ink-contrast);border-color:var(--ink);}
   .btns{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
   button.act{border:1px solid var(--line-strong);background:var(--card);color:var(--ink);
     font:inherit;font-size:13px;font-weight:600;padding:8px 14px;border-radius:7px;cursor:pointer;transition:.12s;}
-  button.act:hover{background:var(--ink);color:#fff;border-color:var(--ink);}
+  button.act:hover{background:var(--ink);color:var(--ink-contrast);border-color:var(--ink);}
   .saved{font-size:11.5px;color:var(--grau);}
 
   /* Tabelle */
   .tablecard{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
   table{width:100%;border-collapse:collapse;}
   thead th{text-align:right;font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);
-    font-weight:700;padding:12px 10px;border-bottom:1.5px solid var(--line-strong);background:#fbfaf7;}
+    font-weight:700;padding:12px 10px;border-bottom:1.5px solid var(--line-strong);background:var(--head-bg);}
   thead th.l{text-align:left;}
   tbody td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:middle;}
 
-  tr.grouphead td{background:#f1eee7;border-bottom:1px solid var(--line-strong);padding:9px 10px;}
+  tr.grouphead td{background:var(--group-bg);border-bottom:1px solid var(--line-strong);padding:9px 10px;}
+  tr.grouphead{cursor:pointer;}
   tr.grouphead .gh{display:flex;align-items:center;gap:10px;}
+  .ghchev{flex:none;width:14px;text-align:center;color:var(--ink-soft);font-size:12px;transition:transform .18s ease;display:inline-block;}
+  tr.grouphead.gopen .ghchev{transform:rotate(90deg);}
   .gbar{width:6px;height:20px;border-radius:2px;cursor:pointer;flex:none;}
-  .gbar:hover{outline:2px solid rgba(0,0,0,.15);outline-offset:1px;}
-  input.gname-in{border:1px solid transparent;background:transparent;font:inherit;font-weight:700;
+  .gbar:hover{outline:2px solid var(--gbar-outline);outline-offset:1px;}
+  input.gname-in{border:1px solid transparent;background:transparent;font:inherit;font-weight:700;color:var(--ink);
     font-size:12.5px;letter-spacing:.03em;text-transform:uppercase;padding:3px 5px;border-radius:4px;flex:1 1 auto;min-width:160px;}
   input.gname-in:hover{border-color:var(--line-strong);}
-  input.gname-in:focus{outline:none;border-color:var(--accent);background:#fff;text-transform:none;}
+  input.gname-in:focus{outline:none;border-color:var(--accent);background:var(--input-bg);text-transform:none;}
   .gh .gright{margin-left:auto;display:flex;align-items:center;gap:12px;}
   .gsum{font-weight:700;font-size:13px;}
   .gsum small{color:var(--ink-soft);font-weight:600;font-size:11px;}
-  .ghbtn{border:1px solid var(--line-strong);background:#fff;border-radius:6px;font:inherit;font-size:11.5px;
+  .ghbtn{border:1px solid var(--line-strong);background:var(--input-bg);border-radius:6px;font:inherit;font-size:11.5px;
     font-weight:600;padding:4px 9px;cursor:pointer;color:var(--ink-soft);}
-  .ghbtn:hover{background:var(--ink);color:#fff;border-color:var(--ink);}
-  .ghbtn.danger:hover{background:var(--rot);border-color:var(--rot);}
+  .ghbtn:hover{background:var(--ink);color:var(--ink-contrast);border-color:var(--ink);}
+  .ghbtn.danger:hover{background:var(--rot);border-color:var(--rot);color:#fff;}
 
   tr.item{cursor:pointer;}
   td.ampelcell{width:20px;text-align:center;}
-  .ampel{width:11px;height:11px;border-radius:50%;display:inline-block;background:var(--grau);box-shadow:0 0 0 3px rgba(0,0,0,.04);}
+  .ampel{width:11px;height:11px;border-radius:50%;display:inline-block;background:var(--grau);box-shadow:0 0 0 3px var(--ring-soft);}
   tr[data-ampel="rot"] .ampel{background:var(--rot);}
   tr[data-ampel="gelb"] .ampel{background:var(--gelb);}
   tr[data-ampel="gruen"] .ampel{background:var(--gruen);}
-  tr.item[data-ampel="gruen"]{background:rgba(58,143,91,.045);}
-  tr.item:hover{background:rgba(31,111,122,.05);}
+  tr.item[data-ampel="gruen"]{background:var(--green-tint);}
+  tr.item:hover{background:var(--hover);}
 
   .pos{color:var(--grau);font-size:11.5px;width:26px;text-align:right;}
   td.name{min-width:210px;}
-  input.name-in{border:1px solid transparent;background:transparent;font:inherit;font-weight:600;width:100%;padding:3px 5px;border-radius:4px;}
+  input.name-in{border:1px solid transparent;background:transparent;font:inherit;font-weight:600;color:var(--ink);width:100%;padding:3px 5px;border-radius:4px;}
   input.name-in:hover{border-color:var(--line);}
-  input.name-in:focus{outline:none;border-color:var(--accent);background:#fff;}
+  input.name-in:focus{outline:none;border-color:var(--accent);background:var(--input-bg);}
   input.firma-in{border:1px solid transparent;background:transparent;font:inherit;font-size:11.5px;color:var(--ink-soft);width:100%;padding:2px 5px;border-radius:4px;margin-top:1px;}
-  input.firma-in::placeholder{color:#bdb8ac;font-style:italic;}
+  input.firma-in::placeholder{color:var(--placeholder);font-style:italic;}
   input.firma-in:hover{border-color:var(--line);}
-  input.firma-in:focus{outline:none;border-color:var(--accent);background:#fff;color:var(--ink);}
+  input.firma-in:focus{outline:none;border-color:var(--accent);background:var(--input-bg);color:var(--ink);}
   .firma-line{display:flex;align-items:center;gap:5px;}
-  .firma-line .pre{color:#c3bdb0;font-size:11px;flex:none;}
+  .firma-line .pre{color:var(--faint);font-size:11px;flex:none;}
 
   td.inp{width:90px;text-align:right;}
   input.eu{width:82px;text-align:right;font-family:"SF Mono",ui-monospace,Consolas,monospace;
-    font-variant-numeric:tabular-nums;font-size:12.5px;border:1px solid var(--line);border-radius:6px;padding:5px 6px;background:#fff;color:var(--ink);}
-  input.eu:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px rgba(31,111,122,.14);}
+    font-variant-numeric:tabular-nums;font-size:12.5px;border:1px solid var(--line);border-radius:6px;padding:5px 6px;background:var(--input-bg);color:var(--ink);}
+  input.eu:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px var(--focus-ring);}
   input.eu::-webkit-outer-spin-button,input.eu::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
   input.eu[type=number]{-moz-appearance:textfield;}
 
   td.sum{width:100px;text-align:right;font-weight:700;font-size:13.5px;}
   td.status{width:150px;}
-  select.st{width:100%;font:inherit;font-size:11.5px;border:1px solid var(--line);border-radius:6px;padding:5px 6px;background:#fff;cursor:pointer;font-weight:600;color:var(--ink-soft);}
-  tr[data-ampel="gelb"] select.st{color:#a9761a;border-color:#e6c98a;}
-  tr[data-ampel="gruen"] select.st{color:var(--gruen);border-color:#9fceb2;}
-  tr[data-ampel="rot"] select.st{color:#b14747;border-color:#e3b3b3;}
+  select.st{width:100%;font:inherit;font-size:11.5px;border:1px solid var(--line);border-radius:6px;padding:5px 6px;background:var(--input-bg);cursor:pointer;font-weight:600;color:var(--ink-soft);}
+  tr[data-ampel="gelb"] select.st{color:var(--st-gelb-ink);border-color:var(--st-gelb-bd);}
+  tr[data-ampel="gruen"] select.st{color:var(--st-gruen-ink);border-color:var(--st-gruen-bd);}
+  tr[data-ampel="rot"] select.st{color:var(--st-rot-ink);border-color:var(--st-rot-bd);}
 
   td.exp{width:30px;text-align:center;}
-  .expbtn{border:1px solid var(--line);background:#fff;border-radius:6px;width:26px;height:26px;cursor:pointer;color:var(--ink-soft);font-size:13px;line-height:1;padding:0;}
-  .expbtn:hover{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .expbtn{border:1px solid var(--line);background:var(--input-bg);border-radius:6px;width:26px;height:26px;cursor:pointer;color:var(--ink-soft);font-size:13px;line-height:1;padding:0;}
+  .expbtn:hover{background:var(--ink);color:var(--ink-contrast);border-color:var(--ink);}
 
   /* Detailpanel */
-  tr.detail td{padding:0;border-bottom:1px solid var(--line);background:#fbfaf6;}
+  tr.detail td{padding:0;border-bottom:1px solid var(--line);background:var(--detail-bg);}
   .detailinner{padding:14px 18px 16px 56px;display:none;}
   tr.detail.open .detailinner{display:block;}
 
   .loghead{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;margin-bottom:7px;}
   .logadd{display:flex;gap:8px;align-items:flex-start;margin-bottom:10px;}
-  .logadd-in{flex:1;font:inherit;font-size:12.5px;border:1px solid var(--line);border-radius:7px;padding:7px 9px;background:#fff;min-height:38px;line-height:1.4;resize:vertical;}
-  .logadd-in:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px rgba(31,111,122,.12);}
-  .logadd-btn{border:1px solid var(--accent);background:var(--accent);color:#fff;font:inherit;font-size:12.5px;font-weight:600;padding:8px 13px;border-radius:7px;cursor:pointer;flex:none;}
+  .logadd-in{flex:1;font:inherit;font-size:12.5px;border:1px solid var(--line);border-radius:7px;padding:7px 9px;background:var(--input-bg);color:var(--ink);min-height:38px;line-height:1.4;resize:vertical;}
+  .logadd-in:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px var(--focus-ring);}
+  .logadd-btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);font:inherit;font-size:12.5px;font-weight:600;padding:8px 13px;border-radius:7px;cursor:pointer;flex:none;}
   .logadd-btn:hover{filter:brightness(.92);}
   .loglist{margin-bottom:14px;}
   .logempty{font-size:12px;color:var(--grau);font-style:italic;padding:4px 0 8px;}
@@ -154,26 +221,26 @@
   .logdel{margin-left:auto;border:none;background:transparent;color:var(--grau);font-size:15px;line-height:1;cursor:pointer;padding:0 4px;border-radius:4px;}
   .logdel:hover{color:#fff;background:var(--rot);}
   .logtext{width:100%;font:inherit;font-size:12.5px;color:var(--ink);border:1px solid transparent;border-radius:6px;padding:4px 6px;background:transparent;line-height:1.4;resize:vertical;min-height:30px;}
-  .logtext:hover{border-color:var(--line);background:#fff;}
-  .logtext:focus{outline:none;border-color:var(--accent);background:#fff;}
+  .logtext:hover{border-color:var(--line);background:var(--input-bg);}
+  .logtext:focus{outline:none;border-color:var(--accent);background:var(--input-bg);}
 
   .dgrid2{display:grid;grid-template-columns:180px 1fr;gap:12px 16px;align-items:start;margin-bottom:11px;}
   .field label{display:block;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;margin-bottom:4px;}
-  .field input[type=date],.field textarea{width:100%;font:inherit;font-size:12.5px;border:1px solid var(--line);border-radius:7px;padding:7px 9px;background:#fff;color:var(--ink);resize:vertical;line-height:1.4;}
-  .field input:focus,.field textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px rgba(31,111,122,.12);}
+  .field input[type=date],.field textarea{width:100%;font:inherit;font-size:12.5px;border:1px solid var(--line);border-radius:7px;padding:7px 9px;background:var(--input-bg);color:var(--ink);resize:vertical;line-height:1.4;}
+  .field input:focus,.field textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px var(--focus-ring);}
   .kontakt-ta{min-height:38px;}
   .annahme{margin-bottom:13px;}
   .annahme label{display:block;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--grau);font-weight:700;margin-bottom:4px;}
   .annahme textarea{width:100%;font:inherit;font-size:12px;color:var(--ink-soft);border:1px dashed var(--line-strong);border-radius:7px;padding:7px 9px;background:transparent;min-height:38px;line-height:1.4;resize:vertical;}
   .detailfoot{display:flex;justify-content:flex-end;}
-  .delbtn{border:1px solid #e3b3b3;background:#fff;color:#b14747;font:inherit;font-size:12px;font-weight:600;padding:6px 13px;border-radius:7px;cursor:pointer;}
+  .delbtn{border:1px solid var(--st-rot-bd);background:var(--input-bg);color:var(--st-rot-ink);font:inherit;font-size:12px;font-weight:600;padding:6px 13px;border-radius:7px;cursor:pointer;}
   .delbtn:hover{background:var(--rot);color:#fff;border-color:var(--rot);}
 
   /* Hauptpunkt hinzufügen */
   .addgroup{display:flex;gap:10px;align-items:center;margin-top:16px;background:var(--card);border:1px dashed var(--line-strong);border-radius:11px;padding:13px 16px;}
-  .addgroup input{flex:1;font:inherit;font-size:13px;border:1px solid var(--line);border-radius:7px;padding:8px 11px;}
+  .addgroup input{flex:1;font:inherit;font-size:13px;border:1px solid var(--line);border-radius:7px;padding:8px 11px;background:var(--input-bg);color:var(--ink);}
   .addgroup input:focus{outline:none;border-color:var(--accent);}
-  .addgroup button{border:1px solid var(--accent);background:var(--accent);color:#fff;font:inherit;font-size:13px;font-weight:600;padding:8px 16px;border-radius:7px;cursor:pointer;}
+  .addgroup button{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);font:inherit;font-size:13px;font-weight:600;padding:8px 16px;border-radius:7px;cursor:pointer;}
   .addgroup button:hover{filter:brightness(.92);}
   .addgroup .lbl{font-size:12px;color:var(--ink-soft);font-weight:600;flex:none;}
 
@@ -185,99 +252,139 @@
 
   /* Cloud-Sync */
   .cloudstat{font-size:11.5px;font-weight:700;color:var(--grau);}
-  .cloudstat.ok{color:var(--gruen);} .cloudstat.warn{color:#b88517;} .cloudstat.err{color:var(--rot);}
-  .cloudpanel{position:fixed;inset:0;background:rgba(20,22,25,.45);display:flex;align-items:center;justify-content:center;z-index:50;padding:18px;}
-  .cloudbox{background:#fff;border-radius:14px;max-width:500px;width:100%;padding:20px 22px;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+  .cloudstat.ok{color:var(--gruen);} .cloudstat.warn{color:var(--gelb);} .cloudstat.err{color:var(--rot);}
+  .cloudpanel{position:fixed;inset:0;background:var(--overlay);display:flex;align-items:center;justify-content:center;z-index:50;padding:18px;}
+  .cloudbox{background:var(--card);border:1px solid var(--line);border-radius:14px;max-width:500px;width:100%;padding:20px 22px;box-shadow:0 20px 60px rgba(0,0,0,.35);}
   .cloudhead{display:flex;align-items:center;font-weight:700;font-size:16px;margin-bottom:12px;}
   .cloudx{margin-left:auto;border:none;background:transparent;font-size:22px;cursor:pointer;color:var(--ink-soft);line-height:1;}
   .cloudstatusrow{font-size:13px;margin-bottom:10px;}
   .cloudlbl{display:block;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;margin:12px 0 5px;}
   .cloudkeyrow{display:flex;gap:8px;}
-  .cloudkeyrow input{flex:1;font:inherit;font-size:12px;border:1px solid var(--line);border-radius:7px;padding:8px 10px;font-family:"SF Mono",ui-monospace,Consolas,monospace;}
+  .cloudkeyrow input{flex:1;font:inherit;font-size:12px;border:1px solid var(--line);border-radius:7px;padding:8px 10px;background:var(--input-bg);color:var(--ink);font-family:"SF Mono",ui-monospace,Consolas,monospace;}
   .cloudkeyrow input:focus{outline:none;border-color:var(--accent);}
-  .cloudhelp{font-size:11.5px;color:var(--ink-soft);line-height:1.5;margin:14px 0 0;background:#f7f6f2;border-radius:8px;padding:10px 12px;}
+  .cloudhelp{font-size:11.5px;color:var(--ink-soft);line-height:1.5;margin:14px 0 0;background:var(--group-bg);border-radius:8px;padding:10px 12px;}
 
-  /* ----- Übersichtsseite ----- */
+  /* ----- Übersichtsseite (Akkordeon) ----- */
   .sumhead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:14px;margin:14px 0 18px;border-bottom:1.5px solid var(--line-strong);padding-bottom:12px;}
   .sumhead h2{margin:0;font-size:20px;font-weight:700;}
   .sumstand{font-size:12px;color:var(--ink-soft);margin-top:4px;}
-  .sumrecap{display:flex;gap:16px;font-size:12.5px;color:var(--ink-soft);}
+  .sumrecap{display:flex;gap:16px;font-size:12.5px;color:var(--ink-soft);flex-wrap:wrap;}
   .sumrecap b{font-size:16px;color:var(--ink);}
-  .sumsec{border-left:4px solid var(--grau);background:var(--card);border:1px solid var(--line);border-left-width:4px;border-radius:11px;padding:6px 16px 14px;margin-bottom:16px;}
-  .sumsec.a-rot{border-left-color:var(--rot);} .sumsec.a-gelb{border-left-color:var(--gelb);}
-  .sumsec.a-gruen{border-left-color:var(--gruen);} .sumsec.a-done{border-left-color:var(--grau);}
-  .sumsec-h{display:flex;align-items:center;gap:10px;padding:12px 0 4px;}
-  .sumsec-h h3{margin:0;font-size:15px;font-weight:700;}
-  .sumsec-c{background:var(--ink);color:#fff;font-size:12px;font-weight:700;border-radius:20px;padding:2px 9px;}
-  .sumsec-s{color:var(--ink-soft);font-size:12px;}
-  .sumcard{border-top:1px solid var(--line);padding:11px 0 9px;cursor:pointer;}
-  .sumcard:hover{background:rgba(31,111,122,.035);}
-  .sumcard-h{display:flex;align-items:center;gap:9px;}
-  .gtag{width:9px;height:9px;border-radius:50%;flex:none;}
-  .sumcard-h b{font-size:13.5px;}
-  .gtag-l{font-size:11px;color:var(--ink-soft);background:#f1eee7;border-radius:5px;padding:1px 7px;}
-  .sumamt{margin-left:auto;font-weight:700;font-size:13px;}
-  .sumcard-m{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin:6px 0 0;padding-left:18px;}
-  .stbadge{font-size:11px;font-weight:700;border-radius:5px;padding:2px 8px;}
-  .stbadge.a-rot{background:#f7e3e3;color:#b14747;} .stbadge.a-gelb{background:#f6ecd2;color:#a9761a;}
-  .stbadge.a-gruen{background:#dff0e6;color:#2f7d4f;} .stbadge.a-done{background:#e6e2d9;color:#6b6457;}
-  .sumfirma{font-size:12px;color:var(--ink);font-weight:600;}
-  .sumdate{font-size:11.5px;color:var(--ink-soft);}
-  .sumnote{margin:7px 0 0;padding-left:18px;font-size:12.5px;color:var(--ink);line-height:1.45;}
-  .sumnote-ts{display:inline-block;font-family:"SF Mono",ui-monospace,Consolas,monospace;font-size:10.5px;font-weight:700;color:var(--accent);margin-right:7px;}
-  .sumnote.empty{color:var(--grau);font-style:italic;}
-  .summore{color:var(--grau);font-size:11px;font-style:italic;margin-left:5px;}
   .sumempty{color:var(--grau);font-style:italic;padding:30px 0;text-align:center;}
+  .sumnote.empty{color:var(--grau);font-style:italic;padding:6px 2px;}
+
+  .acc-group{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gc,var(--grau));border-radius:11px;margin-bottom:10px;overflow:hidden;}
+  .acc-ghead{display:flex;align-items:center;gap:11px;padding:13px 15px;cursor:pointer;user-select:none;}
+  .acc-ghead:hover{background:var(--hover);}
+  .acc-chev{flex:none;width:14px;color:var(--ink-soft);font-size:12px;transition:transform .18s ease;display:inline-block;text-align:center;}
+  .acc-group.open>.acc-ghead .acc-chev,.acc-item.open>.acc-ihead .acc-chev{transform:rotate(90deg);}
+  .acc-gtag{width:11px;height:11px;border-radius:50%;flex:none;}
+  .acc-gname{font-size:15px;font-weight:800;flex:1;letter-spacing:.01em;}
+  .acc-gcount{font-size:11.5px;color:var(--ink-soft);font-weight:600;white-space:nowrap;}
+  .acc-mini{display:flex;gap:4px;align-items:center;}
+  .acc-pill{font-size:10.5px;font-weight:800;border-radius:20px;padding:1px 7px;line-height:1.55;}
+  .acc-pill.r{background:var(--badge-rot-bg);color:var(--badge-rot-ink);}
+  .acc-pill.y{background:var(--badge-gelb-bg);color:var(--badge-gelb-ink);}
+  .acc-pill.g{background:var(--badge-gruen-bg);color:var(--badge-gruen-ink);}
+  .acc-gsum{font-weight:800;font-size:14px;min-width:74px;text-align:right;}
+  .acc-gbody{display:none;padding:0 13px 8px;}
+  .acc-group.open>.acc-gbody{display:block;}
+
+  .acc-item{border-top:1px solid var(--line);}
+  .acc-item:first-child{border-top:none;}
+  .acc-ihead{display:flex;align-items:center;gap:9px;padding:10px 6px;cursor:pointer;user-select:none;flex-wrap:wrap;}
+  .acc-ihead:hover{background:var(--hover);}
+  .acc-iname{font-size:13.5px;font-weight:700;}
+  .acc-ifirma{font-size:12px;color:var(--ink-soft);font-weight:600;}
+  .acc-idate{font-size:11.5px;color:var(--ink-soft);}
+  .acc-isum{margin-left:auto;font-weight:700;font-size:13px;padding-left:8px;}
+  .acc-ibody{display:none;padding:2px 6px 12px 29px;}
+  .acc-item.open>.acc-ibody{display:block;}
+  .acc-note{border-left:2px solid var(--line-strong);padding:3px 0 3px 11px;margin-bottom:8px;}
+  .acc-note.todo{border-left-color:var(--todo-accent);}
+  .acc-note-ts{display:block;font-family:"SF Mono",ui-monospace,Consolas,monospace;font-size:10.5px;font-weight:700;color:var(--accent);margin-bottom:2px;}
+  .acc-note-ts.muted{color:var(--grau);font-weight:600;}
+  .acc-note-tx{font-size:12.5px;color:var(--ink);line-height:1.45;white-space:pre-wrap;}
+  .acc-note-empty{font-size:12px;color:var(--grau);font-style:italic;padding:2px 0 6px;}
+  .acc-open-btn{display:inline-flex;align-items:center;gap:5px;margin-top:5px;border:1px solid var(--line-strong);background:var(--input-bg);color:var(--ink-soft);font:inherit;font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:7px;cursor:pointer;}
+  .acc-open-btn:hover{background:var(--ink);color:var(--ink-contrast);border-color:var(--ink);}
+
+  /* Status-Badges (Übersicht/To-Dos) */
+  .gtag{width:9px;height:9px;border-radius:50%;flex:none;}
+  .gtag-l{font-size:11px;color:var(--ink-soft);background:var(--chip-bg);border-radius:5px;padding:1px 7px;}
+  .stbadge{font-size:11px;font-weight:700;border-radius:5px;padding:2px 8px;}
+  .stbadge.a-rot{background:var(--badge-rot-bg);color:var(--badge-rot-ink);}
+  .stbadge.a-gelb{background:var(--badge-gelb-bg);color:var(--badge-gelb-ink);}
+  .stbadge.a-gruen{background:var(--badge-gruen-bg);color:var(--badge-gruen-ink);}
+  .stbadge.a-done{background:var(--badge-done-bg);color:var(--badge-done-ink);}
 
   /* To-Dos */
-  .rowtodo{font-size:10px;font-weight:800;background:#fbe6d2;color:#c4641f;border-radius:5px;padding:1px 6px;flex:none;}
-  .logadd-btn.todo{background:#fff;color:#c4641f;border-color:#e0b48f;}
-  .logadd-btn.todo:hover{background:#c4641f;color:#fff;border-color:#c4641f;filter:none;}
-  .todobadge{font-size:10px;font-weight:800;letter-spacing:.03em;background:#fbe6d2;color:#c4641f;border-radius:5px;padding:2px 7px;}
-  .logentry.todo{border-left-color:#e07b39;background:#fff7f0;border-radius:0 7px 7px 0;padding:6px 0 6px 11px;}
-  .logdone{border:1px solid #e0b48f;background:#fff;color:#c4641f;font:inherit;font-size:10.5px;font-weight:700;border-radius:5px;padding:2px 8px;cursor:pointer;}
-  .logdone:hover{background:#3a8f5b;color:#fff;border-color:#3a8f5b;}
-  .todo-sec{border-left-color:#e07b39 !important;background:#fffaf5;}
-  .todocard{display:flex;gap:11px;align-items:flex-start;border-top:1px solid #f0e2d4;padding:11px 0;cursor:pointer;}
-  .todocard:hover{background:rgba(224,123,57,.07);}
-  .todochk{flex:none;width:24px;height:24px;border-radius:50%;border:2px solid #e0b48f;color:#c4641f;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;cursor:pointer;background:#fff;}
-  .todochk:hover{background:#3a8f5b;border-color:#3a8f5b;color:#fff;}
+  .rowtodo{font-size:10px;font-weight:800;background:var(--todo-badge-bg);color:var(--todo-ink);border-radius:5px;padding:1px 6px;flex:none;}
+  .logadd-btn.todo{background:var(--input-bg);color:var(--todo-ink);border-color:var(--todo-line);}
+  .logadd-btn.todo:hover{background:var(--todo-ink);color:#fff;border-color:var(--todo-ink);filter:none;}
+  .todobadge{font-size:10px;font-weight:800;letter-spacing:.03em;background:var(--todo-badge-bg);color:var(--todo-ink);border-radius:5px;padding:2px 7px;}
+  .todobadge.done{background:var(--badge-done-bg);color:var(--badge-done-ink);}
+  .logentry.todo{border-left-color:var(--todo-accent);background:var(--todo-bg);border-radius:0 7px 7px 0;padding:6px 0 6px 11px;}
+  .logentry.todo.done{border-left-color:var(--grau);background:transparent;}
+  .logentry.todo.done .logtext{color:var(--ink-soft);}
+  .logdone{border:1px solid var(--todo-line);background:var(--input-bg);color:var(--todo-ink);font:inherit;font-size:10.5px;font-weight:700;border-radius:5px;padding:2px 8px;cursor:pointer;}
+  .logdone:hover{background:var(--gruen);color:#fff;border-color:var(--gruen);}
+  .logreopen{border:1px solid var(--line-strong);background:var(--input-bg);color:var(--ink-soft);font:inherit;font-size:10.5px;font-weight:700;border-radius:5px;padding:2px 8px;cursor:pointer;}
+  .logreopen:hover{background:var(--todo-ink);color:#fff;border-color:var(--todo-ink);}
+  .todo-sec{border-left-color:var(--todo-accent) !important;background:var(--todo-bg2);}
+  .sumsec{border-left:4px solid var(--grau);background:var(--card);border:1px solid var(--line);border-left-width:4px;border-radius:11px;padding:6px 16px 14px;margin-bottom:16px;}
+  .sumsec.a-done{border-left-color:var(--grau);}
+  .sumsec.a-gruen{border-left-color:var(--gruen);}
+  .sumsec-h{display:flex;align-items:center;gap:10px;padding:12px 0 4px;flex-wrap:wrap;}
+  .sumsec-h h3{margin:0;font-size:15px;font-weight:700;}
+  .sumsec-c{background:var(--ink);color:var(--ink-contrast);font-size:12px;font-weight:700;border-radius:20px;padding:2px 9px;}
+  .sumsec-s{color:var(--ink-soft);font-size:12px;}
+  .todocard{display:flex;gap:11px;align-items:flex-start;border-top:1px solid var(--line);padding:11px 0;cursor:pointer;}
+  .todocard:first-of-type{border-top:none;}
+  .todocard:hover{background:var(--todo-hover);}
+  .todocard.done{opacity:.72;}
+  .todocard.done .todotext{text-decoration:line-through;color:var(--ink-soft);}
+  .todochk{flex:none;width:24px;height:24px;border-radius:50%;border:2px solid var(--todo-line);color:var(--todo-ink);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;cursor:pointer;background:var(--input-bg);}
+  .todochk:hover{background:var(--gruen);border-color:var(--gruen);color:#fff;}
+  .todochk.done{background:var(--gruen);border-color:var(--gruen);color:#fff;}
+  .todochk.done:hover{background:var(--todo-ink);border-color:var(--todo-ink);}
   .todobody{flex:1;}
-  .todotext{font-size:14px;font-weight:600;color:var(--ink);line-height:1.35;}
+  .todotext{font-size:14px;font-weight:600;color:var(--ink);line-height:1.35;white-space:pre-wrap;}
   .todometa{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:5px;font-size:12px;color:var(--ink-soft);}
   .todometa .gtag-l{font-size:11px;}
   .todots{font-family:"SF Mono",ui-monospace,Consolas,monospace;font-size:10.5px;color:var(--grau);}
+  .todo-done-date{font-family:"SF Mono",ui-monospace,Consolas,monospace;font-size:10.5px;color:var(--gruen);font-weight:700;}
 
-  /* Ampel sitzt jetzt in der Namenszelle */
+  /* Ampel in der Namenszelle */
   .nameflex{display:flex;align-items:center;gap:8px;}
   .nameflex .name-in{flex:1;width:auto;}
 
-  /* Hierarchie: Hauptpunkte deutlich von Unterpunkten abheben */
-  tr.grouphead td{background:#efeae0;}
+  /* Hierarchie Cockpit */
   tr.grouphead .gname{font-size:14px;font-weight:800;}
   tr.item td.pos{border-left:3px solid var(--gc,transparent);padding-left:8px;}
 
-  /* ---- Bearbeiten-Sperre: standardmäßig sind Namen/Farbe/Löschen gesperrt ---- */
-  .name-in,.gname-in{pointer-events:none;}
+  /* ---- Bearbeiten-Sperre: Namen/Farbe/Löschen/Vergabe standardmäßig gesperrt ---- */
+  .name-in,.gname-in,.firma-in{pointer-events:none;}
   .gbar{pointer-events:none;cursor:default;}
   .ghbtn.danger,.delbtn{display:none;}
-  body.edit-on .name-in,body.edit-on .gname-in{pointer-events:auto;}
-  body.edit-on .name-in{border:1px solid var(--line-strong);background:#fff;}
+  body.edit-on .name-in,body.edit-on .gname-in,body.edit-on .firma-in{pointer-events:auto;}
+  body.edit-on .name-in,body.edit-on .firma-in{border:1px solid var(--line-strong);background:var(--input-bg);}
+  body.edit-on .firma-in{color:var(--ink);}
   body.edit-on .gname-in{border:1px solid var(--line-strong);}
   body.edit-on .gbar{pointer-events:auto;cursor:pointer;}
   body.edit-on .ghbtn.danger{display:inline-block;}
   body.edit-on .delbtn{display:inline-block;}
-  .act.editactive{background:var(--accent) !important;color:#fff !important;border-color:var(--accent) !important;}
+  .act.editactive{background:var(--accent) !important;color:var(--accent-ink) !important;border-color:var(--accent) !important;}
 
   /* Zahlungen (Detailbereich) */
   .rowpaid{font-size:11px;flex:none;}
   .zahlhead{margin-top:15px;}
   .zahladd{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap;}
-  .zahladd input{font:inherit;font-size:12.5px;border:1px solid var(--line);border-radius:7px;padding:7px 9px;background:#fff;color:var(--ink);}
+  .zahladd input{font:inherit;font-size:12.5px;border:1px solid var(--line);border-radius:7px;padding:7px 9px;background:var(--input-bg);color:var(--ink);}
   .zahladd .z-betrag{width:120px;text-align:right;font-family:"SF Mono",ui-monospace,Consolas,monospace;}
   .zahladd .z-text{flex:1;min-width:170px;}
-  .zahladd input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px rgba(31,111,122,.12);}
-  .zadd-btn{border:1px solid var(--accent);background:var(--accent);color:#fff;font:inherit;font-size:12.5px;font-weight:600;padding:8px 13px;border-radius:7px;cursor:pointer;flex:none;}
+  .zahladd input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px var(--focus-ring);}
+  .zadd-btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);font:inherit;font-size:12.5px;font-weight:600;padding:8px 13px;border-radius:7px;cursor:pointer;flex:none;}
   .zadd-btn:hover{filter:brightness(.92);}
   .zahllist{margin-bottom:8px;}
   .zrow{display:flex;align-items:center;gap:10px;padding:6px 2px;border-bottom:1px solid var(--line);}
@@ -301,7 +408,7 @@
   .zpos-list{padding-top:2px;}
   .zrow-ov{cursor:pointer;}
   .zrow-ov:last-child{border-bottom:none;}
-  .zrow-ov:hover{background:rgba(31,111,122,.035);}
+  .zrow-ov:hover{background:var(--hover);}
 
   /* ====== MOBILE: Karten-Layout (iPhone) ====== */
   @media (max-width:720px){
@@ -312,7 +419,7 @@
     .totalbox{text-align:left;}
     .totalbox .big{font-size:27px;}
 
-    .viewtabs .vtab{flex:1;text-align:center;padding:9px 6px;}
+    .viewtabs .vtab{flex:1;text-align:center;padding:9px 4px;font-size:12px;}
     .toolbar{gap:8px;}
     button.act{padding:8px 11px;font-size:12.5px;}
 
@@ -327,9 +434,9 @@
     input.gname-in{min-width:120px;}
     .gh .gright{width:100%;margin-left:0;margin-top:8px;gap:10px;flex-wrap:wrap;justify-content:flex-start;}
 
-    tr.item{border:1px solid var(--line);border-left:4px solid var(--gc,var(--line));border-radius:11px;margin:0 0 11px 16px;padding:11px 13px;background:var(--card);box-shadow:0 1px 2px rgba(0,0,0,.03);}
+    tr.item{border:1px solid var(--line);border-left:4px solid var(--gc,var(--line));border-radius:11px;margin:0 0 11px 16px;padding:11px 13px;background:var(--card);box-shadow:var(--shadow-card);}
     tr.item:hover{background:var(--card);}
-    tr.item[data-ampel="gruen"]{background:rgba(58,143,91,.05);}
+    tr.item[data-ampel="gruen"]{background:var(--green-tint);}
     tr.item td{border:none;padding:0;}
     td.pos{display:none;}
     td.name{padding-bottom:7px;}
@@ -356,10 +463,14 @@
     .logadd-in{flex:1 1 100%;}
     .logadd-btn{flex:1;text-align:center;}
 
-    /* Übersicht */
+    /* Übersicht / To-Dos */
     .sumrecap{font-size:12px;}
-    .sumcard-h{flex-wrap:wrap;}
-    .sumamt{margin-left:auto;}
+    .acc-ghead{gap:8px;}
+    .acc-gname{flex:1 1 100%;order:2;}
+    .acc-chev{order:1;}
+    .acc-gtag{order:1;}
+    .acc-gcount,.acc-mini,.acc-gsum{order:3;}
+    .acc-gsum{margin-left:auto;}
 
     /* Zahlungen mobil */
     .zahladd{gap:6px;}
@@ -379,19 +490,28 @@
     .detailinner{padding-left:18px;}
     .sumrecap{flex-wrap:wrap;gap:10px;}
   }
+
   @media print{
     @page{size:A4 landscape;margin:10mm;}
-    body{background:#fff;font-size:10px;}
-    .viewtabs,.toolbar,.addgroup,.saved,.expbtn,.ghbtn,.disclaimer,.dcard .dsub,.logadd,.logdel,.logdone,.todochk,.cloudpanel,.zahladd,.zdel{display:none !important;}
+    body,body.dark{
+      --paper:#fff;--card:#fff;--ink:#1a1d21;--ink-soft:#5b6168;--ink-contrast:#fff;
+      --line:#e6e2d9;--line-strong:#cdc7ba;--input-bg:#fff;--head-bg:#fbfaf7;--group-bg:#efeae0;--chip-bg:#f1eee7;--detail-bg:#fbfaf6;
+      --badge-rot-bg:#f7e3e3;--badge-rot-ink:#b14747;--badge-gelb-bg:#f6ecd2;--badge-gelb-ink:#a9761a;--badge-gruen-bg:#dff0e6;--badge-gruen-ink:#2f7d4f;--badge-done-bg:#e6e2d9;--badge-done-ink:#6b6457;
+      --todo-badge-bg:#fbe6d2;--todo-ink:#c4641f;--todo-bg:#fff7f0;--todo-bg2:#fffaf5;--todo-accent:#e07b39;--todo-line:#e0b48f;
+      --accent:#1f6f7a;--gruen:#3a8f5b;--gelb:#dca02e;--rot:#cf5a5a;--grau:#a39e92;
+      background:#fff;color:#1a1d21;
+    }
+    .viewtabs,.toolbar,.addgroup,.saved,.expbtn,.ghbtn,.disclaimer,.dcard .dsub,.logadd,.logdel,.logdone,.logreopen,.todochk,.cloudpanel,.zahladd,.zdel,.acc-open-btn{display:none !important;}
     .wrap{max-width:none;padding:0;}
     .tablecard{border:none;border-radius:0;}
     input,select,textarea{border:none !important;background:transparent !important;padding:1px !important;font-size:9.5px !important;-webkit-appearance:none;box-shadow:none !important;}
-    select.st{color:var(--ink) !important;}
-    thead th,tr.grouphead td,.dcard,.progwrap,.sumsec-c,.stbadge,.gtag-l{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-    .ampel,.gtag,.sumsec{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    select.st{color:#1a1d21 !important;}
+    .acc-gbody,.acc-ibody{display:block !important;}
+    thead th,tr.grouphead td,.dcard,.progwrap,.sumsec-c,.stbadge,.gtag-l,.acc-pill{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .ampel,.gtag,.sumsec,.acc-group{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     tr.detail.open .detailinner{display:block;}
     .dash{grid-template-columns:repeat(4,1fr);}
-    .sumcard,.todocard,.sumsec,.logentry{page-break-inside:avoid;}
+    .todocard,.sumsec,.logentry,.acc-group,.acc-item{page-break-inside:avoid;}
   }
 </style>
 </head>
@@ -414,6 +534,7 @@
   <div class="viewtabs">
     <button class="vtab on" data-v="cockpit">📋 Cockpit</button>
     <button class="vtab" data-v="summary">✓ Übersicht</button>
+    <button class="vtab" data-v="todos">⚡ To-Dos</button>
     <button class="vtab" data-v="payments">💶 Zahlungen</button>
   </div>
 
@@ -457,6 +578,8 @@
       <div class="btns">
         <span class="saved" id="savedNote"></span>
         <span class="cloudstat" id="cloudStatus">nur lokal</span>
+        <button class="act" id="expandToggle" onclick="toggleAllGroups()">⊞ Alle auf</button>
+        <button class="act" id="themeToggle" onclick="toggleTheme()">🌙 Dunkel</button>
         <button class="act" id="editToggle" onclick="toggleEdit()">🔒 Gesperrt</button>
         <button class="act" onclick="toggleCloud()">☁️ Cloud-Sync</button>
         <button class="act" onclick="exportJSON()">⭳ Sichern (JSON)</button>
@@ -499,13 +622,16 @@
     </div>
 
     <p class="disclaimer">
-      Richtwerte für die Planungsphase (NÖ, 2026) – keine Angebote. Klick auf eine Zeile klappt Details auf; Klick auf den farbigen Balken eines Hauptpunkts wechselt dessen Farbe. Eingaben werden automatisch gespeichert – zur Sicherheit zusätzlich „Sichern (JSON)".
+      Richtwerte für die Planungsphase (NÖ, 2026) – keine Angebote. Klick auf eine Zeile klappt Details auf; Klick auf den farbigen Balken eines Hauptpunkts wechselt dessen Farbe (nur im Bearbeiten-Modus). Eingaben werden automatisch gespeichert – zur Sicherheit zusätzlich „Sichern (JSON)".
     </p>
 
   </div>
 
   <!-- ===== ÜBERSICHTS-ANSICHT ===== -->
   <div id="summaryView" class="hidden"></div>
+
+  <!-- ===== TO-DOS-ANSICHT ===== -->
+  <div id="todosView" class="hidden"></div>
 
   <!-- ===== ZAHLUNGEN-ANSICHT ===== -->
   <div id="paymentsView" class="hidden"></div>
@@ -519,7 +645,7 @@
       <div class="cloudkeyrow"><input id="cloudKey" readonly value=""><button class="act" onclick="copyCloudKey()">Kopieren</button></div>
       <label class="cloudlbl">Anderes Gerät verbinden – Schlüssel hier einfügen</label>
       <div class="cloudkeyrow"><input id="cloudJoin" placeholder="Schlüssel von Gerät 1 einfügen…"><button class="act" onclick="cloudConnect()">Verbinden</button></div>
-      <p class="cloudhelp"><b>So geht's:</b> Auf Gerät 1 den Schlüssel kopieren → auf Gerät 2 hier einfügen &amp; „Verbinden". Beide zeigen dann live dieselben Daten. Ohne eingetragene Firebase-Konfiguration läuft alles nur lokal (mit JSON-Sicherung als Backup).</p>
+      <p class="cloudhelp"><b>So geht's:</b> Auf Gerät 1 den Schlüssel kopieren → auf Gerät 2 hier einfügen &amp; „Verbinden". Beide zeigen dann dieselben Daten. Der Cloud-Abgleich läuft alle paar Sekunden gebündelt, damit die Eingabe am Handy/Mac nicht unterbrochen wird.</p>
     </div>
   </div>
 
@@ -529,6 +655,7 @@
 const fmt = new Intl.NumberFormat('de-AT',{style:'currency',currency:'EUR',maximumFractionDigits:0});
 const eur = n => fmt.format(Math.round(n||0));
 const STORE_KEY = 'baucockpit_efh_v2';
+const THEME_KEY = 'baucockpit_theme';
 
 const STATUSES = [
   {v:'offen',       t:'Offen',                  a:'rot'},
@@ -546,9 +673,12 @@ const nid = () => 'x'+(uid++);
 
 function fmtTs(iso){ if(!iso) return ''; try{ return new Date(iso).toLocaleString('de-AT',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}); }catch(e){ return ''; } }
 function fmtDate(d){ if(!d) return ''; const p=(''+d).split('-'); return p.length===3?`${p[2]}.${p[1]}.${p[0]}`:d; }
-function isTodo(t){ return /^\s*!/.test(t||''); }
-function todoText(t){ return (t||'').replace(/^\s*!\s*/,''); }
-function hasTodo(it){ return (it.notizen||[]).some(n=>isTodo(n.text)); }
+
+/* ---- To-Do-Modell: explizite Flags (todo/done/doneTs) statt „!"-Präfix ---- */
+function isTodo(nt){ return !!(nt && nt.todo); }
+function isOpenTodo(nt){ return isTodo(nt) && !nt.done; }
+function isDoneTodo(nt){ return isTodo(nt) && !!nt.done; }
+function hasOpenTodo(it){ return (it.notizen||[]).some(isOpenTodo); }
 function hasZahl(it){ return (it.zahlungen||[]).length>0; }
 
 // ---------- Standarddaten ----------
@@ -611,11 +741,19 @@ function defaults(){
 let state = defaults();
 let filter = 'alle';
 let currentView = 'cockpit';
+let sumOpenGroups = new Set();
+let sumOpenItems = new Set();
+let cockpitOpenGroups = new Set();   // aufgeklappte Hauptpunkte im Cockpit (leer = alle zu)
 
 function normalize(){
   (state.items||[]).forEach(it=>{
     if(!Array.isArray(it.notizen)){ it.notizen = it.notiz ? [{ts:null,text:it.notiz}] : []; }
     delete it.notiz;
+    it.notizen.forEach(nt=>{
+      if(typeof nt.text!=='string') nt.text = nt.text==null ? '' : (''+nt.text);
+      // Alt-Format „! …" -> explizites Todo-Flag migrieren
+      if(nt.todo===undefined && /^\s*!/.test(nt.text)){ nt.todo=true; nt.text=nt.text.replace(/^\s*!\s*/,''); }
+    });
     if(typeof it.kontakt!=='string') it.kontakt='';
     if(typeof it.datum!=='string')  it.datum='';
     if(typeof it.firma!=='string')  it.firma='';
@@ -638,12 +776,18 @@ function render(){
     const visible = rows.filter(it=> filter==='alle' || ampelOf(it.status)===filter );
     if(filter!=='alle' && visible.length===0) return;
 
-    let gmin=0,gmax=0; rows.forEach(r=>{gmin+=r.min;gmax+=r.max;});
-    const ghr=document.createElement('tr'); ghr.className='grouphead';
+    let gmin=0,gmax=0,gr_r=0,gr_y=0,gr_g=0;
+    rows.forEach(r=>{gmin+=r.min;gmax+=r.max;const a=ampelOf(r.status);if(a==='rot')gr_r++;else if(a==='gelb')gr_y++;else gr_g++;});
+    const collapsible=(filter==='alle');
+    const gOpen = !collapsible || cockpitOpenGroups.has(gr.id);   // beim Filtern immer offen
+    const gmini=[ gr_r?`<span class="acc-pill r">${gr_r}</span>`:'', gr_y?`<span class="acc-pill y">${gr_y}</span>`:'', gr_g?`<span class="acc-pill g">${gr_g}</span>`:'' ].join('');
+    const ghr=document.createElement('tr'); ghr.className='grouphead'+(gOpen?' gopen':''); ghr.dataset.ghead=gr.id;
     ghr.innerHTML=`<td colspan="8" style="border-left:6px solid ${gr.color}"><div class="gh">
-        <span class="gbar" title="Farbe wechseln" data-color="${gr.id}" style="background:${gr.color}"></span>
+        <span class="ghchev">▸</span>
+        <span class="gbar" title="Farbe wechseln (nur im Bearbeiten-Modus)" data-color="${gr.id}" style="background:${gr.color}"></span>
         <input class="gname-in" data-gname="${gr.id}" value="${esc(gr.label)}">
         <div class="gright">
+          <span class="acc-mini">${gmini}</span>
           <span class="gsum">Σ <span class="num" id="gsum-${gr.id}">–</span> <small>(${eur(gmin)}–${eur(gmax)})</small></span>
           <button class="ghbtn" data-additem="${gr.id}">+ Unterpunkt</button>
           <button class="ghbtn danger" data-delgroup="${gr.id}" title="Hauptpunkt entfernen">×</button>
@@ -652,7 +796,7 @@ function render(){
 
     rows.forEach(it=>{
       posNo++;
-      const hide = !(filter==='alle' || ampelOf(it.status)===filter);
+      const hide = !(filter==='alle' || ampelOf(it.status)===filter) || !gOpen;
       const tr=document.createElement('tr');
       tr.className='item'+(hide?' hidden':'');
       tr.dataset.id=it.id; tr.dataset.ampel=ampelOf(it.status); tr.style.setProperty('--gc',gr.color);
@@ -661,7 +805,7 @@ function render(){
         <td class="pos num">${posNo}</td>
         <td class="name">
           <div class="nameflex"><span class="ampel"></span><input class="name-in" data-f="n" value="${esc(it.n)}"></div>
-          <div class="firma-line">${hasTodo(it)?'<span class="rowtodo" title="Offene To-Dos">⚡ To-Do</span>':''}${hasZahl(it)?'<span class="rowpaid" title="Zahlungen erfasst">💶</span>':''}<span class="pre">AN ▸</span><input class="firma-in" data-f="firma" placeholder="Auftragnehmer / Firma…" value="${esc(it.firma)}"></div>
+          <div class="firma-line">${hasOpenTodo(it)?'<span class="rowtodo" title="Offene To-Dos">⚡ To-Do</span>':''}${hasZahl(it)?'<span class="rowpaid" title="Zahlungen erfasst">💶</span>':''}<span class="pre">AN ▸</span><input class="firma-in" data-f="firma" placeholder="Auftragnehmer / Firma…" value="${esc(it.firma)}"></div>
         </td>
         <td class="inp" data-label="Material"><input class="eu" type="number" inputmode="numeric" min="0" step="100" data-f="mat" value="${it.mat}"></td>
         <td class="inp" data-label="Arbeit"><input class="eu" type="number" inputmode="numeric" min="0" step="100" data-f="arb" value="${it.arb}"></td>
@@ -676,7 +820,7 @@ function render(){
       dr.innerHTML=`<td colspan="8"><div class="detailinner" id="det-${it.id}">
         <div class="loghead">📌 Verlauf / Notizen</div>
         <div class="logadd">
-          <textarea class="logadd-in" placeholder="Neue Notiz… ⚡ = nächster Schritt/To-Do (steht ganz oben in der Übersicht). Strg/⌘+Enter = normaler Eintrag."></textarea>
+          <textarea class="logadd-in" placeholder="Neue Notiz… ⚡ = nächster Schritt/To-Do (erscheint im To-Dos-Reiter). Strg/⌘+Enter = normaler Eintrag."></textarea>
           <button class="logadd-btn todo" data-addtodo="${it.id}">⚡ + To-Do</button>
           <button class="logadd-btn" data-addnote="${it.id}">+ Eintrag</button>
         </div>
@@ -713,9 +857,17 @@ function renderLog(id){
   const it=itemById(id); const box=document.getElementById('log-'+id); if(!it||!box) return;
   if(!it.notizen.length){ box.innerHTML='<div class="logempty">Noch keine Einträge – erste Notiz oben hinzufügen.</div>'; return; }
   box.innerHTML=it.notizen.map((nt,i)=>{
-    const todo=isTodo(nt.text);
-    return `<div class="logentry${todo?' todo':''}">
-      <div class="logmeta">${todo?'<span class="todobadge">⚡ TO-DO</span>':''}<span class="logts${nt.ts?'':' muted'}">${nt.ts?fmtTs(nt.ts):'Vorlage'}</span>${todo?`<button class="logdone" data-idx="${i}" title="To-Do als erledigt markieren">✓ erledigt</button>`:''}<button class="logdel" data-idx="${i}" title="Eintrag löschen">×</button></div>
+    const todo=isTodo(nt), done=isDoneTodo(nt);
+    let meta='';
+    if(todo && done){
+      meta=`<span class="todobadge done">✓ ERLEDIGT</span><span class="logts muted">${nt.doneTs?('am '+fmtTs(nt.doneTs)):''}</span><button class="logreopen" data-idx="${i}" title="Wieder als To-Do öffnen">↩ öffnen</button>`;
+    } else if(todo){
+      meta=`<span class="todobadge">⚡ TO-DO</span><span class="logts${nt.ts?'':' muted'}">${nt.ts?fmtTs(nt.ts):'Vorlage'}</span><button class="logdone" data-idx="${i}" title="To-Do als erledigt markieren">✓ erledigt</button>`;
+    } else {
+      meta=`<span class="logts${nt.ts?'':' muted'}">${nt.ts?fmtTs(nt.ts):'Vorlage'}</span>`;
+    }
+    return `<div class="logentry${todo?(done?' todo done':' todo'):''}">
+      <div class="logmeta">${meta}<button class="logdel" data-idx="${i}" title="Eintrag löschen">×</button></div>
       <textarea class="logtext" data-idx="${i}">${esc(nt.text)}</textarea>
     </div>`;
   }).join('');
@@ -723,10 +875,13 @@ function renderLog(id){
     ta.addEventListener('input',e=>{ it.notizen[+ta.dataset.idx].text=e.target.value; save(); });
   });
   box.querySelectorAll('.logdone').forEach(btn=>{
-    btn.addEventListener('click',()=>{ const i=+btn.dataset.idx; it.notizen[i].text=todoText(it.notizen[i].text); renderLog(id); save(); });
+    btn.addEventListener('click',()=>{ const i=+btn.dataset.idx; it.notizen[i].done=true; it.notizen[i].doneTs=new Date().toISOString(); renderLog(id); refreshRowBadges(id); save(); });
+  });
+  box.querySelectorAll('.logreopen').forEach(btn=>{
+    btn.addEventListener('click',()=>{ const i=+btn.dataset.idx; it.notizen[i].done=false; delete it.notizen[i].doneTs; renderLog(id); refreshRowBadges(id); save(); });
   });
   box.querySelectorAll('.logdel').forEach(btn=>{
-    btn.addEventListener('click',()=>{ if(!confirm('Diesen Notiz-Eintrag löschen?')) return; it.notizen.splice(+btn.dataset.idx,1); renderLog(id); save(); });
+    btn.addEventListener('click',()=>{ if(!confirm('Diesen Notiz-Eintrag löschen?')) return; it.notizen.splice(+btn.dataset.idx,1); renderLog(id); refreshRowBadges(id); save(); });
   });
 }
 
@@ -745,7 +900,7 @@ function renderZahl(id){
         <button class="zdel" data-idx="${i}" title="Zahlung löschen">×</button>
       </div>`).join('');
     box.querySelectorAll('.zdel').forEach(btn=>{
-      btn.addEventListener('click',()=>{ if(!confirm('Diese Zahlung löschen?')) return; it.zahlungen.splice(+btn.dataset.idx,1); renderZahl(id); save(); });
+      btn.addEventListener('click',()=>{ if(!confirm('Diese Zahlung löschen?')) return; it.zahlungen.splice(+btn.dataset.idx,1); renderZahl(id); refreshRowBadges(id); save(); });
     });
   }
   if(sumEl){
@@ -762,12 +917,24 @@ function toggleDetail(id){
   if(!dr) return;
   dr.classList.toggle('open');
   if(btn) btn.textContent = dr.classList.contains('open')?'✕':'⋯';
+  if(!dr.classList.contains('open')) setTimeout(flushPendingRemote,60);
+}
+
+/* aktualisiert ⚡/💶-Badges einer Zeile ohne kompletten Neuaufbau */
+function refreshRowBadges(id){
+  const it=itemById(id); if(!it) return;
+  const line=document.querySelector(`tr.item[data-id="${id}"] .firma-line`);
+  if(!line) return;
+  line.querySelectorAll('.rowtodo,.rowpaid').forEach(e=>e.remove());
+  let html='';
+  if(hasZahl(it)) html='<span class="rowpaid" title="Zahlungen erfasst">💶</span>'+html;
+  if(hasOpenTodo(it)) html='<span class="rowtodo" title="Offene To-Dos">⚡ To-Do</span>'+html;
+  if(html) line.insertAdjacentHTML('afterbegin',html);
 }
 
 function bindRow(){
   document.querySelectorAll('#tbody tr.item').forEach(tr=>{
     const it=itemById(tr.dataset.id);
-    // Klick auf Zeile -> aufklappen (außer auf Eingabeelementen)
     tr.addEventListener('click',e=>{
       if(e.target.closest('input,select,textarea,button,.gbar')) return;
       toggleDetail(it.id);
@@ -792,7 +959,7 @@ function bindRow(){
     const addBtn=dr.querySelector('[data-addnote]');
     const addTodoBtn=dr.querySelector('[data-addtodo]');
     const addIn=dr.querySelector('.logadd-in');
-    const doAdd=(asTodo)=>{ let t=(addIn.value||'').trim(); if(!t) return; if(asTodo&&!isTodo(t)) t='! '+t; it.notizen.unshift({ts:new Date().toISOString(),text:t}); addIn.value=''; renderLog(it.id); save(); };
+    const doAdd=(asTodo)=>{ let t=(addIn.value||'').trim(); if(!t) return; const note={ts:new Date().toISOString(),text:t}; if(asTodo) note.todo=true; it.notizen.unshift(note); addIn.value=''; renderLog(it.id); refreshRowBadges(it.id); save(); };
     if(addBtn) addBtn.addEventListener('click',()=>doAdd(false));
     if(addTodoBtn) addTodoBtn.addEventListener('click',()=>doAdd(true));
     if(addIn) addIn.addEventListener('keydown',e=>{ if((e.ctrlKey||e.metaKey)&&e.key==='Enter') doAdd(false); });
@@ -804,7 +971,7 @@ function bindRow(){
       if(!betrag){ bb.focus(); return; }
       it.zahlungen.unshift({datum:dd.value||'', betrag, text:(tt.value||'').trim()});
       dd.value=''; bb.value=''; tt.value='';
-      renderZahl(it.id); save();
+      renderZahl(it.id); refreshRowBadges(it.id); save();
     });
     renderLog(it.id);
     renderZahl(it.id);
@@ -828,9 +995,46 @@ function bindGroup(){
   });
   document.querySelectorAll('[data-additem]').forEach(btn=>{ btn.addEventListener('click',()=>addItem(btn.dataset.additem)); });
   document.querySelectorAll('[data-delgroup]').forEach(btn=>{ btn.addEventListener('click',()=>delGroup(btn.dataset.delgroup)); });
+  document.querySelectorAll('tr.grouphead[data-ghead]').forEach(gh=>{
+    gh.addEventListener('click',e=>{
+      if(e.target.closest('input,select,textarea,button,.gbar')) return;
+      toggleGroupCollapse(gh.dataset.ghead);
+    });
+  });
+  updateExpandLabel();
 }
 
-// ---------- Bearbeiten-Modus (Namen/Struktur standardmäßig gesperrt) ----------
+// ---------- Cockpit: Hauptpunkte auf-/zuklappen ----------
+function setGroupRowsVisible(gid, open){
+  state.items.filter(i=>i.g===gid).forEach(it=>{
+    const row=document.querySelector(`tr.item[data-id="${it.id}"]`);
+    const dt=document.querySelector(`tr.detail[data-detail="${it.id}"]`);
+    if(row) row.classList.toggle('hidden',!open);
+    if(dt) dt.classList.toggle('hidden',!open);
+  });
+  const gh=document.querySelector(`tr.grouphead[data-ghead="${gid}"]`);
+  if(gh) gh.classList.toggle('gopen',open);
+}
+function toggleGroupCollapse(gid){
+  if(filter!=='alle') return;                 // beim Filtern sind Gruppen immer offen
+  const open = !cockpitOpenGroups.has(gid);
+  if(open) cockpitOpenGroups.add(gid); else cockpitOpenGroups.delete(gid);
+  setGroupRowsVisible(gid, open);
+  updateExpandLabel();
+}
+function toggleAllGroups(){
+  if(filter!=='alle'){ flag('Zum Auf-/Zuklappen Filter „Alle" wählen'); return; }
+  const anyClosed = state.groups.some(g=>!cockpitOpenGroups.has(g.id));
+  state.groups.forEach(g=>{ if(anyClosed) cockpitOpenGroups.add(g.id); else cockpitOpenGroups.delete(g.id); setGroupRowsVisible(g.id, anyClosed); });
+  updateExpandLabel();
+}
+function updateExpandLabel(){
+  const b=document.getElementById('expandToggle'); if(!b) return;
+  const allOpen = state.groups.length>0 && state.groups.every(g=>cockpitOpenGroups.has(g.id));
+  b.textContent = allOpen ? '⊟ Alle zu' : '⊞ Alle auf';
+}
+
+// ---------- Bearbeiten-Modus (Namen/Struktur/Vergabe standardmäßig gesperrt) ----------
 let editMode=false;
 function setEdit(on){
   editMode=on;
@@ -843,6 +1047,7 @@ function toggleEdit(){ setEdit(!editMode); }
 // ---------- Struktur ----------
 function addItem(gid){
   setEdit(true);
+  cockpitOpenGroups.add(gid);
   state.items.push({id:nid(),g:gid,n:'Neue Position',note:'',mat:0,arb:0,son:0,min:0,max:0,status:'offen',firma:'',datum:'',kontakt:'',notizen:[],zahlungen:[]});
   render(); save();
   const last=[...document.querySelectorAll('#tbody tr.item')].filter(tr=>{const x=itemById(tr.dataset.id);return x&&x.g===gid;}).pop();
@@ -911,94 +1116,158 @@ function recalc(){
   document.getElementById('progPct').textContent=Math.round(pg);
 }
 
-// ---------- Übersichtsseite ----------
+// ---------- Übersichtsseite (Akkordeon: Hauptpunkt > Unterpunkt > Notizen) ----------
 function renderSummary(){
   const v=document.getElementById('summaryView');
-  const gById={}; state.groups.forEach(g=>gById[g.id]=g);
-  const b={offen:[],angebot:[],arbeit:[],fertig:[]};
+  let totalSum=0, cFertig=0,cArbeit=0,cAngebot=0,cOffen=0;
   state.items.forEach(it=>{
+    totalSum+=(it.mat||0)+(it.arb||0)+(it.son||0);
     const s=it.status;
-    if(s==='fertig') b.fertig.push(it);
-    else if(s==='beauftragt'||s==='ausfuehrung') b.arbeit.push(it);
-    else if(s==='angebote'||s==='angebot_da') b.angebot.push(it);
-    else b.offen.push(it);
+    if(s==='fertig') cFertig++;
+    else if(s==='beauftragt'||s==='ausfuehrung') cArbeit++;
+    else if(s==='angebote'||s==='angebot_da') cAngebot++;
+    else cOffen++;
   });
-  const total=state.items.length;
 
-  // To-Dos (Notizen mit „!") quer über alle Positionen sammeln, neueste zuerst
-  const todos=[];
-  state.items.forEach(it=>{ (it.notizen||[]).forEach((nt,idx)=>{ if(isTodo(nt.text)) todos.push({it,idx,nt}); }); });
-  todos.sort((a,bb)=>{ const ta=a.nt.ts?Date.parse(a.nt.ts):0, tb=bb.nt.ts?Date.parse(bb.nt.ts):0; return tb-ta; });
+  const groupBlock=(gr)=>{
+    const items=state.items.filter(it=>it.g===gr.id);
+    let gsum=0, r=0,y=0,gg=0;
+    items.forEach(it=>{ gsum+=(it.mat||0)+(it.arb||0)+(it.son||0); const a=ampelOf(it.status); if(a==='rot')r++; else if(a==='gelb')y++; else gg++; });
+    const mini=[ r?`<span class="acc-pill r">${r}</span>`:'', y?`<span class="acc-pill y">${y}</span>`:'', gg?`<span class="acc-pill g">${gg}</span>`:'' ].join('');
+    const openG=sumOpenGroups.has(gr.id);
 
-  const todoCard=(td)=>{
+    const itemsHtml=items.map(it=>{
+      const st=STATUSES.find(x=>x.v===it.status)||STATUSES[0];
+      const sum=(it.mat||0)+(it.arb||0)+(it.son||0);
+      const openI=sumOpenItems.has(it.id);
+      const notes=(it.notizen||[]);
+      const notesHtml= notes.length ? notes.map(nt=>{
+        const todo=isTodo(nt), done=isDoneTodo(nt);
+        const badge= todo?(done?'<span class="todobadge done" style="margin-right:6px">✓</span>':'<span class="todobadge" style="margin-right:6px">⚡</span>'):'';
+        const doneInfo= (done&&nt.doneTs)?(' · erledigt '+fmtTs(nt.doneTs)):'';
+        return `<div class="acc-note${todo?' todo':''}"><span class="acc-note-ts${nt.ts?'':' muted'}">${badge}${nt.ts?fmtTs(nt.ts):'Vorlage'}${doneInfo}</span><div class="acc-note-tx">${esc(nt.text)}</div></div>`;
+      }).join('') : '<div class="acc-note-empty">Keine Notiz hinterlegt.</div>';
+      return `<div class="acc-item${openI?' open':''}" data-i="${it.id}">
+        <div class="acc-ihead" data-toggle-i="${it.id}">
+          <span class="acc-chev">▸</span>
+          <span class="stbadge a-${st.a}">${st.t}</span>
+          <span class="acc-iname">${esc(it.n)}</span>
+          ${hasOpenTodo(it)?'<span class="rowtodo">⚡</span>':''}
+          ${it.firma?`<span class="acc-ifirma">▸ ${esc(it.firma)}</span>`:''}
+          ${it.datum?`<span class="acc-idate">📅 ${fmtDate(it.datum)}</span>`:''}
+          <span class="acc-isum num">${eur(sum)}</span>
+        </div>
+        <div class="acc-ibody">
+          ${notesHtml}
+          <button class="acc-open-btn" data-goto="${it.id}">↗ Im Cockpit öffnen</button>
+        </div>
+      </div>`;
+    }).join('') || '<div class="acc-note-empty" style="padding:10px 6px">Keine Positionen in diesem Hauptpunkt.</div>';
+
+    return `<div class="acc-group${openG?' open':''}" data-g="${gr.id}" style="--gc:${gr.color}">
+      <div class="acc-ghead" data-toggle-g="${gr.id}">
+        <span class="acc-chev">▸</span>
+        <span class="acc-gtag" style="background:${gr.color}"></span>
+        <span class="acc-gname">${esc(gr.label)}</span>
+        <span class="acc-gcount">${items.length} Pos.</span>
+        <span class="acc-mini">${mini}</span>
+        <span class="acc-gsum num">${eur(gsum)}</span>
+      </div>
+      <div class="acc-gbody">${itemsHtml}</div>
+    </div>`;
+  };
+
+  v.innerHTML=`
+    <div class="sumhead">
+      <div><h2>Übersicht nach Gewerken</h2><div class="sumstand">Hauptpunkt antippen → Unterpunkte · Unterpunkt antippen → Notizen</div></div>
+      <div class="sumrecap">
+        <span><b class="num">${eur(totalSum)}</b> gesamt</span>
+        <span><b class="num">${cFertig}</b> fertig</span>
+        <span><b class="num">${cArbeit}</b> in Arbeit</span>
+        <span><b class="num">${cAngebot}</b> in Angebot</span>
+        <span><b class="num">${cOffen}</b> offen</span>
+      </div>
+    </div>
+    ${state.groups.map(groupBlock).join('')}
+    ${state.groups.length===0?'<div class="sumempty">Keine Hauptpunkte vorhanden.</div>':''}
+  `;
+
+  v.querySelectorAll('[data-toggle-g]').forEach(h=>{
+    h.addEventListener('click',()=>{ const gEl=h.closest('.acc-group'); const id=h.dataset.toggleG; gEl.classList.toggle('open'); if(gEl.classList.contains('open')) sumOpenGroups.add(id); else sumOpenGroups.delete(id); });
+  });
+  v.querySelectorAll('[data-toggle-i]').forEach(h=>{
+    h.addEventListener('click',()=>{ const iEl=h.closest('.acc-item'); const id=h.dataset.toggleI; iEl.classList.toggle('open'); if(iEl.classList.contains('open')) sumOpenItems.add(id); else sumOpenItems.delete(id); });
+  });
+  v.querySelectorAll('.acc-open-btn[data-goto]').forEach(b=>{
+    b.addEventListener('click',(e)=>{ e.stopPropagation(); gotoItem(b.dataset.goto); });
+  });
+}
+
+// ---------- To-Dos-Reiter ----------
+function renderTodos(){
+  const v=document.getElementById('todosView');
+  const gById={}; state.groups.forEach(g=>gById[g.id]=g);
+  const open=[], done=[];
+  state.items.forEach(it=>{ (it.notizen||[]).forEach((nt,idx)=>{
+    if(isOpenTodo(nt)) open.push({it,idx,nt});
+    else if(isDoneTodo(nt)) done.push({it,idx,nt});
+  }); });
+  open.sort((a,b)=>{ const ta=a.nt.ts?Date.parse(a.nt.ts):0, tb=b.nt.ts?Date.parse(b.nt.ts):0; return tb-ta; });      // zuletzt notiert zuerst
+  done.sort((a,b)=>{ const ta=a.nt.doneTs?Date.parse(a.nt.doneTs):0, tb=b.nt.doneTs?Date.parse(b.nt.doneTs):0; return tb-ta; }); // zuletzt erledigt zuerst
+
+  const openCard=(td)=>{
     const g=gById[td.it.g]||{}; const st=STATUSES.find(x=>x.v===td.it.status)||STATUSES[0];
     return `<div class="todocard" data-goto="${td.it.id}">
       <span class="todochk" data-done="${td.it.id}__${td.idx}" title="Als erledigt markieren">✓</span>
       <div class="todobody">
-        <div class="todotext">${esc(todoText(td.nt.text))}</div>
+        <div class="todotext">${esc(td.nt.text)}</div>
         <div class="todometa"><span class="gtag" style="background:${g.color||'#999'}"></span><b>${esc(td.it.n)}</b><span class="gtag-l">${esc(g.label||'')}</span><span class="stbadge a-${st.a}">${st.t}</span>${td.nt.ts?`<span class="todots">notiert ${fmtTs(td.nt.ts)}</span>`:''}</div>
       </div>
     </div>`;
   };
-  const todoSection=`<div class="sumsec todo-sec">
-      <div class="sumsec-h"><h3>⚡ Nächste Schritte / To-Dos</h3><span class="sumsec-c">${todos.length}</span><span class="sumsec-s">deine markierten Aufgaben – zuerst erledigen</span></div>
-      ${todos.length? todos.map(todoCard).join('') : '<div class="sumnote empty">Keine offenen To-Dos. Im Verlauf einer Position „⚡ + To-Do" tippen – die Aufgabe erscheint dann hier ganz oben.</div>'}
-    </div>`;
-
-  const card=(it)=>{
-    const g=gById[it.g]||{}; const st=STATUSES.find(x=>x.v===it.status)||STATUSES[0];
-    const note=(it.notizen&&it.notizen.length)?it.notizen[0]:null;
-    const more=(it.notizen&&it.notizen.length>1)?`<span class="summore">+${it.notizen.length-1} weitere Einträge</span>`:'';
-    const sum=(it.mat||0)+(it.arb||0)+(it.son||0);
-    return `<div class="sumcard" data-goto="${it.id}">
-      <div class="sumcard-h">
-        <span class="gtag" style="background:${g.color||'#999'}"></span>
-        <b>${esc(it.n)}</b>${hasTodo(it)?' <span class="rowtodo">⚡</span>':''}
-        <span class="gtag-l">${esc(g.label||'')}</span>
-        <span class="sumamt num">${eur(sum)}</span>
+  const doneCard=(td)=>{
+    const g=gById[td.it.g]||{};
+    return `<div class="todocard done" data-goto="${td.it.id}">
+      <span class="todochk done" data-reopen="${td.it.id}__${td.idx}" title="Wieder öffnen (Häkchen entfernen)">✓</span>
+      <div class="todobody">
+        <div class="todotext">${esc(td.nt.text)}</div>
+        <div class="todometa"><span class="gtag" style="background:${g.color||'#999'}"></span><b>${esc(td.it.n)}</b><span class="gtag-l">${esc(g.label||'')}</span>${td.nt.doneTs?`<span class="todo-done-date">✓ erledigt ${fmtTs(td.nt.doneTs)}</span>`:'<span class="todots">erledigt</span>'}</div>
       </div>
-      <div class="sumcard-m">
-        <span class="stbadge a-${st.a}">${st.t}</span>
-        ${it.firma?`<span class="sumfirma">▸ ${esc(it.firma)}</span>`:''}
-        ${it.datum?`<span class="sumdate">📅 ${fmtDate(it.datum)}</span>`:''}
-      </div>
-      ${note?`<div class="sumnote"><span class="sumnote-ts">${note.ts?fmtTs(note.ts):'Vorlage'}</span>${esc(note.text)}${more}</div>`:'<div class="sumnote empty">Keine Notiz hinterlegt.</div>'}
     </div>`;
   };
-  const section=(title,sub,arr,a)=> arr.length?`<div class="sumsec a-${a}">
-      <div class="sumsec-h"><h3>${title}</h3><span class="sumsec-c">${arr.length}</span><span class="sumsec-s">${sub}</span></div>
-      ${arr.map(card).join('')}
-    </div>`:'';
 
   v.innerHTML=`
     <div class="sumhead">
-      <div><h2>Was steht an, was ist erledigt</h2><div class="sumstand">Stand: ${fmtTs(new Date().toISOString())}</div></div>
+      <div><h2>To-Dos – nächste Schritte</h2><div class="sumstand">Stand: ${fmtTs(new Date().toISOString())}</div></div>
       <div class="sumrecap">
-        <span><b class="num">${todos.length}</b> To-Dos</span>
-        <span><b class="num">${b.fertig.length}</b>/${total} fertig</span>
-        <span><b class="num">${b.arbeit.length}</b> in Arbeit</span>
-        <span><b class="num">${b.angebot.length}</b> in Angebot</span>
-        <span><b class="num">${b.offen.length}</b> offen</span>
+        <span><b class="num">${open.length}</b> offen</span>
+        <span><b class="num">${done.length}</b> erledigt</span>
       </div>
     </div>
-    ${todoSection}
-    ${section('🔴 Offen','Angebote einholen / noch nichts veranlasst',b.offen,'rot')}
-    ${section('🟡 In Angebot','Angebote vergleichen / Entscheidung offen',b.angebot,'gelb')}
-    ${section('🟢 Vergeben &amp; in Arbeit','Beauftragt – läuft',b.arbeit,'gruen')}
-    ${section('✓ Abgeschlossen','Fertiggestellt',b.fertig,'done')}
-    ${total===0?'<div class="sumempty">Keine Positionen vorhanden.</div>':''}
+    <div class="sumsec todo-sec">
+      <div class="sumsec-h"><h3>⚡ Offen</h3><span class="sumsec-c">${open.length}</span><span class="sumsec-s">zuerst erledigen · Klick öffnet die Position</span></div>
+      ${open.length? open.map(openCard).join('') : '<div class="sumnote empty">Keine offenen To-Dos. Im Cockpit eine Position öffnen → „⚡ + To-Do" tippen.</div>'}
+    </div>
+    <div class="sumsec a-done">
+      <div class="sumsec-h"><h3>✓ Erledigt</h3><span class="sumsec-c">${done.length}</span><span class="sumsec-s">chronologisch · zuletzt erledigt zuerst</span></div>
+      ${done.length? done.map(doneCard).join('') : '<div class="sumnote empty">Noch nichts abgehakt.</div>'}
+    </div>
   `;
+
   v.querySelectorAll('.todochk[data-done]').forEach(el=>{
-    el.addEventListener('click',ev=>{ ev.stopPropagation(); const parts=el.dataset.done.split('__'); const it=itemById(parts[0]); const idx=+parts[1];
-      if(it&&it.notizen[idx]){ it.notizen[idx].text=todoText(it.notizen[idx].text); save(); renderSummary(); } });
+    el.addEventListener('click',ev=>{ ev.stopPropagation(); const p=el.dataset.done.split('__'); const it=itemById(p[0]); const idx=+p[1];
+      if(it&&it.notizen[idx]){ it.notizen[idx].done=true; it.notizen[idx].doneTs=new Date().toISOString(); save(); renderTodos(); } });
   });
-  v.querySelectorAll('.sumcard[data-goto], .todocard[data-goto]').forEach(c=>{
-    c.addEventListener('click',()=>gotoItem(c.dataset.goto));
+  v.querySelectorAll('.todochk[data-reopen]').forEach(el=>{
+    el.addEventListener('click',ev=>{ ev.stopPropagation(); const p=el.dataset.reopen.split('__'); const it=itemById(p[0]); const idx=+p[1];
+      if(it&&it.notizen[idx]){ it.notizen[idx].done=false; delete it.notizen[idx].doneTs; save(); renderTodos(); } });
   });
+  v.querySelectorAll('.todocard[data-goto]').forEach(c=>{ c.addEventListener('click',()=>gotoItem(c.dataset.goto)); });
 }
 
 function gotoItem(id){
   filter='alle';
+  const gi=itemById(id); if(gi) cockpitOpenGroups.add(gi.g);
   document.querySelectorAll('.fchip').forEach(x=>x.classList.toggle('on',x.dataset.f==='alle'));
   setView('cockpit'); render();
   const dr=document.querySelector(`tr.detail[data-detail="${id}"]`);
@@ -1054,13 +1323,20 @@ function renderPayments(){
 }
 
 // ---------- View-Umschaltung ----------
+function refreshActiveSecondary(){
+  if(currentView==='summary') renderSummary();
+  else if(currentView==='todos') renderTodos();
+  else if(currentView==='payments') renderPayments();
+}
 function setView(v){
   currentView=v;
   document.getElementById('cockpitView').classList.toggle('hidden',v!=='cockpit');
   document.getElementById('summaryView').classList.toggle('hidden',v!=='summary');
+  document.getElementById('todosView').classList.toggle('hidden',v!=='todos');
   document.getElementById('paymentsView').classList.toggle('hidden',v!=='payments');
   document.querySelectorAll('.vtab').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
   if(v==='summary') renderSummary();
+  if(v==='todos') renderTodos();
   if(v==='payments') renderPayments();
 }
 document.querySelectorAll('.vtab').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.v)));
@@ -1073,9 +1349,33 @@ document.getElementById('filters').addEventListener('click',e=>{
   render();
 });
 
+// ---------- Theme (Hell/Dunkel) ----------
+function applyTheme(t){
+  const dark = t==='dark';
+  document.body.classList.toggle('dark',dark);
+  const b=document.getElementById('themeToggle');
+  if(b) b.textContent = dark?'☀️ Hell':'🌙 Dunkel';
+  const mt=document.querySelector('meta[name="theme-color"]');
+  if(mt) mt.setAttribute('content', dark?'#14161a':'#1a1d21');
+}
+function toggleTheme(){
+  const now = document.body.classList.contains('dark')?'light':'dark';
+  try{ localStorage.setItem(THEME_KEY, now); }catch(e){}
+  applyTheme(now);
+}
+function initTheme(){
+  let t='light';
+  try{
+    const stored=localStorage.getItem(THEME_KEY);
+    if(stored){ t=stored; }
+    else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){ t='dark'; }
+  }catch(e){}
+  applyTheme(t);
+}
+
 // ---------- JSON Export / Import ----------
 function exportJSON(){
-  const data=JSON.stringify({app:'Bau-Cockpit',version:3,exported:new Date().toISOString(),uid,groups:state.groups,items:state.items},null,2);
+  const data=JSON.stringify({app:'Bau-Cockpit',version:4,exported:new Date().toISOString(),uid,groups:state.groups,items:state.items},null,2);
   const blob=new Blob([data],{type:'application/json'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
@@ -1092,23 +1392,33 @@ function importJSON(file){
     state={groups:d.groups,items:d.items}; normalize();
     if(d.uid) uid=Math.max(uid,d.uid);
     filter='alle'; document.querySelectorAll('.fchip').forEach(x=>x.classList.toggle('on',x.dataset.f==='alle'));
-    render(); if(currentView==='summary') renderSummary(); save();
+    render(); refreshActiveSecondary(); save();
     flag('JSON geladen');
   };
   r.readAsText(file);
 }
 
-// ---------- Persistenz (Auto: localStorage + Cloud) ----------
-let saveTimer=null;
+// ---------- Persistenz (lokal schnell, Cloud gebündelt) ----------
+let lsTimer=null, cloudTimer=null;
+function currentPayload(){ return JSON.stringify({groups:state.groups,items:state.items,uid}); }
 function save(){
-  clearTimeout(saveTimer);
-  saveTimer=setTimeout(()=>{
-    const payload=JSON.stringify({groups:state.groups,items:state.items,uid});
-    try{ localStorage.setItem(STORE_KEY,payload); }catch(e){}
-    try{ if(window.__cloud&&window.__cloud.save) window.__cloud.save(payload); }catch(e){}
-    flag('Gespeichert');
-  },400);
+  // localStorage: schnell (verhindert Datenverlust)
+  clearTimeout(lsTimer);
+  lsTimer=setTimeout(()=>{ try{ localStorage.setItem(STORE_KEY,currentPayload()); }catch(e){} flag('Gespeichert'); },300);
+  // Cloud: gebündelt alle paar Sekunden, damit Eingabe/Tastatur nicht unterbrochen wird
+  clearTimeout(cloudTimer);
+  cloudTimer=setTimeout(pushCloudNow,2500);
 }
+function pushCloudNow(){
+  clearTimeout(cloudTimer);
+  const p=currentPayload();
+  window.__lastPushedData=p;
+  try{ if(window.__cloud&&window.__cloud.save) window.__cloud.save(p); }catch(e){}
+}
+// Beim Verlassen/Ausblenden noch offene Cloud-Änderung sofort schreiben
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden') pushCloudNow(); });
+window.addEventListener('beforeunload', pushCloudNow);
+
 function flag(t){const el=document.getElementById('savedNote');el.textContent=t;setTimeout(()=>{if(el.textContent===t)el.textContent='';},1500);}
 async function load(){
   try{
@@ -1120,18 +1430,38 @@ async function load(){
 }
 
 // ---------- Cloud-Bridge (wird vom Firebase-Modul genutzt) ----------
-window.getStatePayload=()=>JSON.stringify({groups:state.groups,items:state.items,uid});
+window.getStatePayload=()=>currentPayload();
+
+function dataFingerprint(payloadStr){ try{ const d=JSON.parse(payloadStr); return JSON.stringify({g:d.groups,i:d.items}); }catch(e){ return payloadStr; } }
+function isEditingNow(){
+  const ae=document.activeElement;
+  if(ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName) && ae.closest && ae.closest('.wrap')) return true;
+  if(document.querySelector('tr.detail.open')) return true;
+  return false;
+}
+let pendingRemote=null;
 window.applyRemoteState=function(payload){
+  const incoming = typeof payload==='string'?payload:JSON.stringify(payload);
+  // eigenes Echo aus der Cloud ignorieren (kein Neuaufbau -> Reiter/Tastatur bleiben offen)
+  if(window.__lastPushedData && incoming===window.__lastPushedData) return;
+  // identischer Datenstand -> nichts zu tun
+  if(dataFingerprint(incoming)===dataFingerprint(currentPayload())) return;
+  // während aktiver Eingabe nicht neu aufbauen, sondern zurückstellen
+  if(isEditingNow()){ pendingRemote=incoming; return; }
   try{
-    const d=typeof payload==='string'?JSON.parse(payload):payload;
+    const d=JSON.parse(incoming);
     if(d&&Array.isArray(d.groups)&&Array.isArray(d.items)){
       state={groups:d.groups,items:d.items}; if(d.uid)uid=Math.max(uid,d.uid);
       normalize();
-      try{ localStorage.setItem(STORE_KEY,JSON.stringify({groups:state.groups,items:state.items,uid})); }catch(e){}
-      render(); if(currentView==='summary') renderSummary();
+      try{ localStorage.setItem(STORE_KEY,currentPayload()); }catch(e){}
+      render(); refreshActiveSecondary();
     }
   }catch(e){}
 };
+function flushPendingRemote(){ if(pendingRemote && !isEditingNow()){ const p=pendingRemote; pendingRemote=null; window.applyRemoteState(p); } }
+document.addEventListener('focusout',()=>{ setTimeout(flushPendingRemote,400); });
+
+// ---------- Cloud-Panel ----------
 function toggleCloud(){ const p=document.getElementById('cloudPanel'); if(!p)return; p.classList.toggle('hidden'); if(!p.classList.contains('hidden')) refreshCloudPanel(); }
 function refreshCloudPanel(){
   const k=(window.__cloud&&window.__cloud.getKey&&window.__cloud.getKey())||'(wird beim ersten Cloud-Login automatisch erzeugt)';
@@ -1152,10 +1482,13 @@ async function resetAll(){
   if(!confirm('Alle Eingaben (inkl. eigener Punkte, Status & Notizen) auf die Standard-Vorlage zurücksetzen?')) return;
   try{ localStorage.removeItem(STORE_KEY); }catch(e){}
   uid=1000; state=defaults(); filter='alle';
+  sumOpenGroups.clear(); sumOpenItems.clear(); cockpitOpenGroups.clear();
   document.querySelectorAll('.fchip').forEach(x=>x.classList.toggle('on',x.dataset.f==='alle'));
   setView('cockpit'); render(); save();
 }
 
+// ---------- Init ----------
+initTheme();
 (async function init(){ await load(); render(); })();
 </script>
 
@@ -1206,7 +1539,7 @@ async function subscribe(){
     else { await writeDoc(payload()); }   // erstes Mal: lokalen Stand in die Cloud schreiben
   }catch(e){ setStatus('error'); console.error('Cloud-Lesefehler:',e); }
   unsub=onSnapshot(ref,(snap)=>{
-    if(snap.metadata.hasPendingWrites) return;            // eigener Schreibvorgang -> ignorieren
+    if(snap.metadata.hasPendingWrites) return;            // eigener (noch nicht bestätigter) Schreibvorgang -> ignorieren
     if(snap.exists() && snap.data() && snap.data().data){ window.applyRemoteState(snap.data().data); setStatus('synced'); }
   },(err)=>{ setStatus('error'); console.error('Cloud-Sync-Fehler:',err); });
   setStatus('synced');
