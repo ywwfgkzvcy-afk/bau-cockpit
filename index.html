@@ -2,7 +2,7 @@
 <html lang="de-AT">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
 <title>Bau-Cockpit · Neubau EFH (Cloud)</title>
 <!-- Homescreen-Icon & Web-App (iPhone) -->
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -88,7 +88,7 @@
     transition:background-color .2s ease,color .2s ease;}
   .num{font-family:"SF Mono",ui-monospace,"JetBrains Mono","Roboto Mono",Consolas,monospace;
     font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
-  .wrap{max-width:1240px;margin:0 auto;padding:26px 20px 90px;}
+  .wrap{max-width:1240px;margin:0 auto;padding:max(26px, calc(env(safe-area-inset-top) + 10px)) 20px 90px;}
   .hidden{display:none !important;}
 
   /* Kopf */
@@ -107,6 +107,9 @@
   .vtab{border:1px solid var(--line-strong);background:var(--card);color:var(--ink-soft);
     font:inherit;font-size:13px;font-weight:600;padding:8px 18px;border-radius:8px;cursor:pointer;transition:.12s;}
   .vtab.on{background:var(--ink);color:var(--ink-contrast);border-color:var(--ink);}
+  .vtab{position:relative;display:inline-flex;align-items:center;}
+  .vtab .vi{margin-right:7px;}
+  .vbadge{display:inline-block;margin-left:7px;min-width:18px;height:18px;line-height:18px;padding:0 5px;border-radius:9px;background:var(--todo-ink);color:var(--ink-contrast);font-size:10.5px;font-weight:800;text-align:center;}
 
   /* Dashboard */
   .dash{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:12px;margin:14px 0 8px;}
@@ -208,7 +211,7 @@
 
   .loghead{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;margin-bottom:7px;}
   .logadd{display:flex;gap:8px;align-items:flex-start;margin-bottom:10px;}
-  .logadd-in{flex:1;font:inherit;font-size:12.5px;border:1px solid var(--line);border-radius:7px;padding:7px 9px;background:var(--input-bg);color:var(--ink);min-height:38px;line-height:1.4;resize:vertical;}
+  .logadd-in{flex:1;font:inherit;font-size:12.5px;border:1px solid var(--line);border-radius:7px;padding:7px 9px;background:var(--input-bg);color:var(--ink);min-height:38px;line-height:1.4;resize:none;overflow:hidden;}
   .logadd-in:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px var(--focus-ring);}
   .logadd-btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);font:inherit;font-size:12.5px;font-weight:600;padding:8px 13px;border-radius:7px;cursor:pointer;flex:none;}
   .logadd-btn:hover{filter:brightness(.92);}
@@ -220,25 +223,25 @@
   .logts.muted{color:var(--grau);font-weight:600;}
   .logdel{margin-left:auto;border:none;background:transparent;color:var(--grau);font-size:15px;line-height:1;cursor:pointer;padding:0 4px;border-radius:4px;}
   .logdel:hover{color:#fff;background:var(--rot);}
-  .logtext{width:100%;font:inherit;font-size:12.5px;color:var(--ink);border:1px solid transparent;border-radius:6px;padding:4px 6px;background:transparent;line-height:1.4;resize:vertical;min-height:30px;}
+  .logtext{width:100%;font:inherit;font-size:12.5px;color:var(--ink);border:1px solid transparent;border-radius:6px;padding:4px 6px;background:transparent;line-height:1.4;resize:none;overflow:hidden;min-height:30px;}
   .logtext:hover{border-color:var(--line);background:var(--input-bg);}
   .logtext:focus{outline:none;border-color:var(--accent);background:var(--input-bg);}
 
   .dgrid2{display:grid;grid-template-columns:180px 1fr;gap:12px 16px;align-items:start;margin-bottom:11px;}
   .field label{display:block;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;margin-bottom:4px;}
-  .field input[type=date],.field textarea{width:100%;font:inherit;font-size:12.5px;border:1px solid var(--line);border-radius:7px;padding:7px 9px;background:var(--input-bg);color:var(--ink);resize:vertical;line-height:1.4;}
+  .field input[type=date],.field textarea{width:100%;font:inherit;font-size:12.5px;border:1px solid var(--line);border-radius:7px;padding:7px 9px;background:var(--input-bg);color:var(--ink);resize:none;overflow:hidden;line-height:1.4;}
   .field input:focus,.field textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px var(--focus-ring);}
   .kontakt-ta{min-height:38px;}
   .annahme{margin-bottom:13px;}
   .annahme label{display:block;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--grau);font-weight:700;margin-bottom:4px;}
-  .annahme textarea{width:100%;font:inherit;font-size:12px;color:var(--ink-soft);border:1px dashed var(--line-strong);border-radius:7px;padding:7px 9px;background:transparent;min-height:38px;line-height:1.4;resize:vertical;}
+  .annahme textarea{width:100%;font:inherit;font-size:12px;color:var(--ink-soft);border:1px dashed var(--line-strong);border-radius:7px;padding:7px 9px;background:transparent;min-height:38px;line-height:1.4;resize:none;overflow:hidden;}
   .detailfoot{display:flex;justify-content:flex-end;}
   .delbtn{border:1px solid var(--st-rot-bd);background:var(--input-bg);color:var(--st-rot-ink);font:inherit;font-size:12px;font-weight:600;padding:6px 13px;border-radius:7px;cursor:pointer;}
   .delbtn:hover{background:var(--rot);color:#fff;border-color:var(--rot);}
 
   /* Hauptpunkt hinzufügen */
   .addgroup{display:flex;gap:10px;align-items:center;margin-top:16px;background:var(--card);border:1px dashed var(--line-strong);border-radius:11px;padding:13px 16px;}
-  .addgroup input{flex:1;font:inherit;font-size:13px;border:1px solid var(--line);border-radius:7px;padding:8px 11px;background:var(--input-bg);color:var(--ink);}
+  .addgroup input{flex:1;min-width:0;font:inherit;font-size:13px;border:1px solid var(--line);border-radius:7px;padding:8px 11px;background:var(--input-bg);color:var(--ink);}
   .addgroup input:focus{outline:none;border-color:var(--accent);}
   .addgroup button{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);font:inherit;font-size:13px;font-weight:600;padding:8px 16px;border-radius:7px;cursor:pointer;}
   .addgroup button:hover{filter:brightness(.92);}
@@ -423,17 +426,131 @@
   .zrow-ov:last-child{border-bottom:none;}
   .zrow-ov:hover{background:var(--hover);}
 
+
+  /* ===================== v5: Kopf-Symbole ===================== */
+  header.top{position:relative;}
+  .top .eyebrow{padding-right:210px;}
+  .totalbox{padding-top:40px;}
+  .hicons{position:absolute;top:-4px;right:0;display:flex;align-items:center;gap:6px;}
+  .hicons .saved{white-space:nowrap;margin-right:4px;}
+  .hicon{border:1px solid var(--line-strong);background:var(--card);color:var(--ink);font:inherit;font-size:15px;line-height:1;
+    height:34px;min-width:34px;padding:0 9px;border-radius:9px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;}
+  .hicon:hover{border-color:var(--ink);}
+  .hicon .hl{font-size:12px;font-weight:700;}
+  .hicon.editactive{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);}
+  .cdot{width:10px;height:10px;border-radius:50%;background:var(--grau);display:inline-block;}
+  .cdot[data-s="synced"]{background:var(--gruen);}
+  .cdot[data-s="connecting"]{background:var(--gelb);}
+  .cdot[data-s="error"]{background:var(--rot);}
+
+  /* ===================== v5: Einstellungen (Zahnrad) ===================== */
+  body.sheet-open{overflow:hidden;}
+  .sheet{position:fixed;inset:0;background:var(--overlay);display:flex;align-items:center;justify-content:center;z-index:60;padding:18px;}
+  .sheetbox{background:var(--card);border:1px solid var(--line);border-radius:16px;max-width:520px;width:100%;max-height:88vh;overflow:auto;
+    -webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:0 20px 18px;box-shadow:0 20px 60px rgba(0,0,0,.35);}
+  .sheethead{display:flex;align-items:center;font-weight:700;font-size:17px;position:sticky;top:0;background:var(--card);padding:16px 0 10px;z-index:1;}
+  .setsec{border-top:1px solid var(--line);padding:14px 0 8px;}
+  .setsec h4{margin:0 0 10px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);}
+  .setsec.danger h4{color:var(--rot);}
+  .seg{display:flex;background:var(--chip-bg);border-radius:10px;padding:3px;gap:3px;}
+  .seg button{flex:1;border:none;background:transparent;font:inherit;font-size:13px;font-weight:600;color:var(--ink-soft);padding:8px 6px;border-radius:8px;cursor:pointer;}
+  .seg button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.14);}
+  .setbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .setbtns .act{width:100%;text-align:left;}
+  .dangerbtn{width:100%;border:1px solid var(--st-rot-bd);background:var(--input-bg);color:var(--st-rot-ink);font:inherit;font-size:13px;font-weight:700;padding:10px 14px;border-radius:8px;cursor:pointer;}
+  .dangerbtn:hover{background:var(--rot);color:#fff;border-color:var(--rot);}
+  .sethint{font-size:11.5px;color:var(--ink-soft);margin:8px 0 0;line-height:1.45;}
+  .setfoot{font-size:11px;color:var(--grau);text-align:center;margin-top:12px;}
+
+  /* ===================== v5: To-Dos (überall gleiche Zeile) ===================== */
+  .tlist{display:flex;flex-direction:column;}
+  .trow{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--line);}
+  .tlist>.trow:first-child{border-top:none;}
+  .tchk{flex:none;width:24px;height:24px;margin-top:3px;border-radius:50%;border:2px solid var(--todo-line);background:var(--input-bg);
+    color:transparent;font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;}
+  .tchk:hover{border-color:var(--gruen);color:var(--gruen);}
+  .trow.done .tchk{background:var(--gruen);border-color:var(--gruen);color:#fff;}
+  .tbody{flex:1;min-width:0;}
+  .ttext{width:100%;display:block;font:inherit;font-size:14px;font-weight:600;color:var(--ink);line-height:1.4;border:1px solid transparent;
+    border-radius:6px;padding:3px 6px;margin-left:-6px;background:transparent;min-height:28px;resize:none;overflow:hidden;}
+  .ttext:hover{border-color:var(--line);}
+  .ttext:focus{outline:none;border-color:var(--accent);background:var(--input-bg);}
+  .trow.done .ttext{text-decoration:line-through;color:var(--ink-soft);font-weight:500;}
+  .tmeta{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:4px;}
+  .tmeta .push{margin-left:auto;display:flex;gap:2px;}
+  .tchip{position:relative;display:inline-flex;align-items:center;gap:5px;max-width:100%;font-size:11.5px;font-weight:600;color:var(--ink-soft);
+    background:var(--chip-bg);border:1px solid transparent;border-radius:7px;padding:3px 8px;cursor:pointer;overflow:hidden;}
+  .tchip:hover{border-color:var(--line-strong);}
+  .tchip>.tl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:260px;}
+  .tchip select,.tchip input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:16px;border:none;margin:0;padding:0;
+    -webkit-appearance:none;appearance:none;background:transparent;color:transparent;}
+  .tchip .gdot{width:8px;height:8px;border-radius:50%;flex:none;}
+  .tchip.inbox{background:var(--badge-gelb-bg);color:var(--badge-gelb-ink);}
+  .tchip.due.set{color:var(--ink);}
+  .tchip.due.today{background:var(--todo-badge-bg);color:var(--todo-ink);}
+  .tchip.due.over{background:var(--badge-rot-bg);color:var(--badge-rot-ink);}
+  .tsmall{border:none;background:transparent;color:var(--grau);font:inherit;font-size:14px;line-height:1;cursor:pointer;padding:4px 6px;border-radius:5px;}
+  .tsmall:hover{color:var(--ink);background:var(--chip-bg);}
+  .tsmall.del:hover{color:#fff;background:var(--rot);}
+  .tsmall.more{font-size:11.5px;font-weight:600;padding:6px 2px;align-self:flex-start;}
+  .tts{font-family:"SF Mono",ui-monospace,Consolas,monospace;font-size:10.5px;color:var(--grau);}
+  .tts.ok{color:var(--gruen);font-weight:700;}
+  .tempty{font-size:12px;color:var(--grau);font-style:italic;padding:4px 0;}
+
+  /* Schnellerfassung */
+  .tcap{background:var(--card);border:1px solid var(--todo-line);border-radius:11px;padding:10px 12px;margin:0 0 14px;}
+  .tcap-in{width:100%;display:block;font:inherit;font-size:15px;color:var(--ink);border:none;background:transparent;padding:4px 2px;
+    line-height:1.4;min-height:30px;resize:none;overflow:hidden;}
+  .tcap-in:focus{outline:none;}
+  .tcap-in::placeholder{color:var(--placeholder);}
+  .tcap-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:6px;}
+  .tcap-btn{margin-left:auto;border:1px solid var(--todo-ink);background:var(--todo-ink);color:var(--ink-contrast);font:inherit;font-size:12.5px;
+    font-weight:700;padding:7px 13px;border-radius:8px;cursor:pointer;}
+  .tcap-btn:hover{filter:brightness(.93);}
+
+  /* To-Dos-Reiter */
+  .tseg{max-width:340px;margin:0 0 14px;}
+  .tfilters{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:2px 0 10px;scrollbar-width:none;}
+  .tfilters::-webkit-scrollbar{display:none;}
+  .tfilters .fchip{flex:none;white-space:nowrap;}
+  .tfilters .cnt{font-size:11px;color:inherit;opacity:.65;}
+  .sumsec.inbox{border-left-color:var(--gelb) !important;}
+  .tdone-h{cursor:pointer;user-select:none;}
+
+  /* To-Dos im Unterpunkt (Detail) */
+  .titems{margin:0 0 12px;}
+  .titems:empty{display:none;}
+  .titems .trow{background:var(--todo-bg);border-top:none;border-left:2px solid var(--todo-accent);padding:7px 10px;margin-bottom:6px;border-radius:0 7px 7px 0;}
+  .titems .trow.done{background:transparent;border-left-color:var(--grau);}
+
+  /* To-Dos im Hauptpunkt (Cockpit) */
+  .ghbtn.gtodo.has{background:var(--todo-badge-bg);color:var(--todo-ink);border-color:var(--todo-line);}
+  .ghbtn.gtodo.on{background:var(--todo-ink);color:var(--ink-contrast);border-color:var(--todo-ink);}
+  tr.gtodorow td{background:var(--todo-bg2);border-bottom:1px solid var(--line-strong);padding:10px 16px 12px 40px;}
+  tr.gtodorow .tcap{margin-bottom:6px;}
+
+  /* Übersicht: allgemeine To-Dos eines Hauptpunkts */
+  .acc-gtodos{padding:8px 6px 4px;border-bottom:1px solid var(--line);margin-bottom:2px;}
+  .acc-gtodos-h{font-size:11px;font-weight:700;color:var(--ink-soft);margin-bottom:6px;}
+
   /* ====== MOBILE: Karten-Layout (iPhone) ====== */
   @media (max-width:720px){
-    .wrap{padding:18px 12px 80px;}
+    .wrap{padding:max(18px, calc(env(safe-area-inset-top) + 8px)) 12px calc(96px + env(safe-area-inset-bottom));}
     .top{align-items:flex-start;}
     .top h1{font-size:21px;}
     .top .sub{font-size:12px;}
     .totalbox{text-align:left;}
     .totalbox .big{font-size:27px;}
 
-    .viewtabs{gap:4px;}
-    .viewtabs .vtab{flex:1;text-align:center;padding:9px 3px;font-size:11px;}
+    /* Tab-Leiste unten wie bei iPhone-Apps */
+    .viewtabs{position:fixed;left:0;right:0;bottom:0;z-index:40;margin:0;gap:2px;background:var(--card);
+      border-top:1px solid var(--line-strong);padding:6px 8px calc(6px + env(safe-area-inset-bottom));}
+    .viewtabs .vtab{flex:1;flex-direction:column;justify-content:center;gap:3px;border:none;background:transparent;
+      padding:6px 2px;font-size:10.5px;color:var(--ink-soft);border-radius:10px;}
+    .viewtabs .vtab .vi{font-size:21px;line-height:1;margin:0;}
+    .viewtabs .vtab.on{background:var(--chip-bg);color:var(--ink);}
+    .viewtabs .vbadge{position:absolute;top:2px;left:calc(50% + 6px);margin:0;}
+    body.kb .viewtabs{display:none;}
     .toolbar{gap:8px;}
     button.act{padding:8px 11px;font-size:12.5px;}
 
@@ -506,6 +623,24 @@
     .sumrecap{flex-wrap:wrap;gap:10px;}
   }
 
+  @media (max-width:720px){
+    .top .eyebrow{padding-right:132px;}
+    .totalbox{padding-top:0;}
+    .hicon{height:38px;min-width:38px;}
+    .hicon .hl{display:none;}
+    .hicons .saved{position:absolute;top:46px;right:2px;margin:0;}
+    .sheet{align-items:flex-end;padding:0;}
+    .sheetbox{border-radius:18px 18px 0 0;max-height:90vh;padding:0 16px calc(18px + env(safe-area-inset-bottom));border-bottom:none;}
+    .setbtns{grid-template-columns:1fr;}
+    .tchip>.tl{max-width:200px;}
+    .addgroup{flex-wrap:wrap;padding:12px;}
+    .addgroup .lbl{flex:1 1 100%;}
+    .addgroup input{flex:1 1 60%;}
+    tr.gtodorow{margin:-2px 0 10px;border-radius:9px;overflow:hidden;}
+    tr.gtodorow td{padding:10px 12px;border-left-width:4px !important;}
+    .ttext{font-size:15px;}
+  }
+
   @media print{
     @page{size:A4 landscape;margin:10mm;}
     body,body.dark{
@@ -516,7 +651,7 @@
       --accent:#1f6f7a;--gruen:#3a8f5b;--gelb:#dca02e;--rot:#cf5a5a;--grau:#a39e92;
       background:#fff;color:#1a1d21;
     }
-    .viewtabs,.toolbar,.addgroup,.saved,.expbtn,.ghbtn,.disclaimer,.dcard .dsub,.logadd,.logdel,.logdone,.logreopen,.todochk,.cloudpanel,.zahladd,.zdel,.acc-open-btn{display:none !important;}
+    .viewtabs,.hicons,.sheet,.tcap,.tfilters,.seg,.tsmall,.tchk,.gtodo,tr.gtodorow,.tchip select,.tchip input,.toolbar,.addgroup,.saved,.expbtn,.ghbtn,.disclaimer,.dcard .dsub,.logadd,.logdel,.logdone,.logreopen,.todochk,.cloudpanel,.zahladd,.zdel,.acc-open-btn{display:none !important;}
     .wrap{max-width:none;padding:0;}
     .tablecard{border:none;border-radius:0;}
     input,select,textarea{border:none !important;background:transparent !important;padding:1px !important;font-size:9.5px !important;-webkit-appearance:none;box-shadow:none !important;}
@@ -539,6 +674,12 @@
       <h1>Kosten &amp; Fortschritt</h1>
       <div class="sub">Niederösterreich · ca. 210&nbsp;m² Wohnfläche + 60&nbsp;m² Garage · Sole-WP, BKA, KWL, Loxone · Stand 2026. Zeile anklicken zum Aufklappen · Notizen mit Zeitstempel · JSON-Sicherung.</div>
     </div>
+    <div class="hicons">
+      <span class="saved" id="savedNote"></span>
+      <button class="hicon" id="cloudBtn" onclick="openSettings('sync')" title="Cloud-Sync"><span class="cdot" id="cloudDot" data-s="local"></span></button>
+      <button class="hicon" id="editToggle" onclick="toggleEdit()" title="Gesperrt – tippen zum Bearbeiten">🔒</button>
+      <button class="hicon" onclick="openSettings()" title="Einstellungen">⚙️</button>
+    </div>
     <div class="totalbox">
       <div class="lbl">Summe (Ansatz)</div>
       <div class="big num" id="grandTotal">–</div>
@@ -546,13 +687,12 @@
     </div>
   </header>
 
-  <div class="viewtabs">
-    <button class="vtab on" data-v="cockpit">📋 Cockpit</button>
-    <button class="vtab" data-v="summary">✓ Übersicht</button>
-    <button class="vtab" data-v="notes">📝 Notizen</button>
-    <button class="vtab" data-v="todos">⚡ To-Dos</button>
-    <button class="vtab" data-v="payments">💶 Zahlungen</button>
-  </div>
+  <nav class="viewtabs">
+    <button class="vtab on" data-v="cockpit"><span class="vi">📋</span><span>Cockpit</span></button>
+    <button class="vtab" data-v="summary"><span class="vi">🗂️</span><span>Übersicht</span></button>
+    <button class="vtab" data-v="todos"><span class="vi">⚡</span><span>To-Dos</span><span class="vbadge hidden" id="todoBadge"></span></button>
+    <button class="vtab" data-v="payments"><span class="vi">💶</span><span>Zahlungen</span></button>
+  </nav>
 
   <!-- ===== COCKPIT-ANSICHT ===== -->
   <div id="cockpitView">
@@ -592,17 +732,7 @@
         <button class="fchip" data-f="gruen"><span class="adot" style="background:var(--gruen)"></span>Gesichert</button>
       </div>
       <div class="btns">
-        <span class="saved" id="savedNote"></span>
-        <span class="cloudstat" id="cloudStatus">nur lokal</span>
         <button class="act" id="expandToggle" onclick="toggleAllGroups()">⊞ Alle auf</button>
-        <button class="act" id="themeToggle" onclick="toggleTheme()">🌙 Dunkel</button>
-        <button class="act" id="editToggle" onclick="toggleEdit()">🔒 Gesperrt</button>
-        <button class="act" onclick="toggleCloud()">☁️ Cloud-Sync</button>
-        <button class="act" onclick="exportJSON()">⭳ Sichern (JSON)</button>
-        <button class="act" onclick="document.getElementById('importFile').click()">⭱ Laden (JSON)</button>
-        <input type="file" id="importFile" accept="application/json,.json" class="hidden" onchange="if(this.files[0])importJSON(this.files[0]);this.value='';">
-        <button class="act" onclick="resetAll()">Zurücksetzen</button>
-        <button class="act" onclick="window.print()">Drucken / PDF</button>
       </div>
     </div>
 
@@ -638,7 +768,7 @@
     </div>
 
     <p class="disclaimer">
-      Richtwerte für die Planungsphase (NÖ, 2026) – keine Angebote. Klick auf eine Zeile klappt Details auf; Klick auf den farbigen Balken eines Hauptpunkts wechselt dessen Farbe (nur im Bearbeiten-Modus). Eingaben werden automatisch gespeichert – zur Sicherheit zusätzlich „Sichern (JSON)".
+      Richtwerte für die Planungsphase (NÖ, 2026) – keine Angebote. Klick auf eine Zeile klappt Details auf; Klick auf den farbigen Balken eines Hauptpunkts wechselt dessen Farbe (nur im Bearbeiten-Modus). Eingaben werden automatisch gespeichert – zur Sicherheit zusätzlich ⚙️ Einstellungen → „Sichern (JSON)". ⚡ im Hauptpunkt öffnet dessen To-Dos.
     </p>
 
   </div>
@@ -646,25 +776,53 @@
   <!-- ===== ÜBERSICHTS-ANSICHT ===== -->
   <div id="summaryView" class="hidden"></div>
 
-  <!-- ===== NOTIZEN-ANSICHT ===== -->
-  <div id="notesView" class="hidden"></div>
-
   <!-- ===== TO-DOS-ANSICHT ===== -->
   <div id="todosView" class="hidden"></div>
 
   <!-- ===== ZAHLUNGEN-ANSICHT ===== -->
   <div id="paymentsView" class="hidden"></div>
 
-  <!-- ===== CLOUD-SYNC-PANEL ===== -->
-  <div id="cloudPanel" class="cloudpanel hidden">
-    <div class="cloudbox">
-      <div class="cloudhead">☁️ Cloud-Synchronisation <button class="cloudx" onclick="toggleCloud()">×</button></div>
-      <div class="cloudstatusrow">Status: <span class="cloudstat" id="cloudStatus2">–</span></div>
-      <label class="cloudlbl">Dein Projekt-Schlüssel (auf allen Geräten identisch)</label>
-      <div class="cloudkeyrow"><input id="cloudKey" readonly value=""><button class="act" onclick="copyCloudKey()">Kopieren</button></div>
-      <label class="cloudlbl">Anderes Gerät verbinden – Schlüssel hier einfügen</label>
-      <div class="cloudkeyrow"><input id="cloudJoin" placeholder="Schlüssel von Gerät 1 einfügen…"><button class="act" onclick="cloudConnect()">Verbinden</button></div>
-      <p class="cloudhelp"><b>So geht's:</b> Auf Gerät 1 den Schlüssel kopieren → auf Gerät 2 hier einfügen &amp; „Verbinden". Beide zeigen dann dieselben Daten. Der Cloud-Abgleich läuft alle paar Sekunden gebündelt, damit die Eingabe am Handy/Mac nicht unterbrochen wird.</p>
+  <!-- ===== EINSTELLUNGEN (Zahnrad) ===== -->
+  <div id="settingsSheet" class="sheet hidden" onclick="if(event.target===this)closeSettings()">
+    <div class="sheetbox" role="dialog" aria-label="Einstellungen">
+      <div class="sheethead">⚙️ Einstellungen <button class="cloudx" onclick="closeSettings()" aria-label="Schließen">×</button></div>
+
+      <div class="setsec">
+        <h4>Darstellung</h4>
+        <div class="seg" id="themeSeg">
+          <button data-theme="light" onclick="setTheme('light')">☀️ Hell</button>
+          <button data-theme="dark" onclick="setTheme('dark')">🌙 Dunkel</button>
+          <button data-theme="auto" onclick="setTheme('auto')">📱 Wie iPhone</button>
+        </div>
+      </div>
+
+      <div class="setsec" id="setSync">
+        <h4>Cloud-Sync</h4>
+        <div class="cloudstatusrow">Status: <span class="cloudstat" id="cloudStatus2">–</span></div>
+        <label class="cloudlbl">Dein Projekt-Schlüssel (auf allen Geräten identisch)</label>
+        <div class="cloudkeyrow"><input id="cloudKey" readonly value=""><button class="act" onclick="copyCloudKey()">Kopieren</button></div>
+        <label class="cloudlbl">Anderes Gerät verbinden – Schlüssel hier einfügen</label>
+        <div class="cloudkeyrow"><input id="cloudJoin" placeholder="Schlüssel von Gerät 1 einfügen…"><button class="act" onclick="cloudConnect()">Verbinden</button></div>
+        <p class="cloudhelp"><b>So geht's:</b> Auf Gerät 1 den Schlüssel kopieren → auf Gerät 2 hier einfügen &amp; „Verbinden". Beide zeigen dann dieselben Daten. Der Abgleich läuft alle paar Sekunden gebündelt, damit die Eingabe nicht unterbrochen wird. Der Punkt oben im Kopf zeigt den Status: grün = synchronisiert, gelb = verbindet, rot = Fehler, grau = nur lokal.</p>
+      </div>
+
+      <div class="setsec">
+        <h4>Daten</h4>
+        <div class="setbtns">
+          <button class="act" onclick="exportJSON()">⭳ Sichern (JSON)</button>
+          <button class="act" onclick="document.getElementById('importFile').click()">⭱ Laden (JSON)</button>
+          <button class="act" onclick="printNow()">🖨 Drucken / PDF</button>
+        </div>
+        <input type="file" id="importFile" accept="application/json,.json" class="hidden" onchange="if(this.files[0])importJSON(this.files[0]);this.value='';">
+        <p class="sethint">Eingaben werden automatisch gespeichert. Eine JSON-Sicherung ab und zu schützt zusätzlich. Drucken nimmt den gerade offenen Reiter.</p>
+      </div>
+
+      <div class="setsec danger">
+        <h4>Gefahrenzone</h4>
+        <button class="dangerbtn" onclick="resetAll()">Alles auf Vorlage zurücksetzen</button>
+        <p class="sethint">Löscht alle eigenen Punkte, Notizen, To-Dos und Zahlungen – bei aktivem Cloud-Sync auch auf den verbundenen Geräten.</p>
+      </div>
+      <div class="setfoot">Bau-Cockpit · Version <span id="appVer">–</span></div>
     </div>
   </div>
 
@@ -693,12 +851,37 @@ const nid = () => 'x'+(uid++);
 function fmtTs(iso){ if(!iso) return ''; try{ return new Date(iso).toLocaleString('de-AT',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}); }catch(e){ return ''; } }
 function fmtDate(d){ if(!d) return ''; const p=(''+d).split('-'); return p.length===3?`${p[2]}.${p[1]}.${p[0]}`:d; }
 
-/* ---- To-Do-Modell: explizite Flags (todo/done/doneTs) statt „!"-Präfix ---- */
-function isTodo(nt){ return !!(nt && nt.todo); }
-function isOpenTodo(nt){ return isTodo(nt) && !nt.done; }
-function isDoneTodo(nt){ return isTodo(nt) && !!nt.done; }
-function hasOpenTodo(it){ return (it.notizen||[]).some(isOpenTodo); }
+/* ---- To-Do-Modell v5: eigene Liste state.todos ----
+   {id, text, ts, done, doneTs, g, i, due}
+   i gesetzt → Unterpunkt (Hauptpunkt ergibt sich daraus) · nur g → Hauptpunkt allgemein · beides leer → Eingang
+   due = Fälligkeitsdatum 'JJJJ-MM-TT' oder '' */
+const APP_VERSION='5.0';
+function isTodoNote(nt){ return !!(nt && nt.todo); }          // nur noch für die Migration alter Notizen
+function tid(){ return 't'+Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+function todoGroupId(t){ if(t.i){ const it=itemById(t.i); if(it) return it.g; } return t.g||''; }
+function asgKey(t){ return t.i?('i:'+t.i):(t.g?('g:'+t.g):''); }
+function hasOpenTodo(it){ return (state.todos||[]).some(t=>!t.done && t.i===it.id); }
+function openTodosInGroup(gid){ return (state.todos||[]).filter(t=>!t.done && todoGroupId(t)===gid); }
 function hasZahl(it){ return (it.zahlungen||[]).length>0; }
+const WD=['So','Mo','Di','Mi','Do','Fr','Sa'];
+function dueInfo(due){
+  if(!due) return null;
+  const p=(''+due).split('-'); if(p.length!==3) return null;
+  const d=new Date(+p[0],+p[1]-1,+p[2]); const t=new Date(); t.setHours(0,0,0,0);
+  const diff=Math.round((d-t)/86400000);
+  const short=`${WD[d.getDay()]} ${p[2]}.${p[1]}.`+(d.getFullYear()!==t.getFullYear()?p[0]:'');
+  if(diff<0)   return {cls:'over', txt:short+' · überfällig'};
+  if(diff===0) return {cls:'today',txt:'heute'};
+  if(diff===1) return {cls:'today',txt:'morgen'};
+  return {cls:'set',txt:short};
+}
+function sortOpen(a,b){
+  const da=a.due||'', db=b.due||'';
+  if(da&&db&&da!==db) return da<db?-1:1;
+  if(da&&!db) return -1; if(!da&&db) return 1;
+  const ta=a.ts?Date.parse(a.ts):0, tb=b.ts?Date.parse(b.ts):0; return tb-ta;   // ohne Datum: zuletzt notiert zuerst
+}
+function sortDone(a,b){ const ta=a.doneTs?Date.parse(a.doneTs):0, tb=b.doneTs?Date.parse(b.doneTs):0; return tb-ta; }
 
 // ---------- Standarddaten ----------
 function defaults(){
@@ -754,7 +937,7 @@ function defaults(){
     mk('g9','Gartenbau / Bepflanzung','Modellierung, Rasen, Bepflanzung, ggf. Bewässerung. Viel Eigenleistung möglich.',3000,3000,0,3000,18000,'offen','',''),
     mk('g9','Terrasse','~30 m² Holz/WPC/Stein + Unterbau.',3500,2500,500,4000,12000,'offen','',''),
   ];
-  return {groups:g, items:it};
+  return {groups:g, items:it, todos:[]};
 }
 
 let state = defaults();
@@ -763,22 +946,55 @@ let currentView = 'cockpit';
 let sumOpenGroups = new Set();
 let sumOpenItems = new Set();
 let cockpitOpenGroups = new Set();   // aufgeklappte Hauptpunkte im Cockpit (leer = alle zu)
+let cockpitTodoGroups = new Set();   // Hauptpunkte mit geöffnetem ⚡-To-Do-Bereich
 
 function normalize(){
-  (state.items||[]).forEach(it=>{
+  if(!Array.isArray(state.groups)) state.groups=[];
+  if(!Array.isArray(state.items))  state.items=[];
+  if(!Array.isArray(state.todos))  state.todos=[];
+  const have=new Set(state.todos.map(t=>t&&t.id));
+  let migrated=0;
+  state.items.forEach(it=>{
     if(!Array.isArray(it.notizen)){ it.notizen = it.notiz ? [{ts:null,text:it.notiz}] : []; }
     delete it.notiz;
-    it.notizen.forEach(nt=>{
+    const keep=[];
+    it.notizen.forEach((nt,idx)=>{
+      if(!nt || typeof nt!=='object') return;
       if(typeof nt.text!=='string') nt.text = nt.text==null ? '' : (''+nt.text);
-      // Alt-Format „! …" -> explizites Todo-Flag migrieren
+      // Alt-Format „! …" -> To-Do
       if(nt.todo===undefined && /^\s*!/.test(nt.text)){ nt.todo=true; nt.text=nt.text.replace(/^\s*!\s*/,''); }
+      if(isTodoNote(nt)){
+        // Migration v4 → v5: To-Do-Notiz wird eigenes To-Do. Stabile ID → kein Doppeleintrag, falls ein
+        // Gerät mit alter Version dieselbe Notiz nochmal schickt.
+        const tsk=(nt.ts&&!isNaN(Date.parse(nt.ts)))?Date.parse(nt.ts).toString(36):('v'+idx);
+        const id='tm-'+it.id+'-'+tsk;
+        if(!have.has(id)){
+          state.todos.push({id,text:nt.text,ts:nt.ts||null,done:!!nt.done,doneTs:nt.doneTs||null,g:it.g,i:it.id,due:''});
+          have.add(id); migrated++;
+        }
+      } else keep.push(nt);
     });
+    it.notizen=keep;
     if(typeof it.kontakt!=='string') it.kontakt='';
     if(typeof it.datum!=='string')  it.datum='';
     if(typeof it.firma!=='string')  it.firma='';
     if(!it.status) it.status='offen';
     if(!Array.isArray(it.zahlungen)) it.zahlungen=[];
   });
+  // To-Dos säubern + Zuordnungen prüfen (gelöschte Punkte → eine Ebene höher bzw. Eingang)
+  const gIds=new Set(state.groups.map(g=>g.id)), iById={}; state.items.forEach(it=>iById[it.id]=it);
+  state.todos=state.todos.filter(t=>t&&typeof t==='object').map(t=>{
+    const o={ id:t.id||tid(),
+      text:typeof t.text==='string'?t.text:(t.text==null?'':''+t.text),
+      ts:t.ts||null, done:!!t.done, doneTs:t.done?(t.doneTs||null):null,
+      g:t.g||'', i:t.i||'',
+      due:(typeof t.due==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(t.due))?t.due:'' };
+    if(o.i && !iById[o.i]) o.i='';
+    if(o.i) o.g=iById[o.i].g;
+    if(o.g && !gIds.has(o.g)) o.g='';
+    return o;
+  });
+  return migrated;
 }
 
 function itemById(id){return state.items.find(i=>i.id===id);}
@@ -808,10 +1024,17 @@ function render(){
         <div class="gright">
           <span class="acc-mini">${gmini}</span>
           <span class="gsum">Σ <span class="num" id="gsum-${gr.id}">–</span> <small>(${eur(gmin)}–${eur(gmax)})</small></span>
+          <button class="ghbtn gtodo" data-gtodo="${gr.id}" id="gpill-${gr.id}" title="To-Dos dieses Hauptpunkts">⚡ +</button>
           <button class="ghbtn" data-additem="${gr.id}">+ Unterpunkt</button>
           <button class="ghbtn danger" data-delgroup="${gr.id}" title="Hauptpunkt entfernen">×</button>
         </div></div></td>`;
     tb.appendChild(ghr);
+
+    // ⚡-Bereich des Hauptpunkts: direkt eintragen (Hauptpunkt allgemein oder einem Unterpunkt zuordnen)
+    const gtr=document.createElement('tr');
+    gtr.className='gtodorow'+(cockpitTodoGroups.has(gr.id)?'':' hidden'); gtr.dataset.gtodorow=gr.id;
+    gtr.innerHTML=`<td colspan="8" style="border-left:6px solid ${gr.color}">${captureHtml('g:'+gr.id, groupAsgOptions(gr.id,'g:'+gr.id), `To-Do für „${esc(gr.label)}“ eintippen …`)}<div class="tlist" id="gtl-${gr.id}"></div></td>`;
+    tb.appendChild(gtr);
 
     rows.forEach(it=>{
       posNo++;
@@ -837,12 +1060,13 @@ function render(){
       const dr=document.createElement('tr');
       dr.className='detail'+(hide?' hidden':''); dr.dataset.detail=it.id;
       dr.innerHTML=`<td colspan="8"><div class="detailinner" id="det-${it.id}">
-        <div class="loghead">📌 Verlauf / Notizen</div>
+        <div class="loghead">📌 To-Dos &amp; Notizen</div>
         <div class="logadd">
-          <textarea class="logadd-in" placeholder="Neue Notiz… ⚡ = nächster Schritt/To-Do (erscheint im To-Dos-Reiter). Strg/⌘+Enter = normaler Eintrag."></textarea>
+          <textarea class="logadd-in" rows="1" placeholder="Notiz oder To-Do eintippen …"></textarea>
           <button class="logadd-btn todo" data-addtodo="${it.id}">⚡ + To-Do</button>
           <button class="logadd-btn" data-addnote="${it.id}">+ Eintrag</button>
         </div>
+        <div class="titems tlist" id="tl-${it.id}"></div>
         <div class="loglist" id="log-${it.id}"></div>
 
         <div class="loghead zahlhead">💶 Zahlungen</div>
@@ -858,9 +1082,9 @@ function render(){
         <div class="dgrid2">
           <div class="field"><label>Termin / Datum</label><input type="date" data-f="datum" value="${it.datum||''}"></div>
           <div class="field"><label>Kontakt (Tel / Mail / Ansprechpartner)</label>
-            <textarea class="kontakt-ta" data-f="kontakt" placeholder="z.B. Hr. Müller · 0664/… · mail@firma.at">${esc(it.kontakt)}</textarea></div>
+            <textarea class="kontakt-ta" rows="1" data-f="kontakt" placeholder="z.B. Hr. Müller · 0664/… · mail@firma.at">${esc(it.kontakt)}</textarea></div>
         </div>
-        <div class="annahme"><label>Kalkulationsbasis / Annahme</label><textarea data-f="note">${esc(it.note)}</textarea></div>
+        <div class="annahme"><label>Kalkulationsbasis / Annahme</label><textarea rows="1" data-f="note">${esc(it.note)}</textarea></div>
         <div class="detailfoot"><button class="delbtn" data-delitem="${it.id}">🗑 Unterpunkt entfernen</button></div>
       </div></td>`;
       tb.appendChild(dr);
@@ -868,40 +1092,30 @@ function render(){
   });
 
   bindRow(); bindGroup(); recalc();
+  state.groups.forEach(g=>{ renderGroupTodos(g.id); updateGPill(g.id); });
+  updateTodoBadge();
+  growAll(tb);
 }
 
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 function renderLog(id){
   const it=itemById(id); const box=document.getElementById('log-'+id); if(!it||!box) return;
-  if(!it.notizen.length){ box.innerHTML='<div class="logempty">Noch keine Einträge – erste Notiz oben hinzufügen.</div>'; return; }
-  box.innerHTML=it.notizen.map((nt,i)=>{
-    const todo=isTodo(nt), done=isDoneTodo(nt);
-    let meta='';
-    if(todo && done){
-      meta=`<span class="todobadge done">✓ ERLEDIGT</span><span class="logts muted">${nt.doneTs?('am '+fmtTs(nt.doneTs)):''}</span><button class="logreopen" data-idx="${i}" title="Wieder als To-Do öffnen">↩ öffnen</button>`;
-    } else if(todo){
-      meta=`<span class="todobadge">⚡ TO-DO</span><span class="logts${nt.ts?'':' muted'}">${nt.ts?fmtTs(nt.ts):'Vorlage'}</span><button class="logdone" data-idx="${i}" title="To-Do als erledigt markieren">✓ erledigt</button>`;
-    } else {
-      meta=`<span class="logts${nt.ts?'':' muted'}">${nt.ts?fmtTs(nt.ts):'Vorlage'}</span>`;
-    }
-    return `<div class="logentry${todo?(done?' todo done':' todo'):''}">
-      <div class="logmeta">${meta}<button class="logdel" data-idx="${i}" title="Eintrag löschen">×</button></div>
-      <textarea class="logtext" data-idx="${i}">${esc(nt.text)}</textarea>
-    </div>`;
-  }).join('');
+  if(!it.notizen.length){
+    box.innerHTML = state.todos.some(t=>t.i===id) ? '' : '<div class="logempty">Noch keine Einträge – erste Notiz oder To-Do oben eintragen.</div>';
+    return;
+  }
+  box.innerHTML=it.notizen.map((nt,i)=>`<div class="logentry">
+      <div class="logmeta"><span class="logts${nt.ts?'':' muted'}">${nt.ts?fmtTs(nt.ts):'Vorlage'}</span><button class="logdel" data-idx="${i}" title="Eintrag löschen">×</button></div>
+      <textarea class="logtext" rows="1" data-idx="${i}">${esc(nt.text)}</textarea>
+    </div>`).join('');
   box.querySelectorAll('.logtext').forEach(ta=>{
     ta.addEventListener('input',e=>{ it.notizen[+ta.dataset.idx].text=e.target.value; save(); });
   });
-  box.querySelectorAll('.logdone').forEach(btn=>{
-    btn.addEventListener('click',()=>{ const i=+btn.dataset.idx; it.notizen[i].done=true; it.notizen[i].doneTs=new Date().toISOString(); renderLog(id); refreshRowBadges(id); save(); });
-  });
-  box.querySelectorAll('.logreopen').forEach(btn=>{
-    btn.addEventListener('click',()=>{ const i=+btn.dataset.idx; it.notizen[i].done=false; delete it.notizen[i].doneTs; renderLog(id); refreshRowBadges(id); save(); });
-  });
   box.querySelectorAll('.logdel').forEach(btn=>{
-    btn.addEventListener('click',()=>{ if(!confirm('Diesen Notiz-Eintrag löschen?')) return; it.notizen.splice(+btn.dataset.idx,1); renderLog(id); refreshRowBadges(id); save(); });
+    btn.addEventListener('click',()=>{ if(!confirm('Diesen Notiz-Eintrag löschen?')) return; it.notizen.splice(+btn.dataset.idx,1); renderLog(id); save(); });
   });
+  growAll(box);
 }
 
 function renderZahl(id){
@@ -936,6 +1150,7 @@ function toggleDetail(id){
   if(!dr) return;
   dr.classList.toggle('open');
   if(btn) btn.textContent = dr.classList.contains('open')?'✕':'⋯';
+  if(dr.classList.contains('open')) growAll(dr);
   if(!dr.classList.contains('open')) setTimeout(flushPendingRemote,60);
 }
 
@@ -978,7 +1193,10 @@ function bindRow(){
     const addBtn=dr.querySelector('[data-addnote]');
     const addTodoBtn=dr.querySelector('[data-addtodo]');
     const addIn=dr.querySelector('.logadd-in');
-    const doAdd=(asTodo)=>{ let t=(addIn.value||'').trim(); if(!t) return; const note={ts:new Date().toISOString(),text:t}; if(asTodo) note.todo=true; it.notizen.unshift(note); addIn.value=''; renderLog(it.id); refreshRowBadges(it.id); save(); };
+    const doAdd=(asTodo)=>{ let t=(addIn.value||'').trim(); if(!t) return;
+      const now=new Date().toISOString();
+      if(asTodo){ state.todos.push({id:tid(),text:t,ts:now,done:false,doneTs:null,g:it.g,i:it.id,due:''}); addIn.value=''; autoGrow(addIn); save(); refreshTodoUI(); flag('To-Do gespeichert'); }
+      else { it.notizen.unshift({ts:now,text:t}); addIn.value=''; autoGrow(addIn); renderLog(it.id); save(); } };
     if(addBtn) addBtn.addEventListener('click',()=>doAdd(false));
     if(addTodoBtn) addTodoBtn.addEventListener('click',()=>doAdd(true));
     if(addIn) addIn.addEventListener('keydown',e=>{ if((e.ctrlKey||e.metaKey)&&e.key==='Enter') doAdd(false); });
@@ -992,6 +1210,7 @@ function bindRow(){
       dd.value=''; bb.value=''; tt.value='';
       renderZahl(it.id); refreshRowBadges(it.id); save();
     });
+    renderItemTodos(it.id);
     renderLog(it.id);
     renderZahl(it.id);
   });
@@ -1059,7 +1278,7 @@ function setEdit(on){
   editMode=on;
   document.body.classList.toggle('edit-on',on);
   const b=document.getElementById('editToggle');
-  if(b){ b.textContent=on?'🔓 Bearbeiten aktiv':'🔒 Gesperrt'; b.classList.toggle('editactive',on); }
+  if(b){ b.innerHTML=on?'🔓<span class="hl">Bearbeiten</span>':'🔒'; b.classList.toggle('editactive',on); b.title=on?'Bearbeiten aktiv – tippen zum Sperren':'Gesperrt – tippen zum Bearbeiten'; }
 }
 function toggleEdit(){ setEdit(!editMode); }
 
@@ -1074,7 +1293,9 @@ function addItem(gid){
 }
 function delItem(id){
   const it=itemById(id);
-  if(!confirm(`Unterpunkt „${it.n}" wirklich entfernen?`)) return;
+  const nT=state.todos.filter(t=>t.i===id).length;
+  if(!confirm(`Unterpunkt „${it.n}" wirklich entfernen?${nT?`\n${nT} To-Do(s) bleiben beim Hauptpunkt erhalten.`:''}`)) return;
+  state.todos.forEach(t=>{ if(t.i===id){ t.i=''; t.g=it.g; } });
   state.items=state.items.filter(i=>i.id!==id); render(); save();
 }
 function addGroup(){
@@ -1088,7 +1309,11 @@ function addGroup(){
 function delGroup(gid){
   const g=groupById(gid);
   const n=state.items.filter(i=>i.g===gid).length;
-  if(!confirm(`Hauptpunkt „${g.label}"${n?` inkl. ${n} Unterpunkt(en)`:''} wirklich entfernen?`)) return;
+  const ids=new Set(state.items.filter(i=>i.g===gid).map(i=>i.id));
+  const nT=state.todos.filter(t=>t.g===gid||ids.has(t.i)).length;
+  if(!confirm(`Hauptpunkt „${g.label}"${n?` inkl. ${n} Unterpunkt(en)`:''} wirklich entfernen?${nT?`\n${nT} To-Do(s) wandern in den Eingang.`:''}`)) return;
+  state.todos.forEach(t=>{ if(t.g===gid||ids.has(t.i)){ t.g=''; t.i=''; } });
+  cockpitTodoGroups.delete(gid);
   state.groups=state.groups.filter(x=>x.id!==gid);
   state.items=state.items.filter(i=>i.g!==gid);
   render(); save();
@@ -1154,18 +1379,18 @@ function renderSummary(){
     items.forEach(it=>{ gsum+=(it.mat||0)+(it.arb||0)+(it.son||0); const a=ampelOf(it.status); if(a==='rot')r++; else if(a==='gelb')y++; else gg++; });
     const mini=[ r?`<span class="acc-pill r">${r}</span>`:'', y?`<span class="acc-pill y">${y}</span>`:'', gg?`<span class="acc-pill g">${gg}</span>`:'' ].join('');
     const openG=sumOpenGroups.has(gr.id);
+    const gOpenT=openTodosInGroup(gr.id).length;
+    const gDirect=state.todos.filter(t=>!t.i&&t.g===gr.id).sort((a,b)=>(a.done-b.done)||(a.done?sortDone(a,b):sortOpen(a,b)));
 
     const itemsHtml=items.map(it=>{
       const st=STATUSES.find(x=>x.v===it.status)||STATUSES[0];
       const sum=(it.mat||0)+(it.arb||0)+(it.son||0);
       const openI=sumOpenItems.has(it.id);
       const notes=(it.notizen||[]);
-      const notesHtml= notes.length ? notes.map(nt=>{
-        const todo=isTodo(nt), done=isDoneTodo(nt);
-        const badge= todo?(done?'<span class="todobadge done" style="margin-right:6px">✓</span>':'<span class="todobadge" style="margin-right:6px">⚡</span>'):'';
-        const doneInfo= (done&&nt.doneTs)?(' · erledigt '+fmtTs(nt.doneTs)):'';
-        return `<div class="acc-note${todo?' todo':''}"><span class="acc-note-ts${nt.ts?'':' muted'}">${badge}${nt.ts?fmtTs(nt.ts):'Vorlage'}${doneInfo}</span><div class="acc-note-tx">${esc(nt.text)}</div></div>`;
-      }).join('') : '<div class="acc-note-empty">Keine Notiz hinterlegt.</div>';
+      const tds=state.todos.filter(t=>t.i===it.id).sort((a,b)=>(a.done-b.done)||(a.done?sortDone(a,b):sortOpen(a,b)));
+      const notesHtml=(tds.length||notes.length)
+        ? tds.map(sumTodoHtml).join('') + notes.map(nt=>`<div class="acc-note"><span class="acc-note-ts${nt.ts?'':' muted'}">${nt.ts?fmtTs(nt.ts):'Vorlage'}</span><div class="acc-note-tx">${esc(nt.text)}</div></div>`).join('')
+        : '<div class="acc-note-empty">Keine Notiz hinterlegt.</div>';
       return `<div class="acc-item${openI?' open':''}" data-i="${it.id}">
         <div class="acc-ihead" data-toggle-i="${it.id}">
           <span class="acc-chev">▸</span>
@@ -1188,11 +1413,12 @@ function renderSummary(){
         <span class="acc-chev">▸</span>
         <span class="acc-gtag" style="background:${gr.color}"></span>
         <span class="acc-gname">${esc(gr.label)}</span>
+        ${gOpenT?`<span class="rowtodo">⚡ ${gOpenT}</span>`:''}
         <span class="acc-gcount">${items.length} Pos.</span>
         <span class="acc-mini">${mini}</span>
         <span class="acc-gsum num">${eur(gsum)}</span>
       </div>
-      <div class="acc-gbody">${itemsHtml}</div>
+      <div class="acc-gbody">${gDirect.length?`<div class="acc-gtodos"><div class="acc-gtodos-h">⚡ Hauptpunkt allgemein</div>${gDirect.map(sumTodoHtml).join('')}</div>`:''}${itemsHtml}</div>
     </div>`;
   };
 
@@ -1222,133 +1448,131 @@ function renderSummary(){
   });
 }
 
-// ---------- To-Dos-Reiter ----------
+// ---------- To-Dos-Reiter (mit Notizen als Umschalter) ----------
+let todoSeg='todos', todoFilter='alle', doneOpen=false, todoCapAsg='';
 function renderTodos(){
   const v=document.getElementById('todosView');
-  const gById={}; state.groups.forEach(g=>gById[g.id]=g);
-  const open=[], done=[];
-  state.items.forEach(it=>{ (it.notizen||[]).forEach((nt,idx)=>{
-    if(isOpenTodo(nt)) open.push({it,idx,nt});
-    else if(isDoneTodo(nt)) done.push({it,idx,nt});
-  }); });
-  open.sort((a,b)=>{ const ta=a.nt.ts?Date.parse(a.nt.ts):0, tb=b.nt.ts?Date.parse(b.nt.ts):0; return tb-ta; });      // zuletzt notiert zuerst
-  done.sort((a,b)=>{ const ta=a.nt.doneTs?Date.parse(a.nt.doneTs):0, tb=b.nt.doneTs?Date.parse(b.nt.doneTs):0; return tb-ta; }); // zuletzt erledigt zuerst
-
-  const openCard=(td)=>{
-    const g=gById[td.it.g]||{}; const st=STATUSES.find(x=>x.v===td.it.status)||STATUSES[0];
-    return `<div class="todocard" data-goto="${td.it.id}">
-      <span class="todochk" data-done="${td.it.id}__${td.idx}" title="Als erledigt markieren">✓</span>
-      <div class="todobody">
-        <div class="todotext">${esc(td.nt.text)}</div>
-        <div class="todometa"><span class="gtag" style="background:${g.color||'#999'}"></span><b>${esc(td.it.n)}</b><span class="gtag-l">${esc(g.label||'')}</span><span class="stbadge a-${st.a}">${st.t}</span>${td.nt.ts?`<span class="todots">notiert ${fmtTs(td.nt.ts)}</span>`:''}</div>
-      </div>
-    </div>`;
-  };
-  const doneCard=(td)=>{
-    const g=gById[td.it.g]||{};
-    return `<div class="todocard done" data-goto="${td.it.id}">
-      <span class="todochk done" data-reopen="${td.it.id}__${td.idx}" title="Wieder öffnen (Häkchen entfernen)">✓</span>
-      <div class="todobody">
-        <div class="todotext">${esc(td.nt.text)}</div>
-        <div class="todometa"><span class="gtag" style="background:${g.color||'#999'}"></span><b>${esc(td.it.n)}</b><span class="gtag-l">${esc(g.label||'')}</span>${td.nt.doneTs?`<span class="todo-done-date">✓ erledigt ${fmtTs(td.nt.doneTs)}</span>`:'<span class="todots">erledigt</span>'}</div>
-      </div>
-    </div>`;
-  };
-
+  if(todoFilter!=='alle'&&todoFilter!=='eingang'&&!groupById(todoFilter)) todoFilter='alle';
+  if(todoCapAsg && !asgExists(todoCapAsg)) todoCapAsg='';
   v.innerHTML=`
     <div class="sumhead">
-      <div><h2>To-Dos – nächste Schritte</h2><div class="sumstand">Stand: ${fmtTs(new Date().toISOString())}</div></div>
-      <div class="sumrecap">
-        <span><b class="num">${open.length}</b> offen</span>
-        <span><b class="num">${done.length}</b> erledigt</span>
-      </div>
+      <div><h2>To-Dos &amp; Notizen</h2><div class="sumstand">Eintippen · zuordnen · abhaken – Zuordnung jederzeit über den Chip änderbar</div></div>
+      <div class="sumrecap" id="tdRecap"></div>
     </div>
-    <div class="sumsec todo-sec">
-      <div class="sumsec-h"><h3>⚡ Offen</h3><span class="sumsec-c">${open.length}</span><span class="sumsec-s">zuerst erledigen · Klick öffnet die Position</span></div>
-      ${open.length? open.map(openCard).join('') : '<div class="sumnote empty">Keine offenen To-Dos. Im Cockpit eine Position öffnen → „⚡ + To-Do" tippen.</div>'}
-    </div>
-    <div class="sumsec a-done">
-      <div class="sumsec-h"><h3>✓ Erledigt</h3><span class="sumsec-c">${done.length}</span><span class="sumsec-s">chronologisch · zuletzt erledigt zuerst</span></div>
-      ${done.length? done.map(doneCard).join('') : '<div class="sumnote empty">Noch nichts abgehakt.</div>'}
-    </div>
+    <div class="seg tseg"><button data-tseg="todos" class="${todoSeg==='todos'?'on':''}">⚡ To-Dos</button><button data-tseg="notes" class="${todoSeg==='notes'?'on':''}">📝 Notizen</button></div>
+    ${todoSeg==='todos'
+      ? captureHtml(todoCapAsg, asgOptions(todoCapAsg), 'Neues To-Do eintippen … (Enter = speichern)')+'<div id="tdFilters" class="tfilters"></div><div id="tdBody"></div>'
+      : '<div id="ntBody"></div>'}
   `;
+  v.querySelectorAll('[data-tseg]').forEach(b=>b.addEventListener('click',()=>{ todoSeg=b.dataset.tseg; renderTodos(); }));
+  if(todoSeg==='todos') renderTodoLists(); else { renderTodoRecap(); renderNotesInto(document.getElementById('ntBody')); }
+  growAll(v);
+}
+function renderTodoRecap(){
+  const rc=document.getElementById('tdRecap'); if(!rc) return;
+  const open=state.todos.filter(t=>!t.done);
+  rc.innerHTML=`<span><b class="num">${open.length}</b> offen</span><span><b class="num">${open.filter(t=>!t.i&&!t.g).length}</b> im Eingang</span><span><b class="num">${state.todos.length-open.length}</b> erledigt</span>`;
+}
+function renderTodoLists(){
+  const fb=document.getElementById('tdFilters'), body=document.getElementById('tdBody'); if(!fb||!body) return;
+  renderTodoRecap();
+  const open=state.todos.filter(t=>!t.done), done=state.todos.filter(t=>t.done);
+  const isInbox=t=>!t.i&&!t.g;
+  // Filter-Chips: Alle · Eingang · Hauptpunkte mit offenen To-Dos
+  const cnt={}; open.forEach(t=>{ const g=todoGroupId(t); if(g) cnt[g]=(cnt[g]||0)+1; });
+  let chips=`<button class="fchip${todoFilter==='alle'?' on':''}" data-tf="alle">Alle <span class="cnt">${open.length}</span></button>`
+           +`<button class="fchip${todoFilter==='eingang'?' on':''}" data-tf="eingang">📥 Eingang <span class="cnt">${open.filter(isInbox).length}</span></button>`;
+  state.groups.forEach(g=>{ if(cnt[g.id]||todoFilter===g.id) chips+=`<button class="fchip${todoFilter===g.id?' on':''}" data-tf="${g.id}"><span class="adot" style="background:${g.color}"></span>${esc(g.label)} <span class="cnt">${cnt[g.id]||0}</span></button>`; });
+  fb.innerHTML=chips;
+  fb.querySelectorAll('[data-tf]').forEach(b=>b.addEventListener('click',()=>{
+    todoFilter=b.dataset.tf;
+    if(todoFilter==='eingang') todoCapAsg=''; else if(todoFilter!=='alle') todoCapAsg='g:'+todoFilter;   // neue To-Dos landen im gewählten Hauptpunkt
+    renderTodos();
+  }));
 
-  v.querySelectorAll('.todochk[data-done]').forEach(el=>{
-    el.addEventListener('click',ev=>{ ev.stopPropagation(); const p=el.dataset.done.split('__'); const it=itemById(p[0]); const idx=+p[1];
-      if(it&&it.notizen[idx]){ it.notizen[idx].done=true; it.notizen[idx].doneTs=new Date().toISOString(); save(); renderTodos(); } });
-  });
-  v.querySelectorAll('.todochk[data-reopen]').forEach(el=>{
-    el.addEventListener('click',ev=>{ ev.stopPropagation(); const p=el.dataset.reopen.split('__'); const it=itemById(p[0]); const idx=+p[1];
-      if(it&&it.notizen[idx]){ it.notizen[idx].done=false; delete it.notizen[idx].doneTs; save(); renderTodos(); } });
-  });
-  v.querySelectorAll('.todocard[data-goto]').forEach(c=>{ c.addEventListener('click',()=>gotoItem(c.dataset.goto)); });
+  const inF=t=> todoFilter==='alle' ? true : (todoFilter==='eingang' ? isInbox(t) : todoGroupId(t)===todoFilter);
+  const fOpen=open.filter(inF).sort(sortOpen), fDone=done.filter(inF).sort(sortDone);
+  const sec=(cls,title,sub,list,empty)=>{
+    if(!list.length && !empty) return '';
+    return `<div class="sumsec ${cls}"><div class="sumsec-h"><h3>${title}</h3><span class="sumsec-c">${list.length}</span><span class="sumsec-s">${sub}</span></div>
+      ${list.length?`<div class="tlist">${list.map(t=>todoRowHtml(t,'list')).join('')}</div>`:`<div class="sumnote empty">${empty}</div>`}</div>`;
+  };
+  let html='';
+  if(todoFilter==='alle'){
+    const fIn=fOpen.filter(isInbox), fRest=fOpen.filter(t=>!isInbox(t));
+    html+=sec('inbox','📥 Eingang','noch nicht zugeordnet – Chip antippen',fIn,'');
+    html+=sec('todo-sec','⚡ Offen','fällige zuerst',fRest, fIn.length?'':'Keine offenen To-Dos. Oben eintippen und Enter drücken.');
+  } else if(todoFilter==='eingang'){
+    html+=sec('inbox','📥 Eingang','Chip antippen zum Zuordnen',fOpen,'Eingang ist leer – alles zugeordnet.');
+  } else {
+    const g=groupById(todoFilter);
+    html+=sec('todo-sec','⚡ '+esc(g?g.label:''),'fällige zuerst',fOpen,'Keine offenen To-Dos in diesem Hauptpunkt.');
+  }
+  if(fDone.length) html+=`<div class="sumsec a-done"><div class="sumsec-h tdone-h" data-tdonetoggle><h3>${doneOpen?'▾':'▸'} ✓ Erledigt</h3><span class="sumsec-c">${fDone.length}</span><span class="sumsec-s">${doneOpen?'zuletzt erledigt zuerst':'antippen zum Anzeigen'}</span></div>${doneOpen?`<div class="tlist">${fDone.map(t=>todoRowHtml(t,'list')).join('')}</div>`:''}</div>`;
+  body.innerHTML=html;
+  const dt=body.querySelector('[data-tdonetoggle]'); if(dt) dt.addEventListener('click',()=>{ doneOpen=!doneOpen; renderTodoLists(); });
+  growAll(body);
 }
 
-// ---------- Notizen-Reiter (chronologischer Verlauf über alle Gewerke) ----------
-let notesFilter='alle';
-function renderNotes(){
-  const v=document.getElementById('notesView');
+// ---------- Notizen (Verlauf über alle Gewerke) – jetzt Umschalter im To-Dos-Reiter ----------
+let notesFilter='notes';
+function renderNotesInto(v){
+  if(!v) return;
   const gById={}; state.groups.forEach(g=>gById[g.id]=g);
-  const all=[];
-  state.items.forEach(it=>{ (it.notizen||[]).forEach((nt,idx)=>{ all.push({it,idx,nt}); }); });
-  const total=all.length;
-  const openC=all.filter(x=>isOpenTodo(x.nt)).length;
-  const doneC=all.filter(x=>isDoneTodo(x.nt)).length;
-  const plainC=total-openC-doneC;
-
-  let list=all;
-  if(notesFilter==='notes') list=all.filter(x=>!isTodo(x.nt));
-  else if(notesFilter==='todos') list=all.filter(x=>isTodo(x.nt));
-
-  // nach Notiz-Zeitstempel absteigend; undatierte „Vorlage"-Notizen ans Ende
-  const tOf=(x)=> x.nt.ts?Date.parse(x.nt.ts):0;
-  list=[...list].sort((a,b)=>tOf(b)-tOf(a));
+  const notes=[], todos=[];
+  state.items.forEach(it=>{ (it.notizen||[]).forEach(nt=>notes.push({kind:'note',it,nt,ts:nt.ts})); });
+  state.todos.forEach(t=>todos.push({kind:'todo',t,ts:t.ts}));
+  let list = notesFilter==='notes' ? notes : (notesFilter==='todos' ? todos : notes.concat(todos));
+  const tOf=x=>x.ts?Date.parse(x.ts):0;
+  list=[...list].sort((a,b)=>tOf(b)-tOf(a));   // neueste zuerst, „Vorlage“ ans Ende
 
   const card=(x)=>{
-    const g=gById[x.it.g]||{};
-    const nt=x.nt, todo=isTodo(nt), done=isDoneTodo(nt);
-    const tsLabel = nt.ts?fmtTs(nt.ts):'Vorlage';
-    const badge = todo?(done?'<span class="todobadge done">✓ erledigt</span>':'<span class="todobadge">⚡ To-Do</span>'):'';
-    const doneInfo = (done&&nt.doneTs)?`<span class="todots">erledigt ${fmtTs(nt.doneTs)}</span>`:'';
-    return `<div class="notecard${done?' done':''}" data-goto="${x.it.id}">
-      <span class="notets${nt.ts?'':' muted'}">${tsLabel}</span>
-      <div class="notebody">
-        <div class="notetext">${esc(nt.text)}</div>
-        <div class="notemeta"><span class="gtag" style="background:${g.color||'#999'}"></span><b>${esc(x.it.n)}</b><span class="gtag-l">${esc(g.label||'')}</span>${badge}${doneInfo}</div>
-      </div>
+    if(x.kind==='note'){
+      const g=gById[x.it.g]||{};
+      return `<div class="notecard" data-ngoto="${x.it.id}">
+        <span class="notets${x.ts?'':' muted'}">${x.ts?fmtTs(x.ts):'Vorlage'}</span>
+        <div class="notebody"><div class="notetext">${esc(x.nt.text)}</div>
+          <div class="notemeta"><span class="gtag" style="background:${g.color||'#999'}"></span><b>${esc(x.it.n)}</b><span class="gtag-l">${esc(g.label||'')}</span></div></div>
+      </div>`;
+    }
+    const t=x.t, a=asgInfo(t,'list');
+    const badge=t.done?'<span class="todobadge done">✓ erledigt</span>':'<span class="todobadge">⚡ To-Do</span>';
+    return `<div class="notecard${t.done?' done':''}" data-ntgoto="${t.id}">
+      <span class="notets${x.ts?'':' muted'}">${x.ts?fmtTs(x.ts):'–'}</span>
+      <div class="notebody"><div class="notetext">${esc(t.text)}</div>
+        <div class="notemeta">${a.dot?`<span class="gtag" style="background:${a.dot}"></span>`:''}<b>${esc(a.txt)}</b>${badge}${(t.done&&t.doneTs)?`<span class="todots">erledigt ${fmtTs(t.doneTs)}</span>`:''}</div></div>
     </div>`;
   };
   const chip=(f,label)=>`<button class="fchip${notesFilter===f?' on':''}" data-nf="${f}">${label}</button>`;
-
   v.innerHTML=`
-    <div class="sumhead">
-      <div><h2>Notizen – Verlauf über alle Gewerke</h2><div class="sumstand">chronologisch · neueste zuerst</div></div>
-      <div class="sumrecap">
-        <span><b class="num">${total}</b> Einträge</span>
-        <span><b class="num">${plainC}</b> Notizen</span>
-        <span><b class="num">${openC}</b> offene To-Dos</span>
-        <span><b class="num">${doneC}</b> erledigt</span>
-      </div>
-    </div>
-    <div class="notesbar">
-      ${chip('alle','Alle')}
-      ${chip('notes','Nur Notizen')}
-      ${chip('todos','Nur To-Dos')}
-    </div>
+    <div class="notesbar">${chip('notes','Notizen ('+notes.length+')')}${chip('alle','Verlauf – alles')}${chip('todos','To-Dos ('+todos.length+')')}</div>
     ${list.length? `<div class="notewrap">${list.map(card).join('')}</div>` : '<div class="sumempty">Keine Einträge in dieser Ansicht.</div>'}
   `;
-  v.querySelectorAll('[data-nf]').forEach(b=>{ b.addEventListener('click',()=>{ notesFilter=b.dataset.nf; renderNotes(); }); });
-  v.querySelectorAll('.notecard[data-goto]').forEach(c=>{ c.addEventListener('click',()=>gotoItem(c.dataset.goto)); });
+  v.querySelectorAll('[data-nf]').forEach(b=>b.addEventListener('click',()=>{ notesFilter=b.dataset.nf; renderNotesInto(v); }));
+  v.querySelectorAll('[data-ngoto]').forEach(c=>c.addEventListener('click',()=>gotoItem(c.dataset.ngoto)));
+  v.querySelectorAll('[data-ntgoto]').forEach(c=>c.addEventListener('click',()=>{
+    const t=state.todos.find(x=>x.id===c.dataset.ntgoto); if(!t) return;
+    if(t.i) gotoItem(t.i); else if(t.g) gotoGroup(t.g); else { todoSeg='todos'; todoFilter='eingang'; renderTodos(); window.scrollTo(0,0); }
+  }));
+}
+
+function gotoGroup(gid){
+  filter='alle';
+  document.querySelectorAll('#filters .fchip').forEach(x=>x.classList.toggle('on',x.dataset.f==='alle'));
+  cockpitOpenGroups.add(gid); cockpitTodoGroups.add(gid);
+  setView('cockpit'); render();
+  const gh=document.querySelector(`tr.grouphead[data-ghead="${gid}"]`);
+  if(gh) gh.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 function gotoItem(id){
   filter='alle';
   const gi=itemById(id); if(gi) cockpitOpenGroups.add(gi.g);
-  document.querySelectorAll('.fchip').forEach(x=>x.classList.toggle('on',x.dataset.f==='alle'));
+  document.querySelectorAll('#filters .fchip').forEach(x=>x.classList.toggle('on',x.dataset.f==='alle'));
   setView('cockpit'); render();
   const dr=document.querySelector(`tr.detail[data-detail="${id}"]`);
   const btn=document.querySelector(`[data-exp="${id}"]`);
-  if(dr){ dr.classList.add('open'); if(btn) btn.textContent='✕';
+  if(dr){ dr.classList.add('open'); growAll(dr); if(btn) btn.textContent='✕';
     const row=document.querySelector(`tr.item[data-id="${id}"]`);
     if(row) row.scrollIntoView({behavior:'smooth',block:'center'});
   }
@@ -1399,62 +1623,62 @@ function renderPayments(){
 }
 
 // ---------- View-Umschaltung ----------
+const VIEWS=['cockpit','summary','todos','payments'];
 function refreshActiveSecondary(){
   if(currentView==='summary') renderSummary();
-  else if(currentView==='notes') renderNotes();
   else if(currentView==='todos') renderTodos();
   else if(currentView==='payments') renderPayments();
 }
 function setView(v){
+  if(v==='notes'){ todoSeg='notes'; v='todos'; }     // alter Notizen-Reiter → Umschalter im To-Dos-Reiter
+  if(!VIEWS.includes(v)) v='cockpit';
   currentView=v;
-  document.getElementById('cockpitView').classList.toggle('hidden',v!=='cockpit');
-  document.getElementById('summaryView').classList.toggle('hidden',v!=='summary');
-  document.getElementById('notesView').classList.toggle('hidden',v!=='notes');
-  document.getElementById('todosView').classList.toggle('hidden',v!=='todos');
-  document.getElementById('paymentsView').classList.toggle('hidden',v!=='payments');
+  VIEWS.forEach(n=>document.getElementById(n+'View').classList.toggle('hidden',v!==n));
   document.querySelectorAll('.vtab').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
   if(v==='summary') renderSummary();
-  if(v==='notes') renderNotes();
   if(v==='todos') renderTodos();
   if(v==='payments') renderPayments();
+  if(v==='cockpit') growAll(document.getElementById('cockpitView'));
 }
-document.querySelectorAll('.vtab').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.v)));
+document.querySelectorAll('.vtab').forEach(b=>b.addEventListener('click',()=>{ setView(b.dataset.v); window.scrollTo(0,0); }));
 
 // ---------- Filter ----------
 document.getElementById('filters').addEventListener('click',e=>{
   const b=e.target.closest('.fchip'); if(!b)return;
   filter=b.dataset.f;
-  document.querySelectorAll('.fchip').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('#filters .fchip').forEach(x=>x.classList.toggle('on',x===b));
   render();
 });
 
-// ---------- Theme (Hell/Dunkel) ----------
-function applyTheme(t){
-  const dark = t==='dark';
+// ---------- Theme: Hell / Dunkel / Wie iPhone ----------
+let themePref='auto';
+function resolveTheme(p){
+  if(p==='dark'||p==='light') return p;
+  try{ return (window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light'; }catch(e){ return 'light'; }
+}
+function applyTheme(p){
+  themePref=p||'auto';
+  const dark=resolveTheme(themePref)==='dark';
   document.body.classList.toggle('dark',dark);
-  const b=document.getElementById('themeToggle');
-  if(b) b.textContent = dark?'☀️ Hell':'🌙 Dunkel';
   const mt=document.querySelector('meta[name="theme-color"]');
   if(mt) mt.setAttribute('content', dark?'#14161a':'#1a1d21');
+  document.querySelectorAll('#themeSeg [data-theme]').forEach(b=>b.classList.toggle('on',b.dataset.theme===themePref));
 }
-function toggleTheme(){
-  const now = document.body.classList.contains('dark')?'light':'dark';
-  try{ localStorage.setItem(THEME_KEY, now); }catch(e){}
-  applyTheme(now);
-}
+function setTheme(p){ try{ localStorage.setItem(THEME_KEY,p); }catch(e){} applyTheme(p); }
 function initTheme(){
-  let t='light';
-  try{
-    const stored=localStorage.getItem(THEME_KEY);
-    if(stored){ t=stored; }
-    else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){ t='dark'; }
-  }catch(e){}
+  let t='auto';
+  try{ const s=localStorage.getItem(THEME_KEY); if(s==='light'||s==='dark'||s==='auto') t=s; }catch(e){}
   applyTheme(t);
+  try{
+    const mq=window.matchMedia('(prefers-color-scheme: dark)');
+    const h=()=>{ if(themePref==='auto') applyTheme('auto'); };
+    if(mq.addEventListener) mq.addEventListener('change',h); else if(mq.addListener) mq.addListener(h);
+  }catch(e){}
 }
 
 // ---------- JSON Export / Import ----------
 function exportJSON(){
-  const data=JSON.stringify({app:'Bau-Cockpit',version:4,exported:new Date().toISOString(),uid,groups:state.groups,items:state.items},null,2);
+  const data=JSON.stringify({app:'Bau-Cockpit',version:5,exported:new Date().toISOString(),uid,groups:state.groups,items:state.items,todos:state.todos},null,2);
   const blob=new Blob([data],{type:'application/json'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
@@ -1468,9 +1692,10 @@ function importJSON(file){
     let d; try{ d=JSON.parse(r.result); }catch(e){ alert('Die Datei ist kein gültiges JSON.'); return; }
     if(!d||!Array.isArray(d.groups)||!Array.isArray(d.items)){ alert('Datei enthält keine gültigen Bau-Cockpit-Daten.'); return; }
     if(!confirm('Aktuelle Daten durch die geladene Datei ersetzen? (Tipp: vorher „Sichern (JSON)")')) return;
-    state={groups:d.groups,items:d.items}; normalize();
+    state={groups:d.groups,items:d.items,todos:Array.isArray(d.todos)?d.todos:[]}; normalize();   // v4-Dateien werden dabei migriert
     if(d.uid) uid=Math.max(uid,d.uid);
-    filter='alle'; document.querySelectorAll('.fchip').forEach(x=>x.classList.toggle('on',x.dataset.f==='alle'));
+    cockpitTodoGroups.clear(); closeSettings();
+    filter='alle'; document.querySelectorAll('#filters .fchip').forEach(x=>x.classList.toggle('on',x.dataset.f==='alle'));
     render(); refreshActiveSecondary(); save();
     flag('JSON geladen');
   };
@@ -1479,7 +1704,7 @@ function importJSON(file){
 
 // ---------- Persistenz (lokal schnell, Cloud gebündelt) ----------
 let lsTimer=null, cloudTimer=null;
-function currentPayload(){ return JSON.stringify({groups:state.groups,items:state.items,uid}); }
+function currentPayload(){ return JSON.stringify({v:5,groups:state.groups,items:state.items,todos:state.todos,uid}); }
 function save(){
   // localStorage: schnell (verhindert Datenverlust)
   clearTimeout(lsTimer);
@@ -1503,15 +1728,15 @@ async function load(){
   try{
     const raw=localStorage.getItem(STORE_KEY);
     if(raw){ const d=JSON.parse(raw);
-      if(d&&d.groups&&d.items){ state={groups:d.groups,items:d.items}; if(d.uid)uid=Math.max(uid,d.uid); } }
+      if(d&&d.groups&&d.items){ state={groups:d.groups,items:d.items,todos:Array.isArray(d.todos)?d.todos:[]}; if(d.uid)uid=Math.max(uid,d.uid); } }
   }catch(e){}
-  normalize();
+  return normalize()>0;     // true = alte To-Dos wurden gerade ins neue Format übernommen
 }
 
 // ---------- Cloud-Bridge (wird vom Firebase-Modul genutzt) ----------
 window.getStatePayload=()=>currentPayload();
 
-function dataFingerprint(payloadStr){ try{ const d=JSON.parse(payloadStr); return JSON.stringify({g:d.groups,i:d.items}); }catch(e){ return payloadStr; } }
+function dataFingerprint(payloadStr){ try{ const d=JSON.parse(payloadStr); return JSON.stringify({g:d.groups,i:d.items,t:d.todos}); }catch(e){ return payloadStr; } }
 function isEditingNow(){
   const ae=document.activeElement;
   if(ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName) && ae.closest && ae.closest('.wrap')) return true;
@@ -1530,10 +1755,13 @@ window.applyRemoteState=function(payload){
   try{
     const d=JSON.parse(incoming);
     if(d&&Array.isArray(d.groups)&&Array.isArray(d.items)){
-      state={groups:d.groups,items:d.items}; if(d.uid)uid=Math.max(uid,d.uid);
+      // Schutz: Daten von einem Gerät mit ALTER App-Version haben keine To-Do-Liste → lokale To-Dos behalten
+      const oldFormat=!Array.isArray(d.todos);
+      state={groups:d.groups,items:d.items,todos:oldFormat?state.todos:d.todos}; if(d.uid)uid=Math.max(uid,d.uid);
       normalize();
       try{ localStorage.setItem(STORE_KEY,currentPayload()); }catch(e){}
       render(); refreshActiveSecondary();
+      if(oldFormat) save();   // zusammengeführten Stand im neuen Format zurück in die Cloud
     }
   }catch(e){}
 };
@@ -1541,7 +1769,7 @@ function flushPendingRemote(){ if(pendingRemote && !isEditingNow()){ const p=pen
 document.addEventListener('focusout',()=>{ setTimeout(flushPendingRemote,400); });
 
 // ---------- Cloud-Panel ----------
-function toggleCloud(){ const p=document.getElementById('cloudPanel'); if(!p)return; p.classList.toggle('hidden'); if(!p.classList.contains('hidden')) refreshCloudPanel(); }
+function toggleCloud(){ openSettings('sync'); }
 function refreshCloudPanel(){
   const k=(window.__cloud&&window.__cloud.getKey&&window.__cloud.getKey())||'(wird beim ersten Cloud-Login automatisch erzeugt)';
   const el=document.getElementById('cloudKey'); if(el) el.value=k;
@@ -1558,17 +1786,232 @@ function copyCloudKey(){
   try{ navigator.clipboard.writeText(el.value); flag('Schlüssel kopiert'); }catch(e){ try{document.execCommand('copy');}catch(_){} }
 }
 async function resetAll(){
-  if(!confirm('Alle Eingaben (inkl. eigener Punkte, Status & Notizen) auf die Standard-Vorlage zurücksetzen?')) return;
+  if(!confirm('Alle Eingaben (eigene Punkte, Status, Notizen, To-Dos, Zahlungen) auf die Standard-Vorlage zurücksetzen?')) return;
+  if(!confirm('Wirklich? Das lässt sich nicht rückgängig machen. Tipp: vorher „Sichern (JSON)“.')) return;
   try{ localStorage.removeItem(STORE_KEY); }catch(e){}
   uid=1000; state=defaults(); filter='alle';
-  sumOpenGroups.clear(); sumOpenItems.clear(); cockpitOpenGroups.clear();
-  document.querySelectorAll('.fchip').forEach(x=>x.classList.toggle('on',x.dataset.f==='alle'));
-  setView('cockpit'); render(); save();
+  sumOpenGroups.clear(); sumOpenItems.clear(); cockpitOpenGroups.clear(); cockpitTodoGroups.clear();
+  todoFilter='alle'; todoCapAsg='';
+  document.querySelectorAll('#filters .fchip').forEach(x=>x.classList.toggle('on',x.dataset.f==='alle'));
+  closeSettings(); setView('cockpit'); render(); save();
 }
+
+// =====================================================================
+//  v5: To-Do-Bausteine, mitwachsende Felder, Einstellungen
+// =====================================================================
+
+/* ---- Mitwachsende Textfelder ---- */
+function autoGrow(el){
+  if(!el || el.tagName!=='TEXTAREA' || !el.isConnected || el.offsetParent===null) return;   // versteckte Felder später
+  const y=window.scrollY;
+  el.style.height='auto';
+  const border=el.offsetHeight-el.clientHeight;
+  el.style.height=(el.scrollHeight+border)+'px';
+  if(Math.abs(window.scrollY-y)>1) window.scrollTo(0,y);     // kein Springen beim Tippen
+}
+function growAll(root){ (root||document).querySelectorAll('textarea').forEach(autoGrow); }
+let growTimer=null;
+window.addEventListener('resize',()=>{ clearTimeout(growTimer); growTimer=setTimeout(()=>growAll(document),150); });
+
+/* ---- Zuordnung (Eingang / Hauptpunkt / Unterpunkt) ---- */
+function asgExists(key){
+  if(!key) return true;
+  if(key.startsWith('i:')) return !!itemById(key.slice(2));
+  if(key.startsWith('g:')) return !!groupById(key.slice(2));
+  return false;
+}
+function applyAsg(t,key){
+  t.g=''; t.i='';
+  if(key&&key.startsWith('i:')){ const it=itemById(key.slice(2)); if(it){ t.i=it.id; t.g=it.g; } }
+  else if(key&&key.startsWith('g:')){ if(groupById(key.slice(2))) t.g=key.slice(2); }
+}
+function asgInfo(t,ctx){
+  if(t.i){ const it=itemById(t.i); const g=it?groupById(it.g):null;
+    return {cls:'', dot:g?g.color:'#999', txt: ctx==='group' ? (it?it.n:'?') : ((g?g.label+' › ':'')+(it?it.n:'?'))}; }
+  if(t.g){ const g=groupById(t.g);
+    return {cls:'', dot:g?g.color:'#999', txt: ctx==='group' ? 'Hauptpunkt allgemein' : ((g?g.label:'?')+' · allgemein')}; }
+  return {cls:'inbox', dot:'', txt:'📥 Eingang – zuordnen'};
+}
+function asgInfoFromKey(key,ctx){ const t={g:'',i:''}; applyAsg(t,key||''); return asgInfo(t,ctx); }
+function asgOptions(sel){
+  let h=`<option value=""${!sel?' selected':''}>📥 Eingang (nicht zugeordnet)</option>`;
+  state.groups.forEach(g=>{
+    h+=`<optgroup label="${esc(g.label)}"><option value="g:${g.id}"${sel==='g:'+g.id?' selected':''}>${esc(g.label)} – allgemein</option>`;
+    state.items.filter(i=>i.g===g.id).forEach(i=>{ h+=`<option value="i:${i.id}"${sel==='i:'+i.id?' selected':''}>↳ ${esc(i.n)}</option>`; });
+    h+='</optgroup>';
+  });
+  return h;
+}
+function groupAsgOptions(gid,sel){
+  const g=groupById(gid); if(!g) return '';
+  let h=`<option value="g:${gid}"${sel==='g:'+gid?' selected':''}>${esc(g.label)} – allgemein</option>`;
+  state.items.filter(i=>i.g===gid).forEach(i=>{ h+=`<option value="i:${i.id}"${sel==='i:'+i.id?' selected':''}>↳ ${esc(i.n)}</option>`; });
+  return h;
+}
+function setAsgChip(chip,key,ctx){
+  if(!chip) return; const a=asgInfoFromKey(key,ctx);
+  chip.classList.toggle('inbox',a.cls==='inbox');
+  let dot=chip.querySelector('.gdot');
+  if(a.dot){ if(!dot){ dot=document.createElement('span'); dot.className='gdot'; chip.insertBefore(dot,chip.firstChild); } dot.style.background=a.dot; }
+  else if(dot) dot.remove();
+  chip.querySelector('.tl').textContent=a.txt;
+}
+function setDueChip(chip,due){
+  if(!chip) return; const di=dueInfo(due);
+  chip.classList.remove('set','today','over'); if(di) chip.classList.add(di.cls);
+  chip.querySelector('.tl').textContent=di?di.txt:'Datum';
+}
+
+/* ---- Eine To-Do-Zeile (gleich im Reiter, im Hauptpunkt und im Unterpunkt) ---- */
+function todoRowHtml(t,ctx){
+  ctx=ctx||'list';
+  const a=asgInfo(t,ctx), di=t.done?null:dueInfo(t.due);
+  const asgTxt= ctx==='item' ? '↪ umhängen' : a.txt;
+  const showDot= ctx!=='item' && a.dot;
+  const showGo = ctx==='list' ? !!(t.i||t.g) : (ctx==='group' ? !!t.i : false);
+  const meta = t.done ? `<span class="tts ok">✓ erledigt${t.doneTs?' '+fmtTs(t.doneTs):''}</span>` : (t.ts?`<span class="tts">${fmtTs(t.ts)}</span>`:'');
+  return `<div class="trow${t.done?' done':''}" data-tid="${t.id}">
+    <button class="tchk" data-tdone title="${t.done?'Wieder öffnen':'Als erledigt abhaken'}">✓</button>
+    <div class="tbody">
+      <textarea class="ttext" rows="1" data-ttext>${esc(t.text)}</textarea>
+      <div class="tmeta">
+        <label class="tchip asg${ctx!=='item'&&a.cls?' '+a.cls:''}" title="Zuordnung ändern">${showDot?`<span class="gdot" style="background:${a.dot}"></span>`:''}<span class="tl">${esc(asgTxt)}</span><select data-tasg>${asgOptions(asgKey(t))}</select></label>
+        ${t.done?'':`<label class="tchip due${di?' '+di.cls:''}" title="Fälligkeitsdatum (erscheint später im Kalender)">📅 <span class="tl">${di?di.txt:'Datum'}</span><input type="date" data-tdue value="${t.due||''}"></label>${t.due?'<button class="tsmall" data-tdueclr title="Datum entfernen">×</button>':''}`}
+        ${meta}
+        <span class="push">${showGo?'<button class="tsmall" data-tgo title="Im Cockpit öffnen">↗</button>':''}<button class="tsmall del" data-tdel title="To-Do löschen">🗑</button></span>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ---- Schnellerfassung ---- */
+function captureHtml(sel,opts,ph){
+  const ctx= sel&&sel.startsWith('g:')&&!opts.includes('📥') ? 'group' : 'list';
+  const a=asgInfoFromKey(sel,ctx);
+  return `<div class="tcap" data-capctx="${ctx}">
+    <textarea class="tcap-in" rows="1" enterkeyhint="done" placeholder="${ph}"></textarea>
+    <div class="tcap-row">
+      <label class="tchip asg${a.cls?' '+a.cls:''}" title="Zuordnen">${a.dot?`<span class="gdot" style="background:${a.dot}"></span>`:''}<span class="tl">${esc(a.txt)}</span><select data-capasg>${opts}</select></label>
+      <label class="tchip due" title="Fälligkeitsdatum (optional)">📅 <span class="tl">Datum</span><input type="date" data-capdue value=""></label>
+      <button class="tcap-btn" data-capadd>+ To-Do</button>
+    </div>
+  </div>`;
+}
+function captureAdd(cap){
+  if(!cap) return;
+  const ta=cap.querySelector('.tcap-in'); const txt=(ta.value||'').trim();
+  if(!txt){ ta.focus(); return; }
+  const key=cap.querySelector('[data-capasg]').value, dueEl=cap.querySelector('[data-capdue]');
+  const t={id:tid(),text:txt,ts:new Date().toISOString(),done:false,doneTs:null,g:'',i:'',due:dueEl.value||''};
+  applyAsg(t,key);
+  state.todos.push(t);
+  ta.value=''; autoGrow(ta); dueEl.value=''; setDueChip(dueEl.closest('.tchip'),'');
+  save(); refreshTodoUI(); flag('To-Do gespeichert');
+  ta.focus();
+}
+
+/* ---- Listen neu zeichnen (gezielt, Eingabefelder bleiben stehen) ---- */
+function renderItemTodos(id){
+  const box=document.getElementById('tl-'+id); if(!box) return;
+  const list=state.todos.filter(t=>t.i===id);
+  box.innerHTML=list.filter(t=>!t.done).sort(sortOpen).concat(list.filter(t=>t.done).sort(sortDone)).map(t=>todoRowHtml(t,'item')).join('');
+  growAll(box);
+}
+function renderGroupTodos(gid){
+  const box=document.getElementById('gtl-'+gid); if(!box) return;
+  const open=openTodosInGroup(gid).sort(sortOpen);
+  const doneN=state.todos.filter(t=>t.done&&todoGroupId(t)===gid).length;
+  box.innerHTML=(open.length?open.map(t=>todoRowHtml(t,'group')).join(''):'<div class="tempty">Keine offenen To-Dos – oben eintippen.</div>')
+    +(doneN?`<button class="tsmall more" data-gotodos="${gid}">✓ ${doneN} erledigt – im To-Dos-Reiter ansehen</button>`:'');
+  growAll(box);
+}
+function updateGPill(gid){
+  const b=document.getElementById('gpill-'+gid); if(!b) return;
+  const n=openTodosInGroup(gid).length;
+  b.textContent=n?('⚡ '+n):'⚡ +';
+  b.classList.toggle('has',n>0); b.classList.toggle('on',cockpitTodoGroups.has(gid));
+}
+function updateTodoBadge(){
+  const b=document.getElementById('todoBadge'); if(!b) return;
+  const n=state.todos.filter(t=>!t.done).length;
+  b.textContent=n?String(n):''; b.classList.toggle('hidden',!n);
+}
+function refreshTodoUI(){
+  if(currentView==='todos'){ if(todoSeg==='todos') renderTodoLists(); else renderTodos(); }
+  else if(currentView==='summary') renderSummary();
+  state.items.forEach(it=>{ renderItemTodos(it.id); refreshRowBadges(it.id); if(!it.notizen.length) renderLog(it.id); });
+  state.groups.forEach(g=>{ renderGroupTodos(g.id); updateGPill(g.id); });
+  updateTodoBadge();
+}
+function toggleGroupTodos(gid){
+  const row=document.querySelector(`tr.gtodorow[data-gtodorow="${gid}"]`); if(!row) return;
+  const open=!cockpitTodoGroups.has(gid);
+  if(open) cockpitTodoGroups.add(gid); else cockpitTodoGroups.delete(gid);
+  row.classList.toggle('hidden',!open); updateGPill(gid);
+  if(open){ growAll(row); if(!openTodosInGroup(gid).length){ const ta=row.querySelector('.tcap-in'); if(ta) ta.focus(); } }
+}
+function sumTodoHtml(t){
+  const di=t.done?null:dueInfo(t.due);
+  return `<div class="acc-note todo"><span class="acc-note-ts${t.ts?'':' muted'}"><span class="todobadge${t.done?' done':''}" style="margin-right:6px">${t.done?'✓':'⚡'}</span>${t.ts?fmtTs(t.ts):''}${di?' · 📅 '+di.txt:''}${t.done&&t.doneTs?' · erledigt '+fmtTs(t.doneTs):''}</span><div class="acc-note-tx">${esc(t.text)}</div></div>`;
+}
+
+/* ---- Ereignisse (zentral, gelten für alle To-Do-Zeilen) ---- */
+function todoFromEl(el){ const r=el.closest('.trow'); return r?state.todos.find(t=>t.id===r.dataset.tid):null; }
+document.addEventListener('click',e=>{
+  const el=e.target; let b;
+  if((b=el.closest('[data-tdone]'))){ const t=todoFromEl(b); if(!t) return; t.done=!t.done; t.doneTs=t.done?new Date().toISOString():null; save(); refreshTodoUI(); flag(t.done?'Erledigt ✓':'Wieder offen'); return; }
+  if((b=el.closest('[data-tdel]'))){ const t=todoFromEl(b); if(!t) return; if(!confirm('Dieses To-Do löschen?')) return; state.todos=state.todos.filter(x=>x!==t); save(); refreshTodoUI(); return; }
+  if((b=el.closest('[data-tdueclr]'))){ const t=todoFromEl(b); if(!t) return; t.due=''; save(); refreshTodoUI(); return; }
+  if((b=el.closest('[data-tgo]'))){ const t=todoFromEl(b); if(!t) return; if(t.i) gotoItem(t.i); else if(t.g) gotoGroup(t.g); return; }
+  if((b=el.closest('[data-capadd]'))){ captureAdd(b.closest('.tcap')); return; }
+  if((b=el.closest('[data-gtodo]'))){ toggleGroupTodos(b.dataset.gtodo); return; }
+  if((b=el.closest('[data-gotodos]'))){ todoFilter=b.dataset.gotodos; todoSeg='todos'; doneOpen=true; setView('todos'); window.scrollTo(0,0); return; }
+});
+document.addEventListener('change',e=>{
+  const el=e.target;
+  if(el.matches('[data-tasg]')){ const t=todoFromEl(el); if(!t) return; applyAsg(t,el.value); save(); refreshTodoUI(); flag(el.value?'Zugeordnet':'In den Eingang'); return; }
+  if(el.matches('[data-tdue]')){ const t=todoFromEl(el); if(!t) return; t.due=el.value||''; save(); refreshTodoUI(); return; }
+  if(el.matches('[data-capasg]')){ const cap=el.closest('.tcap'); setAsgChip(el.closest('.tchip'),el.value,cap?cap.dataset.capctx:'list'); if(el.closest('#todosView')) todoCapAsg=el.value; return; }
+  if(el.matches('[data-capdue]')){ setDueChip(el.closest('.tchip'),el.value); return; }
+});
+document.addEventListener('input',e=>{
+  const el=e.target;
+  if(el.tagName==='TEXTAREA') autoGrow(el);
+  if(el.matches && el.matches('[data-ttext]')){ const t=todoFromEl(el); if(t){ t.text=el.value; save(); } }
+});
+document.addEventListener('keydown',e=>{
+  const el=e.target;
+  if(el.matches && el.matches('.tcap-in') && e.key==='Enter' && !e.shiftKey && !e.isComposing){ e.preventDefault(); captureAdd(el.closest('.tcap')); return; }
+  if(e.key==='Escape'){ const s=document.getElementById('settingsSheet'); if(s&&!s.classList.contains('hidden')) closeSettings(); }
+});
+// Datumsfeld: auch am Mac per Klick den Kalender öffnen
+document.addEventListener('click',e=>{
+  const inp=e.target.closest && e.target.closest('.tchip input[type=date]');
+  if(inp && typeof inp.showPicker==='function'){ try{ inp.showPicker(); }catch(_){} }
+});
+// Tastatur offen (iPhone) → Tab-Leiste ausblenden, damit sie nicht über der Tastatur schwebt
+document.addEventListener('focusin',e=>{ const el=e.target; if(el.matches && el.matches('textarea,input:not([type=date]):not([type=file])')) document.body.classList.add('kb'); });
+document.addEventListener('focusout',()=>{ setTimeout(()=>{ const a=document.activeElement; if(!a||!a.matches||!a.matches('textarea,input:not([type=date]):not([type=file])')) document.body.classList.remove('kb'); },80); });
+
+/* ---- Einstellungen (Zahnrad) ---- */
+function openSettings(sec){
+  const s=document.getElementById('settingsSheet'); if(!s) return;
+  s.classList.remove('hidden'); document.body.classList.add('sheet-open');
+  refreshCloudPanel(); applyTheme(themePref);
+  const box=s.querySelector('.sheetbox'); if(box) box.scrollTop=0;
+  if(sec==='sync'){ const el=document.getElementById('setSync'); if(el) setTimeout(()=>el.scrollIntoView({block:'start',behavior:'smooth'}),60); }
+}
+function closeSettings(){ const s=document.getElementById('settingsSheet'); if(s) s.classList.add('hidden'); document.body.classList.remove('sheet-open'); }
+function printNow(){ closeSettings(); setTimeout(()=>window.print(),300); }
 
 // ---------- Init ----------
 initTheme();
-(async function init(){ await load(); render(); })();
+(async function init(){
+  const migrated=await load();
+  render();
+  const v=document.getElementById('appVer'); if(v) v.textContent=APP_VERSION;
+  if(migrated){ save(); flag('Daten auf v5 umgestellt'); }   // neues Format gleich sichern + in die Cloud
+})();
 </script>
 
 <!-- =====================================================================
@@ -1594,7 +2037,8 @@ const firebaseConfig = {
 
 const KEYNAME='baucockpit_projectkey';
 const STAT={local:['nur lokal',''],connecting:['verbinde…','warn'],synced:['☁ synchronisiert','ok'],error:['Cloud-Fehler – nur lokal','err']};
-function setStatus(s){ const x=STAT[s]||['','']; ['cloudStatus','cloudStatus2'].forEach(id=>{ const el=document.getElementById(id); if(el){ el.textContent=x[0]; el.className='cloudstat'+(x[1]?(' '+x[1]):''); } }); }
+function setStatus(s){ const x=STAT[s]||['','']; ['cloudStatus','cloudStatus2'].forEach(id=>{ const el=document.getElementById(id); if(el){ el.textContent=x[0]; el.className='cloudstat'+(x[1]?(' '+x[1]):''); } });
+  const d=document.getElementById('cloudDot'); if(d) d.dataset.s=s; const b=document.getElementById('cloudBtn'); if(b) b.title='Cloud: '+x[0]; }
 function genKey(){ try{ return crypto.randomUUID(); }catch(e){ return 'p'+Date.now()+Math.random().toString(36).slice(2); } }
 function getKey(){ try{ return localStorage.getItem(KEYNAME); }catch(e){ return null; } }
 function storeKey(k){ try{ localStorage.setItem(KEYNAME,k); }catch(e){} }
